@@ -1,6 +1,7 @@
 import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
 import axios from "axios";
+let user = {};
 
 export default {
   providers: [
@@ -30,7 +31,7 @@ export default {
         };
 
         // Return the promise from the axios.post() call
-        return axios
+        const res = await axios
           .post(
             "http://192.168.2.165:8085/realms/testRealm/protocol/openid-connect/token",
             encodeFormData(data),
@@ -45,7 +46,25 @@ export default {
               return null;
             }
           });
+        user = res;
+
+        return res;
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user;
+        return token;
+      } else {
+        return token;
+      }
+    },
+    async session({ session, token }) {
+      session.user = token.user;
+
+      return session;
+    },
+  },
 } satisfies NextAuthConfig;

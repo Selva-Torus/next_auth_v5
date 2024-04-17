@@ -1,15 +1,15 @@
-import { auth } from "@/auth";
+"use client";
+import { signOut, useSession } from "next-auth/react";
 import React from "react";
 
-const page = async () => {
-  const session = await auth();
-  console.log(session);
+const page = () => {
+  const session = useSession();
 
   return (
     <>
       <div>page</div>
       <div>{JSON.stringify(session)}</div>
-      <button>Signout</button>
+      <button onClick={() => signOut()}>Signout</button>
     </>
   );
 };
