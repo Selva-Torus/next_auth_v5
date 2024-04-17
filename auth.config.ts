@@ -1,4 +1,3 @@
-import GitHub from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
 import axios from "axios";
@@ -9,7 +8,7 @@ export default {
       async authorize(credentials) {
         const { username, password } = credentials;
 
-        const encodeFormData = (data :any) => {
+        const encodeFormData = (data: any) => {
           return Object.keys(data)
             .map(
               (key) =>
@@ -25,21 +24,27 @@ export default {
           grant_type: "password",
         };
         const config = {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded', 
-            }
-          };
-        axios.post(
-          "http://192.168.2.165:8085/realms/testRealm/protocol/openid-connect/token" ,encodeFormData(data) , config
-        ).then(res => {
-            if(res.status == 200){
-                return res.data
-            }else{
-                return null
-            }
-        });
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        };
 
-        return null
+        // Return the promise from the axios.post() call
+        return axios
+          .post(
+            "http://192.168.2.165:8085/realms/testRealm/protocol/openid-connect/token",
+            encodeFormData(data),
+            config
+          )
+          .then((res) => {
+            if (res.status == 200) {
+              // Return the user object from the response data
+              return res.data;
+            } else {
+              // Return null if the request fails
+              return null;
+            }
+          });
       },
     }),
   ],
