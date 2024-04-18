@@ -1,29 +1,8 @@
 "use client";
 import { login } from "@/action/login";
-// import { Button, Input } from '@nextui-org/react'
-// import { useRouter } from 'next/navigation'
-// import React, { FC } from 'react'
-
-// const LoginForm : FC = () => {
-// const router = useRouter();
-//   const handleNavigateToRegister = () => {
-//     router.push('register')
-//   }
-//   return (
-//     <div>
-//       <div className='flex flex-col justify-center items-center gap-2'>
-//         <Input label="username" type='text'/>
-//         <Input label="password" type='password'/>
-//         <Button>Submit</Button>
-//       </div>
-//       <div>Not a registered user <span className='cursor-pointer' onClick={handleNavigateToRegister}>Signup here</span></div>
-//     </div>
-//   )
-// }
-
-// export default LoginForm
-
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { Button, Input } from "@nextui-org/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation"; // Changed from 'next/navigation' to 'next/router'
 import React, { FC, useState } from "react";
 
@@ -56,6 +35,12 @@ const LoginForm: FC = () => {
     router.push("/register"); // Changed to '/register'
   };
 
+  const handleSocialLogin = (provider : "github"|"google") =>{
+    signIn(provider , {
+      callbackUrl: DEFAULT_LOGIN_REDIRECT
+    })
+  }
+
   return (
     <div>
       <form
@@ -84,6 +69,10 @@ const LoginForm: FC = () => {
         )}
         <Button type="submit">Submit</Button>
       </form>
+      <div className="flex justify-between w-full">
+        <Button onClick={()=>handleSocialLogin("google")}>Google</Button>
+        <Button onClick={()=>handleSocialLogin('github')}>github</Button>
+      </div>
       <div>
         Not a registered user{" "}
         <span className="cursor-pointer" onClick={handleNavigateToRegister}>
