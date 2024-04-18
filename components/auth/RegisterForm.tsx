@@ -104,7 +104,7 @@ const RegisterForm: FC = () => {
           Already have an account?{" "}
           <span
             className="text-blue-500 cursor-pointer"
-            onClick={() => handleNavigateToLogin}
+            onClick={handleNavigateToLogin}
           >
             Login here
           </span>
