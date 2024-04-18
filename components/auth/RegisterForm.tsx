@@ -1,8 +1,11 @@
 "use client";
 import { register } from "@/action/register";
 import { Button, Input } from "@nextui-org/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { FC, useState } from "react";
+import torusIcon from "@/app/favicon.ico"
+
 
 const RegisterForm: FC = () => {
   const router = useRouter();
@@ -41,7 +44,8 @@ const RegisterForm: FC = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-purple-400 to-pink-500">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <h2 className={"font-bold text-center text-4xl text-blue-700 "}>
+          <h2 className={"font-bold text-4xl text-blue-700 flex items-center justify-center gap-2 "}>
+          <Image className="h-8 w-8" src={torusIcon} alt="torus"/>
             Torus
           </h2>
 

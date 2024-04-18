@@ -3,8 +3,10 @@ import { login } from "@/action/login";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { Button, Input } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation"; // Changed from 'next/navigation' to 'next/router'
 import React, { FC, useState } from "react";
+import torusIcon from "@/app/favicon.ico"
 
 const LoginForm: FC = () => {
   const router = useRouter();
@@ -62,7 +64,8 @@ const LoginForm: FC = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-purple-400 to-pink-500">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <h2 className={"font-bold text-center text-4xl text-blue-700 "}>
+          <h2 className={"font-bold text-4xl text-blue-700 flex items-center justify-center gap-2"}>
+            <Image className="h-8 w-8" src={torusIcon} alt="torus"/>
             Torus
           </h2>
 
