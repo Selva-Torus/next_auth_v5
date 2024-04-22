@@ -1,6 +1,8 @@
 import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
 import axios from "axios";
+import GoogleProvider from "next-auth/providers/google"
+import GitHub from "next-auth/providers/github";
 let user = {};
 
 export default {
@@ -51,6 +53,21 @@ export default {
         return res;
       },
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code"
+        }
+      },
+    }),
+    GitHub({
+      clientId:process.env.GITHUB_CLIENT_ID,
+      clientSecret:process.env.GITHUB_CLIENT_SECRET,
+    }),
   ],
   callbacks: {
     async jwt({ token, user }) {
@@ -61,7 +78,7 @@ export default {
         return token;
       }
     },
-    async session({ session, token }) {
+    async session({ session, token }:any) {
       session.user = token.user;
 
       return session;
