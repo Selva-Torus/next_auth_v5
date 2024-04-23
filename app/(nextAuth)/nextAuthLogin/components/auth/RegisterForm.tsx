@@ -4,7 +4,7 @@ import { Button, Input } from "@nextui-org/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { FC, useState } from "react";
-import torusIcon from "@/app/favicon.ico";
+import torusIcon from "../../favicon.ico";
 import { handleKeycloakRegister } from "@/action/registorKeyCloak";
 
 const RegisterForm: FC = () => {
@@ -28,7 +28,7 @@ const RegisterForm: FC = () => {
     register(formData)
       .then((response) => {
         // Handle successful registration, such as redirecting to another page
-        router.push("/");
+        router.push("/nextAuthLogin");
       })
       .catch((error) => {
         // Handle registration error, such as displaying an error message
@@ -37,14 +37,14 @@ const RegisterForm: FC = () => {
   };
 
   const handleNavigateToLogin = () => {
-    router.push("/");
+    router.push("/nextAuthLogin");
   };
 
   function handlekeycloakReg() {
     try {
       if (formData.email && formData.password && formData.username)
-        handleKeycloakRegister(formData).then((res) => 
-          router.push('/')
+        handleKeycloakRegister(formData).then((res) =>
+          router.push("/nextAuthLogin")
         );
     } catch (err) {
       alert("There is an issue with user creation , please check credentials");

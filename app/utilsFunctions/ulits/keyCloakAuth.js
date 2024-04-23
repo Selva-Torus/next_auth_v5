@@ -90,6 +90,8 @@ export const getRealm = async () => {
 };
 
 export const logoutRealm = async (data, token) => {
+  // console.log("logoutRealm", data, token);
+  // return;
   if (!data.realm) return "";
   var logOutUrl = `http://192.168.2.165:8085/realms/${data.realm}/protocol/openid-connect/logout`;
   var maindata = { ...data, refresh_token: token.refresh_token };

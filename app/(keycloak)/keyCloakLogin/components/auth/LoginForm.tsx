@@ -9,7 +9,7 @@ import {
 import { Button, CircularProgress, Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation"; // Changed from 'next/navigation' to 'next/router'
 import React, { useEffect, useState } from "react";
-// import logo from "@/app/(main)/favicon.ico";
+import logo from "../../favicon.ico";
 import {
   Dropdown,
   DropdownMenu,
@@ -206,7 +206,7 @@ const LoginForm = () => {
       .then((response) => {
         console.log("Response:", response.data);
         localStorage.setItem("registertoken", response.data.access_token);
-        router.push("./register");
+        router.push("./keyCloakLogin/register");
       })
       .catch((error) => {
         alert("error occured");
@@ -222,7 +222,7 @@ const LoginForm = () => {
       className="flex flex-col w-full h-screen justify-center items-center gap-2"
     >
       <div className="flex gap-2">
-        {/* <Image className=" w-12 h-12  transition-all" src={logo} alt=""></Image> */}
+        <Image className=" w-12 h-12  transition-all" src={logo} alt=""></Image>
 
         <h2 className="text-center font-bold text-4xl text-white">Torus</h2>
       </div>

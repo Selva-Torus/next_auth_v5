@@ -88,9 +88,9 @@ import { Button } from "@nextui-org/react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import logo from "@/app/(main)/favicon.ico";
-import picture from "@/app/assets/google.png"
-import pictures from "@/app/assets/github.png"
+import logo from "../../favicon.ico";
+// import picture from "@/app/assets/google.png";
+// import pictures from "@/app/assets/github.png";
 
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { IoEyeOffOutline } from "react-icons/io5";
@@ -118,7 +118,6 @@ const RegisterForm = () => {
   } = useForm({ resolver: zodResolver(schema) });
   const submitData = async (data: any) => {
     try {
-      console.log("It Worked", data);
       const requestBody = {
         attributes: {
           attribute_key: "test_value",
@@ -155,7 +154,7 @@ const RegisterForm = () => {
         .then((res) => {
           console.log(res);
           if (res.status == 201) {
-            router.push("/");
+            router.push("./keyCloakLogin");
             alert("new user created");
           } else {
             alert("failed to create");
@@ -189,15 +188,18 @@ const RegisterForm = () => {
         </div>
         <div className="flex flex-col justify-center items-center w-full gap-3 ">
           <div className="grid grid-cols-2 gap-1">
-            
             <Button className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2">
-            <Image src={pictures} alt="GitHub logo" width={20} height={25} />
-            <span className="ml-2 text-black text-sm">Sign in with GitHub</span>
-        </Button>
+              {/* <Image src={pictures} alt="GitHub logo" width={20} height={25} /> */}
+              <span className="ml-2 text-black text-sm">
+                Sign in with GitHub
+              </span>
+            </Button>
             <Button className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2">
-            <Image src={picture} alt="Google logo" width={30} height={35} />
-            <span className="ml-2 text-black text-sm">Sign in with Google</span>
-        </Button>
+              {/* <Image src={picture} alt="Google logo" width={30} height={35} /> */}
+              <span className="ml-2 text-black text-sm">
+                Sign in with Google
+              </span>
+            </Button>
           </div>
           <h2 className="text-slate-400 text-[14px]">Or continue with</h2>
         </div>
@@ -420,7 +422,7 @@ const RegisterForm = () => {
               </p>
               <span
                 className="cursor-pointer hover:bg-slate-400 rounded-full p-2 text-[14px] text-green-300"
-                onClick={() => router.push("/")}
+                onClick={() => router.push("/keyCloakLogin")}
               >
                 login
               </span>
