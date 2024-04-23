@@ -1,7 +1,7 @@
-export const publicRoutes = ["/"];
+export const publicRoutes = ["/nextAuthLogin"];
 
-export const authRoutes = ["/", "/register"];
+export const authRoutes = ["/nextAuthLogin", "/nextAuthLogin/register"];
 
-export const apiAuthPrefix = "/api/auth";
+export const apiAuthPrefix = "/nextAuthLogin/api/auth";
 
-export const DEFAULT_LOGIN_REDIRECT = "/protected";
+export const DEFAULT_LOGIN_REDIRECT = "/nextAuthLogin/Torus";

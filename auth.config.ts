@@ -71,11 +71,14 @@ export default {
   ],
   callbacks: {
     async signIn({ user, account }) {
-      console.log(user, account, "hvyhvy");
+      // console.log(user, account, "hvyhvy");
       if (account?.type == "credentials") {
         return true; //false;
+      } else {
+        // console.log(user, account, "--------");
+
+        return true;
       }
-      return true;
     },
     async jwt({ token, user }) {
       if (user) {

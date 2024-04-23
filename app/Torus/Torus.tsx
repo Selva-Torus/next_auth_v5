@@ -2,8 +2,8 @@
 import { signOut, useSession } from "next-auth/react";
 import React from "react";
 
-const Page = () => {
-  const {status , data:session} = useSession();
+const Torus = () => {
+  const { status, data: session } = useSession();
 
   return (
     <>
@@ -14,4 +14,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Torus;
