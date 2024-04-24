@@ -17,8 +17,8 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 import axios from "axios";
-// import picture from "@/app/assets/google.png";
-// import pictures from "@/app/assets/github.png";
+ import picture from "@/app/assets/google.png";
+ import pictures from "@/app/assets/github.png";
 import Image from "next/image";
 type Realm = {
   id: string;
@@ -238,13 +238,13 @@ const LoginForm = () => {
         <div className="flex flex-col justify-center items-center w-full gap-3 ">
           <div className="grid grid-cols-2 gap-1">
             <Button className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2">
-              {/* <Image src={pictures} alt="GitHub logo" width={20} height={25} /> */}
+               <Image src={pictures} alt="GitHub logo" width={20} height={25} /> 
               <span className="ml-2 text-black text-sm">
                 Sign in with GitHub
               </span>
             </Button>
             <Button className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2">
-              {/* <Image src={picture} alt="Google logo" width={30} height={35} /> */}
+               <Image src={picture} alt="Google logo" width={30} height={35} /> 
               <span className="ml-2 text-black text-sm">
                 Sign in with Google
               </span>
@@ -253,12 +253,12 @@ const LoginForm = () => {
           <h2 className="text-slate-400 text-[14px]">Or continue with</h2>
         </div>
 
-        <Dropdown className="w-[400px] border border-[#20252B]  p-0 ">
+        <Dropdown className="w-[300px] border border-[#121a24] p-0 shadow-lg text-shadow">
           <DropdownTrigger>
             <Button
               size="lg"
               variant="bordered"
-              className={`border-2 border-[#323B45] ${
+              className={`border border-[#1a1735] ${
                 checkDetails && !data.realm ? "text-red-400" : "text-white"
               }`}
             >
@@ -276,7 +276,7 @@ const LoginForm = () => {
           >
             {realmList.map((realm, id) => (
               <DropdownItem
-                className=" text-white hover:bg-slate-500"
+                className="bg-[#39316e] text-white hover:bg-slate-900 py-2"
                 key={id}
                 // onChange={() => handleSelectRealm(realm)}
 
