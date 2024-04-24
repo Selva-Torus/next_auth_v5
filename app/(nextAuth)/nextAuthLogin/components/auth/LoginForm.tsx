@@ -575,6 +575,7 @@
 
 "use client";
 import {
+  checkIsActive,
   getAllRealm,
   getClientcredentials,
   loginWithRealm,
@@ -601,7 +602,7 @@ type Realm = {
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { IoEyeOffOutline } from "react-icons/io5";
 import { login } from "@/action/login";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 const LoginForm: FC = () => {
   const [checkDetails, setCheckDetails] = useState(false);
@@ -621,34 +622,6 @@ const LoginForm: FC = () => {
   const [isVisible, setIsVisible] = React.useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
-
-  // useEffect(() => {
-  //   var token = localStorage.getItem("token");
-  //   if (token) setToken(JSON.parse(token));
-  //   var user: any = localStorage.getItem("user");
-  //   if (user) setData(JSON.parse(user));
-
-  //   if (token && user) {
-  //     (async () => {
-  //       const res = await checkIsActive(JSON.parse(user), JSON.parse(token));
-  //       if (res.active == false) {
-  //         localStorage.removeItem("token");
-  //         localStorage.removeItem("user");
-  //         setData({
-  //           realm: "",
-  //           username: "",
-  //           password: "",
-  //           client_id: "",
-  //           client_secret: "",
-  //         });
-  //         setToken(null);
-  //       }
-  //       if (res.active == true) {
-  //         routes.push("./torus");
-  //       }
-  //     })();
-  //   }
-  // }, []);
 
   useEffect(() => {
     (async () => {
@@ -678,11 +651,8 @@ const LoginForm: FC = () => {
       setCheckDetails(true);
       return;
     }
-
-    // console.log(data);
     setCheckDetails(true);
     setLoading(true);
-    localStorage.setItem("user", JSON.stringify(data));
     const res = await login(data);
     console.log(res);
     if (res?.error) {
@@ -716,10 +686,6 @@ const LoginForm: FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
   };
 
   const handleNavigateToRegister = async () => {
@@ -767,6 +733,7 @@ const LoginForm: FC = () => {
       callbackUrl: DEFAULT_LOGIN_REDIRECT,
     });
   };
+
   return (
     <div
       style={{

@@ -41,8 +41,7 @@ const Home = () => {
 
   return (
     <div>
-      {token}
-      <Button onClick={() => Logout()}>Logout</Button>
+      <Torus session={token} Logout={Logout} />
     </div>
   );
 };
