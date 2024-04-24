@@ -2,7 +2,7 @@
 
 import React from "react";
 
-const Torus = ({ session, Logout }: any) => {
+const Torus = ({ session, Logout = () => {} }: any) => {
   return (
     <>
       <div>page success</div>

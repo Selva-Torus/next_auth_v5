@@ -36,6 +36,7 @@ const Home = () => {
 
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.setItem("isLogin", "false");
     routes.push("/");
   }
 

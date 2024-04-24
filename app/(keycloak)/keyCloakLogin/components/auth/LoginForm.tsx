@@ -17,8 +17,8 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 import axios from "axios";
- import picture from "@/app/assets/google.png";
- import pictures from "@/app/assets/github.png";
+import picture from "@/app/assets/google.png";
+import pictures from "@/app/assets/github.png";
 import Image from "next/image";
 type Realm = {
   id: string;
@@ -26,6 +26,7 @@ type Realm = {
 };
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { IoEyeOffOutline } from "react-icons/io5";
+import Link from "next/link";
 
 const LoginForm = () => {
   const [checkDetails, setCheckDetails] = useState(false);
@@ -132,6 +133,7 @@ const LoginForm = () => {
         setLoading(false);
         localStorage.setItem("token", JSON.stringify(res));
         localStorage.setItem("user", JSON.stringify(data));
+        localStorage.setItem("isLogin", "keyCloakTrue");
         setRealmId("");
         routes.push("/keyCloakLogin/Torus");
 
@@ -238,13 +240,13 @@ const LoginForm = () => {
         <div className="flex flex-col justify-center items-center w-full gap-3 ">
           <div className="grid grid-cols-2 gap-1">
             <Button className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2">
-               <Image src={pictures} alt="GitHub logo" width={20} height={25} /> 
+              <Image src={pictures} alt="GitHub logo" width={20} height={25} />
               <span className="ml-2 text-black text-sm">
                 Sign in with GitHub
               </span>
             </Button>
             <Button className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2">
-               <Image src={picture} alt="Google logo" width={30} height={35} /> 
+              <Image src={picture} alt="Google logo" width={30} height={35} />
               <span className="ml-2 text-black text-sm">
                 Sign in with Google
               </span>
@@ -396,6 +398,11 @@ const LoginForm = () => {
           >
             Sign up
           </span>
+        </div>
+        <div className="flex justify-center items-center w-full gap-3">
+          <Link href={"./nextAuthLogin"} className="text-slate-400 text-[14px]">
+            via nextAuth
+          </Link>
         </div>
       </div>
     </div>
