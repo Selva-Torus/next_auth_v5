@@ -89,8 +89,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logo from "../../favicon.ico";
- import picture from "@/app/assets/google.png";
- import pictures from "@/app/assets/github.png";
+import picture from "@/app/assets/google.png";
+import pictures from "@/app/assets/github.png";
 
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { IoEyeOffOutline } from "react-icons/io5";
@@ -154,8 +154,8 @@ const RegisterForm = () => {
         .then((res) => {
           console.log(res);
           if (res.status == 201) {
-            router.push("./keyCloakLogin");
             alert("new user created");
+            router.push("/keyCloakLogin");
           } else {
             alert("failed to create");
           }
@@ -189,13 +189,13 @@ const RegisterForm = () => {
         <div className="flex flex-col justify-center items-center w-full gap-3 ">
           <div className="grid grid-cols-2 gap-1">
             <Button className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2">
-               <Image src={pictures} alt="GitHub logo" width={20} height={25} /> 
+              <Image src={pictures} alt="GitHub logo" width={20} height={25} />
               <span className="ml-2 text-black text-sm">
                 Sign in with GitHub
               </span>
             </Button>
             <Button className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2">
-               <Image src={picture} alt="Google logo" width={30} height={35} /> 
+              <Image src={picture} alt="Google logo" width={30} height={35} />
               <span className="ml-2 text-black text-sm">
                 Sign in with Google
               </span>

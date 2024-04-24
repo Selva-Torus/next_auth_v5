@@ -1,137 +1,3 @@
-// "use client";
-// import { login } from "@/action/login";
-// import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-// import { Button, Input } from "@nextui-org/react";
-// import { signIn } from "next-auth/react";
-// import Image from "next/image";
-// import { useRouter } from "next/navigation"; // Changed from 'next/navigation' to 'next/router'
-// import React, { FC, useState } from "react";
-// // import torusIcon from "@/app/favicon.ico"
-
-// const LoginForm: FC = () => {
-//   const router = useRouter();
-//   const [formData, setFormData] = useState({
-//     username: "",
-//     password: "",
-//   });
-
-//   const [errors, setErrors] = useState({
-//     username: "",
-//     password: "",
-//   });
-
-//   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const { name, value } = e.target;
-//     setFormData({
-//       ...formData,
-//       [name]: value,
-//     });
-//   };
-
-//   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-//     setErrors({
-//       username: "",
-//       password: "",
-//     });
-//     e.preventDefault();
-//     if (!formData.username || !formData.password) {
-//       setErrors({
-//         username: "username required",
-//         password: "password required",
-//       });
-//     } else {
-//       const res = await login(formData);
-//       if (res && res?.error) {
-//         setErrors({
-//           username: "please check username",
-//           password: " please check password",
-//         });
-//       }
-//     }
-//   };
-
-//   const handleNavigateToRegister = () => {
-//     router.push("/nextAuthLogin/register"); // Changed to '/register'
-//   };
-
-//   const handleSocialLogin = (provider: "github" | "google") => {
-//     signIn(provider, {
-//       callbackUrl: DEFAULT_LOGIN_REDIRECT,
-//     });
-//   };
-
-//   return (
-//     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-purple-400 to-pink-500">
-//       <div className="bg-white p-8 rounded-lg shadow-md w-96">
-//         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-//           <h2
-//             className={
-//               "font-bold text-4xl text-blue-700 flex items-center justify-center gap-2"
-//             }
-//           >
-//             {/* <Image className="h-8 w-8" src={torusIcon} alt="torus" /> */}
-//             Torus
-//           </h2>
-
-//           <Input
-//             label="Username"
-//             type="text"
-//             name="username"
-//             value={formData.username}
-//             onChange={handleInputChange}
-//             className="rounded-lg"
-//           />
-//           {errors.username && (
-//             <span className="text-red-500">{errors.username}</span>
-//           )}
-//           <Input
-//             label="Password"
-//             type="password"
-//             name="password"
-//             value={formData.password}
-//             onChange={handleInputChange}
-//             className="rounded-lg"
-//           />
-//           {errors.password && (
-//             <span className="text-red-500">{errors.password}</span>
-//           )}
-//           <Button
-//             type="submit"
-//             className="bg-purple-500 hover:bg-purple-600 text-white rounded-lg"
-//           >
-//             Submit
-//           </Button>
-//         </form>
-//         <div className="mt-4 flex justify-between">
-//           <Button
-//             onClick={() => handleSocialLogin("google")}
-//             className="bg-red-600 hover:bg-red-700 text-white rounded-lg"
-//           >
-//             Google
-//           </Button>
-//           <Button
-//             onClick={() => handleSocialLogin("github")}
-//             className="bg-black hover:bg-gray-800 text-white rounded-lg"
-//           >
-//             GitHub
-//           </Button>
-//         </div>
-//         <div className="mt-4 text-center">
-//           Not a registered user?{" "}
-//           <span
-//             className="text-blue-500 cursor-pointer"
-//             onClick={handleNavigateToRegister}
-//           >
-//             Signup here
-//           </span>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default LoginForm;
-
 // var SPre = [
 //   "I eat breakfast every morning.",
 //   "She walks to school with her friends.",
@@ -254,6 +120,8 @@
 //   rl.close();
 // });
 
+
+
 "use client";
 import { login } from "@/action/login";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
@@ -261,125 +129,73 @@ import { Button, Input } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation"; // Changed from 'next/navigation' to 'next/router'
-import React, { FC, useEffect, useState } from "react";
-import torusIcon from "../../favicon.ico";
+import React, { FC, useState } from "react";
+import torusIcon from "../../favicon.ico"
 import logo from "../../favicon.ico";
 import picture from "@/app/assets/google.png";
 import pictures from "@/app/assets/github.png";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
-import {
-  Dropdown,
-  DropdownMenu,
-  DropdownTrigger,
-  DropdownItem,
-} from "@nextui-org/react";
 import { IoEyeOffOutline } from "react-icons/io5";
-import { CircularProgress } from "@nextui-org/react";
-import {
-  getAllRealm,
-  getClientcredentials,
-} from "@/app/utilsFunctions/ulits/keyCloakAuth";
+import {  CircularProgress } from "@nextui-org/react";
 //  const [loading, setLoading] = useState("");
-type Realm = {
-  id: string;
-  name: string;
-};
+ 
+ 
 const LoginForm: FC = () => {
-  const [realmList, setRealmList] = useState<Realm[] | any[]>([]);
-  const [realmId, setRealmId] = useState<string>("");
   const router = useRouter();
-  const [checkDetails, setCheckDetails] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await getAllRealm();
-
-        res.status == 200
-          ? setRealmList(res.data)
-          : // setData({ ...data, realm: res.data[0].name })
-
-            setRealmList([]);
-      } catch (err) {
-        console.log("Error occured");
-      }
-    })();
-  }, []);
-
-  const [data, setData] = useState<any>({
-    realm: "",
+  const [formData, setFormData] = useState({
     username: "",
     password: "",
-    client_id: "",
-    client_secret: "",
   });
   const [isVisible, setIsVisible] = React.useState(false);
-
+ 
+  const [errors, setErrors] = useState({
+    username: "",
+    password: "",
+  });
+ 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setData({
-      ...data,
+    setFormData({
+      ...formData,
       [name]: value,
     });
   };
-  const handleSelectRealm = async (datas: any) => {
-    setRealmId(datas.id);
-    setData({ ...data, realm: datas.name });
-    // handleClientCredentials();
-  };
-
-  const handleClientCredentials = async () => {
-    const res = await getClientcredentials(realmId);
-    if (res.data.length)
-      setData({
-        ...data,
-        client_id: res.data[0].client_id,
-        client_secret: res.data[0].secret,
-      });
-  };
-
-  useEffect(() => {
-    handleClientCredentials();
-  }, [realmId]);
-  const handleSubmit = async (e: any) => {
+ 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setErrors({
+      username: "",
+      password: "",
+    });
     e.preventDefault();
-    if (
-      data.realm &&
-      data.username &&
-      data.password &&
-      data.client_id &&
-      data.client_secret
-    ) {
-      console.log(data);
-
-      const res = await login(data);
-
+    if (!formData.username || !formData.password) {
+      setErrors({
+        username: "username required",
+        password: "password required",
+      });
+    } else {
+      const res = await login(formData);
       if (res && res?.error) {
-        alert({
+        setErrors({
           username: "please check username",
           password: " please check password",
         });
       }
-      // else{
-      //   router.push("/nextAuthLogin/Torus");
-      // }
-    } else {
-      alert("fill all details");
     }
   };
-
+ 
   const handleNavigateToRegister = () => {
     router.push("/nextAuthLogin/register"); // Changed to '/register'
   };
-
+ 
   const handleSocialLogin = (provider: "github" | "google") => {
     signIn(provider, {
       callbackUrl: DEFAULT_LOGIN_REDIRECT,
     });
   };
-
+ 
+ 
   return (
-    <div
+<div
       style={{
         background:
           "linear-gradient(90deg, rgba(17,15,18,1) 0%, rgba(110,68,139,1) 45%, rgba(117,59,94,1) 55%, rgba(24,24,23,1) 100%)",
@@ -388,14 +204,12 @@ const LoginForm: FC = () => {
     >
       <div className="flex gap-2">
         <Image className=" w-12 h-12  transition-all" src={logo} alt=""></Image>
-
+ 
         <h2 className="text-center font-bold text-4xl text-white">Torus</h2>
       </div>
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-4 p-4 rounded-xl shadow-md w-[42%] border-2 border-[#323B45]  text-white bg-slate-800/70"
-      >
-        {/* <div className="p-4 rounded-xl shadow-md w-[42%] flex flex-col gap-4 border-2 border-[#323B45]  text-white bg-slate-800/70"> */}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+ 
+      <div className="p-4 rounded-xl shadow-md w-[42%] flex flex-col gap-4 border-2 border-[#323B45]  text-white bg-slate-800/70">
         <div>
           <h2 className="text-2xl font-semibold ">Login</h2>
           <p className="text-slate-400 text-[14px]">
@@ -405,20 +219,14 @@ const LoginForm: FC = () => {
         </div>
         <div className="flex flex-col justify-center items-center w-full gap-3 ">
           <div className="grid grid-cols-2 gap-1">
-            <Button
-              onClick={() => handleSocialLogin("github")}
-              className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2"
-            >
-              <Image src={pictures} alt="GitHub logo" width={20} height={25} />
+            <Button  onClick={() => handleSocialLogin("github")} className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2">
+               <Image src={pictures} alt="GitHub logo" width={20} height={25} />
               <span className="ml-2 text-black text-sm">
                 Sign in with GitHub
               </span>
             </Button>
-            <Button
-              onClick={() => handleSocialLogin("google")}
-              className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2"
-            >
-              <Image src={picture} alt="Google logo" width={30} height={35} />
+            <Button  onClick={() => handleSocialLogin("google")} className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2">
+               <Image src={picture} alt="Google logo" width={30} height={35} />
               <span className="ml-2 text-black text-sm">
                 Sign in with Google
               </span>
@@ -426,62 +234,25 @@ const LoginForm: FC = () => {
           </div>
           <h2 className="text-slate-400 text-[14px]">Or continue with</h2>
         </div>
-        <Dropdown className="w-[300px] border border-[#121a24] p-0 shadow-lg text-shadow">
-          <DropdownTrigger>
-            <Button
-              size="lg"
-              variant="bordered"
-              className={`border border-[#1a1735] ${
-                checkDetails && !data.realm ? "text-red-400" : "text-white"
-              }`}
-            >
-              {data.realm ? data.realm : "Select Tenant"}
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu
-            onSelectionChange={(e) => handleSelectRealm(e)}
-            aria-label="Link Actions"
-            className=" text-white rounded-sm"
-            variant="light"
-            classNames={{
-              base: "bg-[#20252B] border-1 border-black",
-            }}
-          >
-            {realmList.map((realm, id) => (
-              <DropdownItem
-                className="bg-[#39316e] text-white hover:bg-slate-900 py-2"
-                key={id}
-                // onChange={() => handleSelectRealm(realm)}
-
-                // onClick={() => handleSelectRealm(realm)}
-              >
-                <button
-                  onClick={() => handleSelectRealm(realm)}
-                  className="p-0 m-0 w-full bg-transparent"
-                  // size="sm"
-                >
-                  {realm.name}
-                </button>
-              </DropdownItem>
-            ))}
-          </DropdownMenu>
-        </Dropdown>
-
+ 
+       
+ 
         <Input
           type="text"
           label="username"
           name="username"
-          value={data.username}
+          value={formData.username}
           onChange={handleInputChange}
+         
           classNames={{
             base: " w-full ",
             label: [
               // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
               "text-xs  text-white focus-within:text-white",
             ],
-
+ 
             // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
-
+ 
             // input: [
             //   "bg-transparent",
             //   "text-black",
@@ -489,7 +260,7 @@ const LoginForm: FC = () => {
             //   "text-sm",
             //   "font-bold",
             // ],
-
+ 
             inputWrapper: [
               "border border-slate-500/50",
               "text-white",
@@ -502,14 +273,22 @@ const LoginForm: FC = () => {
             innerWrapper: ["bg-transparent", "boder-2 border-blue-100"],
           }}
         />
-
+         {errors.username && (
+            <span className="text-red-500">{errors.username}</span>
+          )}
+ 
         <Input
+       
           label="Password"
           name="password"
-          value={data.password}
+          value={formData.password}
           onChange={handleInputChange}
           endContent={
-            <button className="focus:outline-none" type="button">
+            <button
+              className="focus:outline-none"
+              type="button"
+             
+            >
               {isVisible ? (
                 <IoEyeOffOutline className="text-2xl text-default-400 pointer-events-none" />
               ) : (
@@ -523,7 +302,7 @@ const LoginForm: FC = () => {
               // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
               "text-xs  text-white focus-within:text-white",
             ],
-
+ 
             inputWrapper: [
               "border border-slate-500/50",
               "text-white",
@@ -536,6 +315,9 @@ const LoginForm: FC = () => {
             innerWrapper: ["bg-transparent", "boder-2 border-blue-100"],
           }}
         />
+        {errors.password && (
+            <span className="text-red-500">{errors.password}</span>
+          )}
         <div className="flex justify-between">
           <Button
             variant="bordered"
@@ -545,13 +327,13 @@ const LoginForm: FC = () => {
             Forget password
           </Button>
           <Button
-            type="submit"
+type="submit"
             color="primary"
             variant="bordered"
             className="w-[10%]  text-white border-2 border-[#323B45]"
           >
-            {/* {loading ? <CircularProgress size="sm" /> : "Sign in"}  */}
-            Sign in
+             {/* {loading ? <CircularProgress size="sm" /> : "Sign in"}  */}
+             Sign in
           </Button>
         </div>
         <div className="flex justify-center items-center w-full gap-3">
@@ -563,10 +345,15 @@ const LoginForm: FC = () => {
             Sign up
           </span>
         </div>
-        {/* </div> */}
+      </div>
       </form>
     </div>
   );
+   
+   
+ 
 };
-
+ 
 export default LoginForm;
+ 
+has context menu
