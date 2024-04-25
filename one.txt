@@ -27,7 +27,7 @@ user_consent_client_scope	0
 user_role_mapping	493
 identity_provider	2
 fed_user_attribute	0
-federated_identity	2
+federated_identity	1
 identity_provider_mapper	0
 client_attributes	127
 client_scope	80
@@ -35,7 +35,7 @@ client_session_prot_mapper	0
 redirect_uris	38
 user_federation_config	0
 migration_model	1
-credential	115
+credential	116
 client_initial_access	0
 component	98
 user_federation_mapper	0
