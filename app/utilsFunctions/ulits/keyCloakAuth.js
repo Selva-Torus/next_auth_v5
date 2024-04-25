@@ -130,7 +130,6 @@ export const logoutRealm = async (data, token) => {
 };
 
 export const checkIsActive = async (data, token) => {
-  console.log("checkIsActive", data, token);
   var checkisAciveUrl = `http://192.168.2.165:8085/realms/${data.realm}/protocol/openid-connect/token/introspect`;
   var maindata = { ...data, token: token.access_token };
   delete maindata.realm;

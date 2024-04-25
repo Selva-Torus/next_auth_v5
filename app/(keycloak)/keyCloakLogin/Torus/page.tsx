@@ -8,7 +8,6 @@ import React, { useEffect, useState } from "react";
 const Home = () => {
   const routes = useRouter();
   const [token, setToken] = useState<any>();
-
   useEffect(() => {
     var tokens = localStorage.getItem("token");
     if (tokens) setToken(tokens);
@@ -31,18 +30,19 @@ const Home = () => {
       };
       const res = await logoutRealm(demo, allDeatiles.token);
     } else {
-      alert("Logging out failed");
+      alert("Loaing out failed");
     }
 
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    localStorage.setItem("isLogin", "false");
     routes.push("/");
   }
 
   return (
     <div>
-      <Torus session={token} Logout={Logout} />
+      {token}
+
+      <Button onClick={() => Logout()}>Logout</Button>
     </div>
   );
 };

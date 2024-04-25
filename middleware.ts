@@ -10,28 +10,28 @@ import {
 const { auth } = NextAuth(authConfig);
 
 export default auth((req): any => {
-  // console.log("mid");
+  console.log("mid");
 
   const { nextUrl } = req;
-  // console.log("nextUrl", nextUrl.pathname);
+  console.log("nextUrl", nextUrl.pathname);
   const isLoggedIn = !!req.auth;
-  // console.log("isLoggedIn", isLoggedIn);
+  console.log("isLoggedIn", isLoggedIn);
 
-  // console.log("req.auth", req.auth);
+  console.log("req.auth", req.auth);
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  // console.log("isApiAuthRoute", isApiAuthRoute);
+  console.log("isApiAuthRoute", isApiAuthRoute);
 
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-  // console.log("isAuthRoute", isAuthRoute);
+  console.log("isAuthRoute", isAuthRoute);
 
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
-  // console.log("isPublicRoute", isPublicRoute);
+  console.log("isPublicRoute", isPublicRoute);
 
   if (isApiAuthRoute) {
     return null;
   }
-  // console.log("called __________");
+  console.log("called __________");
 
   if (isAuthRoute) {
     if (isLoggedIn) {
@@ -40,11 +40,11 @@ export default auth((req): any => {
     }
     return null;
   }
-  // console.log("called +++++++++++++++");
+  console.log("called +++++++++++++++");
 
   if (!isLoggedIn && !isPublicRoute) {
     //  // it will call if the url 3000/{something}
-    console.log("_____________");
+    //  console.log("_____________");
 
     return Response.redirect(new URL("/nextAuthLogin", nextUrl));
   }

@@ -1,18 +1,15 @@
 import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
 import axios from "axios";
-import { registerIdentityProviderUser } from "./action/registerIdentityProvider";
 import GoogleProvider from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
-
-let realmDetails = {};
+let user = {};
 
 export default {
   providers: [
     Credentials({
       async authorize(credentials) {
-        const { realm, username, password, client_id, client_secret } =
-          credentials;
+        const { username, password } = credentials;
 
         const encodeFormData = (data: any) => {
           return Object.keys(data)
@@ -23,10 +20,10 @@ export default {
             .join("&");
         };
         const data = {
-          username: username,
-          password: password,
-          client_id: client_id,
-          client_secret: client_secret,
+          username,
+          password,
+          client_id: "demoClient",
+          client_secret: "oTtfWsw8SKukpKTiaNr4bGIg5Dlkp4sW",
           grant_type: "password",
         };
         const config = {
@@ -34,10 +31,11 @@ export default {
             "Content-Type": "application/x-www-form-urlencoded",
           },
         };
+
         // Return the promise from the axios.post() call
         const res = await axios
           .post(
-            `http://192.168.2.165:8085/realms/${realm}/protocol/openid-connect/token`,
+            "http://192.168.2.165:8085/realms/testRealm/protocol/openid-connect/token",
             encodeFormData(data),
             config
           )
@@ -50,13 +48,9 @@ export default {
               return null;
             }
           });
-        realmDetails = {
-          realm: realm,
-          token: res,
-          client_id: client_id,
-          client_secret: client_secret,
-        };
-        return realmDetails;
+        user = res;
+
+        return res;
       },
     }),
     GoogleProvider({
@@ -73,13 +67,6 @@ export default {
     GitHub({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      // authorization: {
-      //   params: {
-      //     prompt: "consent",
-      //     access_type: "offline",
-      //     response_type: "code",
-      //   },
-      // },
     }),
   ],
   callbacks: {
@@ -88,26 +75,23 @@ export default {
       if (account?.type == "credentials") {
         return true; //false;
       } else {
-        await registerIdentityProviderUser(user, account);
+        // console.log(user, account, "--------");
 
         return true;
       }
     },
     async jwt({ token, user }) {
-      if (token) {
-        // Check if token exists
-        if (user) {
-          token.user = user;
-        }
+      if (user) {
+        token.user = user;
+        return token;
+      } else {
+        return token;
       }
-      return token;
     },
     async session({ session, token }: any) {
-      if (token && token.user) {
-        // Check if token and user exist
-        session.user = token.user;
-      }
+      session.user = token.user;
+
       return session;
     },
   },
-} as NextAuthConfig; // Use 'as NextAuthConfig' to satisfy TypeScript
+} satisfies NextAuthConfig;
