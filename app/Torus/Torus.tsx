@@ -1,15 +1,13 @@
 "use client";
-import { signOut, useSession } from "next-auth/react";
+
 import React from "react";
 
-const Torus = () => {
-  const { status, data: session } = useSession();
-
+const Torus = ({ session, Logout = () => {} }: any) => {
   return (
     <>
-      <div>page</div>
-      <div>{JSON.stringify(session)}</div>
-      <button onClick={() => signOut()}>Signout</button>
+      <div>page success</div>
+      <div>{session}</div>
+      <button onClick={Logout}>Signout</button>
     </>
   );
 };
