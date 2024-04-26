@@ -212,8 +212,8 @@ const RegisterForm = () => {
                         {errors?.username?.message as string}
                       </p>
                     )}
-                    <div className="flex justify-between">
-                      <div className="flex flex-col gap-2">
+                    <div className="flex justify-between text-xs gap-2">
+                      <div className="flex flex-col gap-2 w-full">
                         <Input
                           label="firstname"
                           labelPlacement="outside"
@@ -244,7 +244,7 @@ const RegisterForm = () => {
                         />
                         {errors.firstName && (
                           <p
-                            className="text-red-500 flex flex-col text-xs"
+                            className="text-red-500 flex flex-col"
                             style={{ color: "red" }}
                           >
                             {errors.firstName.message as string}
@@ -252,7 +252,7 @@ const RegisterForm = () => {
                         )}
                       </div>
 
-                      <div className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-2 w-full">
                         <Input
                           label="Lastname"
                           labelPlacement="outside"
@@ -282,7 +282,7 @@ const RegisterForm = () => {
                           {...register("lastName")}
                         />
                         {errors.lastName && (
-                          <p className="text-red-500 flex flex-col text-xs">
+                          <p className="text-red-500 flex flex-col">
                             {errors.lastName.message as string}
                           </p>
                         )}
@@ -315,12 +315,12 @@ const RegisterForm = () => {
                       {...register("email")}
                     />
                     {errors.email && (
-                      <p className="text-red-500">
+                      <p className="text-red-500 text-xs">
                         {errors.email.message as string}
                       </p>
                     )}
-                    <div className="flex justify-between">
-                      <div className="flex flex-col gap-2">
+                    <div className="flex justify-between text-xs gap-2">
+                      <div className="flex flex-col gap-2 w-full">
                         <Input
                           type={isVisible ? "text" : "password"}
                           label="Password"
@@ -368,7 +368,7 @@ const RegisterForm = () => {
                           </p>
                         )}
                       </div>
-                      <div className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-2 w-full">
                         <Input
                           type={isVisible ? "text" : "Confirm Password"}
                           label="Confirm Password"
@@ -434,10 +434,32 @@ const RegisterForm = () => {
                   <Input
                     name="otp"
                     label="OTP"
-                    type="number"
+                    labelPlacement="outside"
+                    type="text"
                     onChange={handleOtpChange}
+                    color={`${errors.password ? "danger" : "primary"}`}
+                    classNames={{
+                      base: " w-full h-7 my-2 ",
+                      label: [
+                        "text-xs  text-white focus-within:text-white",
+                      ],
+
+                      inputWrapper: [
+                        "border border-slate-500/50",
+                        "text-white",
+                        "bg-transparent",
+                        "data-[hover=true]:bg-[#282551]",
+                        "data-[hover=true]:border-[#4435CF]",
+                        "focus-within:!bg-[#282551]",
+                        "focus-within:border-[#4435CF] border-2",
+                      ],
+                      innerWrapper: [
+                        "bg-transparent",
+                        "boder-2 border-blue-100",
+                      ],
+                    }}
                   />
-                  <Button onClick={verifyOtpandPostUser}>Submit</Button>
+                  <Button color="primary"  className="mt-2 text-end" onClick={verifyOtpandPostUser}>Submit</Button>
                 </div>
               );
           }
