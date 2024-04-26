@@ -114,18 +114,22 @@ const RegisterForm = () => {
   };
 
   return (
-    <div
-      className="flex flex-col gap-2 w-full items-center justify-center h-screen bg-slate-400"
+    <div className="flex flex-col md:flex-row gap-2 w-full md:max-w-screen   items-center  "> 
+
+    <div className="flex flex-col gap-2 w-full   items-center justify-center min-h-screen  bg-slate-400"
+
       style={{
         background:
           "radial-gradient(circle, rgba(67,57,208,1) 0%, rgba(9,9,121,1) 19%, rgba(18,18,19,1) 100%)",
       }}
     >
-      <div className="flex gap-2">
-        <Image className=" w-12 h-12  transition-all" src={logo} alt=""></Image>
+      
+      <div className="flex gap-2 ">
+        <Image className=" w-12 h-12   transition-all" src={logo} alt=""></Image>
 
         <h2 className="text-center font-bold text-4xl text-white">Torus</h2>
       </div>
+
       {(() => {
         switch (steps) {
           case "0":
@@ -414,7 +418,9 @@ const RegisterForm = () => {
             );
         }
       })()}
+
     </div>
+     </div>
   );
 };
 
