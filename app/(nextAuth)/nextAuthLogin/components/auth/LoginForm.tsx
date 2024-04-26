@@ -329,6 +329,7 @@ const LoginForm: FC = () => {
             variant="bordered"
             color="primary"
             className="  text-white border-2 border-[#323B45]"
+            onClick={() => router.push("/nextAuthLogin/ForgetPass")}
           >
             Forget password
           </Button>
