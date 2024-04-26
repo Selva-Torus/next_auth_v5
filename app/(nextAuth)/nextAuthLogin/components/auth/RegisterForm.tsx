@@ -167,20 +167,25 @@ const RegisterForm = () => {
   };
 
   return (
-    <div
-      className="flex flex-col gap-2 w-full items-center justify-center h-screen bg-slate-400"
+    <div className="flex flex-col md:flex-row gap-2 w-full md:max-w-screen   items-center  "> 
+
+    <div className="flex flex-col gap-2 w-full   items-center justify-center min-h-screen  bg-slate-400"
+
       style={{
         background:
           "radial-gradient(circle, rgba(67,57,208,1) 0%, rgba(9,9,121,1) 19%, rgba(18,18,19,1) 100%)",
       }}
     >
-      <div className="flex gap-2">
-        <Image className=" w-12 h-12  transition-all" src={logo} alt=""></Image>
+      
+      <div className="flex gap-2 ">
+        <Image className=" w-12 h-12   transition-all" src={logo} alt=""></Image>
 
         <h2 className="text-center font-bold text-4xl text-white">Torus</h2>
       </div>
 
-      <div className="p-4 rounded-xl shadow-md w-[42%] flex flex-col gap-4 border-2 border-[#323B45]  text-white bg-slate-800/70">
+      <div className="p-1 md:p-4 -mt-4 rounded-xl shadow-md w-full md:w-[40%] h-[50%] flex flex-col gap-2 md:gap-4 border-2 border-[#323B45] text-white bg-slate-800/70">
+
+
         <div>
           <h2 className="text-2xl text-bold font-semibold ">Create Account</h2>
           <p className="text-slate-400 text-[14px]">
@@ -189,20 +194,20 @@ const RegisterForm = () => {
         </div>
         <div className="flex flex-col justify-center items-center w-full gap-3 ">
           <div className="grid grid-cols-2 gap-1">
-            <Button className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2">
+            <Button className="google-signin-button flex items-center h-8 bg-white border border-black rounded-md px-4 py-2">
               <Image src={pictures} alt="GitHub logo" width={20} height={25} />
               <span className="ml-2 text-black text-sm">
                 Sign in with GitHub
               </span>
             </Button>
-            <Button className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2">
+            <Button className="google-signin-button flex items-center bg-white border border-black rounded-md h-8 px-4 py-2">
               <Image src={picture} alt="Google logo" width={30} height={35} />
               <span className="ml-2 text-black text-sm">
                 Sign in with Google
               </span>
             </Button>
           </div>
-          <h2 className="text-slate-400 text-[14px]">Or continue with</h2>
+          <h2 className="text-slate-400  text-[14px]">Or continue with</h2>
         </div>
         <form
           onSubmit={handleSubmit(submitData)}
@@ -213,7 +218,7 @@ const RegisterForm = () => {
             variant="bordered"
             color={`${errors.username ? "danger" : "primary"}`}
             classNames={{
-              base: " w-full ",
+              base: " w-full h-7 my-2 -mt-3 ",
               label: [
                 // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
                 "text-xs  text-white focus-within:text-white",
@@ -253,7 +258,7 @@ const RegisterForm = () => {
             variant="bordered"
             color={`${errors.firstName ? "danger" : "primary"}`}
             classNames={{
-              base: " w-full ",
+              base: " w-full h-7 my-2 ",
               label: [
                 // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
                 "text-xs  text-white focus-within:text-white",
@@ -294,7 +299,7 @@ const RegisterForm = () => {
             variant="bordered"
             color={`${errors.lastName ? "danger" : "primary"}`}
             classNames={{
-              base: " w-full ",
+              base: " w-full h-7 my-2",
               label: [
                 // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
                 "text-xs  text-white focus-within:text-white",
@@ -332,7 +337,7 @@ const RegisterForm = () => {
             variant="bordered"
             color={`${errors.email ? "danger" : "primary"}`}
             classNames={{
-              base: " w-full ",
+              base: " w-full h-7 my-2 ",
               label: [
                 // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
                 "text-xs  text-white focus-within:text-white",
@@ -384,7 +389,7 @@ const RegisterForm = () => {
               </button>
             }
             classNames={{
-              base: " w-full ",
+              base: " w-full h-7 my-2 ",
               label: [
                 // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
                 "text-xs  text-white focus-within:text-white",
@@ -399,6 +404,49 @@ const RegisterForm = () => {
               //   "text-sm",
               //   "font-bold",
               // ],
+
+              inputWrapper: [
+                "border border-slate-500/50",
+                "text-white",
+                "bg-transparent",
+                "data-[hover=true]:bg-[#282551]",
+                "data-[hover=true]:border-[#4435CF]",
+                "focus-within:!bg-[#282551]",
+                "focus-within:border-[#4435CF] border-2",
+              ],
+              innerWrapper: ["bg-transparent", "boder-2 border-blue-100"],
+            }}
+            {...register("password")}
+          />
+          {errors.password && (
+            <p className="text-red-500">{errors.password.message as string}</p>
+          )}
+          <Input
+            type={isVisible ? "text" : "Confirm Password"}
+            label="Confirm Password"
+            variant="bordered"
+            // color={`${errors.password ? "danger" : "primary"}`}
+            // endContent={
+            //   <button
+            //     className="focus:outline-none"
+            //     type="button"
+            //     onClick={toggleVisibility}
+            //   >
+            //     {isVisible ? (
+            //       <IoEyeOffOutline className="text-2xl text-default-400 pointer-events-none" />
+            //     ) : (
+            //       <MdOutlineRemoveRedEye className="text-2xl text-default-400 pointer-events-none" />
+            //     )}
+            //   </button>
+            // }
+            classNames={{
+              base: " w-full h-7 my-2 ",
+              label: [
+                // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
+                "text-xs  text-white focus-within:text-white",
+              ],
+
+              
 
               inputWrapper: [
                 "border border-slate-500/50",
@@ -435,6 +483,7 @@ const RegisterForm = () => {
         </form>
       </div>
     </div>
+     </div>
   );
 };
 
