@@ -133,43 +133,48 @@ export const logoutRealm = async (data, token) => {
 export const checkIsActive = async (data, token) => {
   console.log("checkIsActive", data, token);
   var checkisAciveUrl = `http://192.168.2.165:8085/realms/${data.realm}/protocol/openid-connect/token/introspect`;
-  var maindata = { ...data, token: token.access_token };
-  delete maindata.realm;
+  // if (token === undefined) return "failed";
 
-  // if (data.realm === "testRealm") {
-  //   maindata = {
-  //     token: token.access_token,
-  //     client_secret: "cDG5XcuqnJmj8ZeTIFO1kHrCOJGiO8Os",
-  //     client_id: "testRealm1",
-  //   };
-  // } else {
-  //   return "failed";
-  //   maindata = {
-  //     ...data,
-  //     grant_type: "password",
-  //     client_secret: "cDG5XcuqnJmj8ZeTIFO1kHrCOJGiO8Os",
-  //     client_id: "demoClient",
-  //   };
-  //   delete maindata.realm;
-  // }
-  try {
-    const res = await fetch(checkisAciveUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: encodeFormData(maindata),
-    })
-      .then((res) => res.json())
-      .then((res) => res);
-    // Parsing JSON response and returning it
-    // const jsonResponse = await res.json();
+  if (token.hasOwnProperty("access_token")) {
+    var maindata = { ...data, token: token.access_token };
+    delete maindata.realm;
 
-    // return jsonResponse;
-    return res;
-  } catch (err) {
-    return "error";
+    // if (data.realm === "testRealm") {
+    //   maindata = {
+    //     token: token.access_token,
+    //     client_secret: "cDG5XcuqnJmj8ZeTIFO1kHrCOJGiO8Os",
+    //     client_id: "testRealm1",
+    //   };
+    // } else {
+    //   return "failed";
+    //   maindata = {
+    //     ...data,
+    //     grant_type: "password",
+    //     client_secret: "cDG5XcuqnJmj8ZeTIFO1kHrCOJGiO8Os",
+    //     client_id: "demoClient",
+    //   };
+    //   delete maindata.realm;
+    // }
+    try {
+      const res = await fetch(checkisAciveUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: encodeFormData(maindata),
+      })
+        .then((res) => res.json())
+        .then((res) => res);
+      // Parsing JSON response and returning it
+      // const jsonResponse = await res.json();
+
+      // return jsonResponse;
+      return res;
+    } catch (err) {
+      return "error";
+    }
   }
+  return "error";
 };
 
 export const forgetPass = async (data) => {
@@ -223,8 +228,34 @@ export const resetPasswordOnDatabase = async (data) => {
       `http://192.168.2.110:3002/keycloak/changepassword`,
       maindata
     );
-    console.log(res);
+    // console.log(res);
 
+    return res.data;
+  } catch (err) {
+    return "error";
+  }
+};
+
+export const getVerifyOtp = async (data) => {
+  try {
+    const res = await axios.post(
+      `http://192.168.2.110:3002/keycloak/sendVerificationOTP`,
+      data
+    );
+    // console.log(res);
+
+    return res.data;
+  } catch (err) {
+    return "error";
+  }
+};
+
+export const validateOtp = async (data) => {
+  try {
+    const res = await axios.post(
+      `http://192.168.2.110:3002/keycloak/verifyMailId`,
+      data
+    );
     return res.data;
   } catch (err) {
     return "error";

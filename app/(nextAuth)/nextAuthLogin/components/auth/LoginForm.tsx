@@ -174,8 +174,8 @@ const LoginForm: FC = () => {
       style={{
         background:
           "linear-gradient(90deg, rgba(17,15,18,1) 0%, rgba(110,68,139,1) 45%, rgba(117,59,94,1) 55%, rgba(24,24,23,1) 100%)",
-      }}
-      className="flex flex-col w-full h-screen justify-center items-center gap-2"
+          }}
+      className="flex flex-col  w-full h-screen justify-center items-center gap-2 overflow-y-auto"
     >
       <div className="flex gap-2">
         <Image className=" w-12 h-12  transition-all" src={logo} alt=""></Image>
@@ -183,7 +183,7 @@ const LoginForm: FC = () => {
         <h2 className="text-center font-bold text-4xl text-white">Torus</h2>
       </div>
 
-      <div className="p-4 rounded-xl shadow-md w-[42%] flex flex-col gap-4 border-2 border-[#323B45]  text-white bg-slate-800/70">
+      <div className="p-4 my-4  rounded-xl shadow-md w-[42%] flex flex-col gap-4 border-2 border-[#323B45]  text-white bg-slate-800/70">
         <div>
           <h2 className="text-2xl font-semibold ">Login</h2>
           <p className="text-slate-400 text-[14px]">
@@ -251,12 +251,12 @@ const LoginForm: FC = () => {
           type="text"
           label="Email or phone"
           name="username"
-          // labelPlacement="outside"
+          labelPlacement="outside"
           color={`${checkDetails && !data.username ? "danger" : "primary"}`}
           onChange={handleChange}
           value={data.username}
           classNames={{
-            base: " w-full ",
+            base: " w-full h-6 my-2",
             label: [
               // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
               "text-xs  text-white focus-within:text-white",
@@ -289,6 +289,7 @@ const LoginForm: FC = () => {
           type={isVisible ? "text" : "password"}
           label="Password"
           name="password"
+          labelPlacement="outside"
           color={`${checkDetails && !data.password ? "danger" : "primary"}`}
           onChange={handleChange}
           value={data.password}
@@ -306,7 +307,7 @@ const LoginForm: FC = () => {
             </button>
           }
           classNames={{
-            base: " w-full ",
+            base: " w-full h-6 my-2 ",
             label: [
               // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
               "text-xs  text-white focus-within:text-white",

@@ -94,6 +94,10 @@ export default {
       }
     },
     async jwt({ token, user }) {
+      // console.log(user);
+
+      console.log("++++++++++++++++++++++++++++");
+
       if (token) {
         // Check if token exists
         if (user) {
@@ -103,6 +107,8 @@ export default {
       return token;
     },
     async session({ session, token }: any) {
+      console.log(session, token);
+
       if (token && token.user) {
         // Check if token and user exist
         session.user = token.user;

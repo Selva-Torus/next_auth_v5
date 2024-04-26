@@ -10,7 +10,8 @@ import {
 const { auth } = NextAuth(authConfig);
 
 export default auth((req): any => {
-  // console.log("mid");
+  // console.log("called __________");
+  // console.log("mid", req);
 
   const { nextUrl } = req;
   // console.log("nextUrl", nextUrl.pathname);
@@ -44,7 +45,7 @@ export default auth((req): any => {
 
   if (!isLoggedIn && !isPublicRoute) {
     //  // it will call if the url 3000/{something}
-    console.log("_____________");
+    // console.log("_____________");
 
     return Response.redirect(new URL("/nextAuthLogin", nextUrl));
   }
