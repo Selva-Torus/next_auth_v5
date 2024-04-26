@@ -223,8 +223,34 @@ export const resetPasswordOnDatabase = async (data) => {
       `http://192.168.2.110:3002/keycloak/changepassword`,
       maindata
     );
-    console.log(res);
+    // console.log(res);
 
+    return res.data;
+  } catch (err) {
+    return "error";
+  }
+};
+
+export const getVerifyOtp = async (data) => {
+  try {
+    const res = await axios.post(
+      `http://192.168.2.110:3002/keycloak/sendVerificationOTP`,
+      data
+    );
+    // console.log(res);
+
+    return res.data;
+  } catch (err) {
+    return "error";
+  }
+};
+
+export const validateOtp = async (data) => {
+  try {
+    const res = await axios.post(
+      `http://192.168.2.110:3002/keycloak/verifyMailId`,
+      data
+    );
     return res.data;
   } catch (err) {
     return "error";
