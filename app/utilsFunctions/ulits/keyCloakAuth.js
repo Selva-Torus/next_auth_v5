@@ -1,4 +1,5 @@
 "use server";
+import axios from "axios";
 import { client } from "./dbFunctions";
 
 // code for realm and client
@@ -90,6 +91,8 @@ export const getRealm = async () => {
 };
 
 export const logoutRealm = async (data, token) => {
+  // console.log("logoutRealm", data, token);
+  // return;
   if (!data.realm) return "";
   var logOutUrl = `http://192.168.2.165:8085/realms/${data.realm}/protocol/openid-connect/logout`;
   var maindata = { ...data, refresh_token: token.refresh_token };
@@ -128,6 +131,7 @@ export const logoutRealm = async (data, token) => {
 };
 
 export const checkIsActive = async (data, token) => {
+  console.log("checkIsActive", data, token);
   var checkisAciveUrl = `http://192.168.2.165:8085/realms/${data.realm}/protocol/openid-connect/token/introspect`;
   var maindata = { ...data, token: token.access_token };
   delete maindata.realm;
@@ -163,6 +167,65 @@ export const checkIsActive = async (data, token) => {
 
     // return jsonResponse;
     return res;
+  } catch (err) {
+    return "error";
+  }
+};
+
+export const forgetPass = async (data) => {
+  var maindata = {
+    email: data.email,
+    realmId: data.realmId,
+  };
+  // console.log(maindata);
+  const res = await fetch(`http://192.168.2.110:3002/keycloak/resetotp`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(maindata),
+  }).then((res) => res.json());
+  return res;
+};
+
+export const getAllRealmOnDatabase = async () => {
+  const res = await axios.get("http://192.168.2.110:3002/keycloak/allRealm");
+  return res.data;
+};
+
+export const otpCheck = async (data) => {
+  var maindata = {
+    email: data.email,
+    realmId: data.realmId,
+    otp: data.otp,
+  };
+  console.log(maindata);
+  try {
+    const res = await axios.post(
+      `http://192.168.2.110:3002/keycloak/verifyPasswordOtp`,
+      maindata
+    );
+    return res.data;
+  } catch (err) {
+    return "error";
+  }
+};
+
+export const resetPasswordOnDatabase = async (data) => {
+  var maindata = {
+    userId: data.userId,
+    password: data.password,
+  };
+  console.log(maindata);
+
+  try {
+    const res = await axios.post(
+      `http://192.168.2.110:3002/keycloak/changepassword`,
+      maindata
+    );
+    console.log(res);
+
+    return res.data;
   } catch (err) {
     return "error";
   }

@@ -9,6 +9,7 @@ await db.user.create({data : {
     name : username,
     email,
     password
+    
 }});
     
 
