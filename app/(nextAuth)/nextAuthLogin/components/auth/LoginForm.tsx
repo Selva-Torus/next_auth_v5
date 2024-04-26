@@ -46,6 +46,7 @@ const LoginForm: FC = () => {
   const routes = useRouter();
 
   const [isVisible, setIsVisible] = React.useState(false);
+  const [error, setError] = useState<any>();
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -80,7 +81,8 @@ const LoginForm: FC = () => {
       !data.client_id ||
       !data.client_secret
     ) {
-      alert("fill all details");
+      // alert("fill all details");
+      setError("Fill all the details");
       setCheckDetails(true);
       return;
     }
@@ -119,6 +121,7 @@ const LoginForm: FC = () => {
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError("")
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
@@ -175,15 +178,15 @@ const LoginForm: FC = () => {
         background:
           "linear-gradient(90deg, rgba(17,15,18,1) 0%, rgba(110,68,139,1) 45%, rgba(117,59,94,1) 55%, rgba(24,24,23,1) 100%)",
           }}
-      className="flex flex-col  w-full h-screen justify-center items-center gap-2 overflow-y-auto"
+      className="flex flex-col w-full h-screen justify-center items-center gap-2 overflow-y-auto"
     >
-      <div className="flex gap-2">
-        <Image className=" w-12 h-12  transition-all" src={logo} alt=""></Image>
+      <div className="flex gap-2 ">
+        <Image className=" w-12 h-12 transition-all" src={logo} alt=""></Image>
 
         <h2 className="text-center font-bold text-4xl text-white">Torus</h2>
       </div>
 
-      <div className="p-4 my-4  rounded-xl shadow-md w-[42%] flex flex-col gap-4 border-2 border-[#323B45]  text-white bg-slate-800/70">
+      <div className="p-4 my-1 rounded-xl shadow-md w-[42%] flex flex-col gap-4 border-2 border-[#323B45] text-white bg-slate-800/70">
         <div>
           <h2 className="text-2xl font-semibold ">Login</h2>
           <p className="text-slate-400 text-[14px]">
@@ -284,7 +287,6 @@ const LoginForm: FC = () => {
             innerWrapper: ["bg-transparent", "boder-2 border-blue-100"],
           }}
         />
-
         <Input
           type={isVisible ? "text" : "password"}
           label="Password"
@@ -325,7 +327,7 @@ const LoginForm: FC = () => {
             innerWrapper: ["bg-transparent", "boder-2 border-blue-100"],
           }}
         />
-        <div className="flex justify-between">
+        <div className="flex flex-center justify-between">
           <Button
             variant="bordered"
             color="primary"
@@ -334,6 +336,7 @@ const LoginForm: FC = () => {
           >
             Forget password
           </Button>
+          {error && <p className="text-red-500 text-lg my-2 mr-5">{error}</p>}
           <Button
             onClick={Login}
             color="primary"

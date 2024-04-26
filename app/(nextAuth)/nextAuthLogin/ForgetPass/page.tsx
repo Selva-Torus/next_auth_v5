@@ -32,6 +32,7 @@ const page = () => {
   const [steps, setSteps] = useState<string>("0");
 
   const [isVisible, setIsVisible] = React.useState(false);
+  const [error, setError] = useState<any>();
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -58,6 +59,7 @@ const page = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
+    setError("");
   };
   const [resetPassword, setResetPassword] = useState({
     password: "",
@@ -83,7 +85,8 @@ const page = () => {
       if (res.data == "Email sent") {
         setSteps("1");
       } else {
-        alert(res.error);
+        // alert(res.error);
+        setError(res.error);
       }
     });
   };
@@ -98,7 +101,9 @@ const page = () => {
       if (res.userId) {
         setResetPasswordData({ ...resetPasswordData, userId: res.userId });
         setSteps("2");
-      } else alert(res.error);
+      } else 
+      // alert(res.error);
+      setError("Enter OTP");
     });
   };
 
@@ -110,11 +115,12 @@ const page = () => {
     ) {
       resetPasswordOnDatabase(resetPasswordData).then((res) => {
         if (res.data == "password updated") {
-          alert("password changed successfully");
+          // alert("password changed successfully");
           routes.push("/nextAuthLogin");
-        } else alert("something went wrong");
+        }
       });
     }
+    setError("Enter Password");
   };
   return (
     <div
@@ -166,7 +172,7 @@ const page = () => {
                   >
                     {realmList.map((realm, id) => (
                       <DropdownItem
-                        className=" text-white hover:bg-slate-500"
+                        className=" text-white hover:bg-slate-200"
                         key={id}
                         onClick={() => handleSelectRealm(realm)}
                       >
@@ -203,6 +209,7 @@ const page = () => {
                     innerWrapper: ["bg-transparent", "boder-2 border-blue-100"],
                   }}
                 ></Input>
+                {error && <p className="text-red-500">{error}</p>}
                 <Button
                   onClick={() => {
                     handleForgetPass();
@@ -247,11 +254,12 @@ const page = () => {
                     innerWrapper: ["bg-transparent", "boder-2 border-blue-100"],
                   }}
                 ></Input>
+                {error && <p className="text-red-500 my-4">{error}</p>}
                 </div>
                 <Button
                   onClick={() => isOtpValid()}
                   color="primary"
-                  className=" my-5 w-[90%] text-end"
+                  className="w-[90%] text-end"
                   type="submit"
                 >
                   submit
@@ -261,7 +269,7 @@ const page = () => {
           case "2":
             return (
               <div className="p-4 my-4 rounded-xl shadow-md w-[42%] flex flex-col gap-4 border-2 border-[#323B45]  text-white bg-slate-800/70">
-                <h2 className="text-center text-red-300">reset password</h2>
+                <h2 className="text-center text-blue-500">reset password</h2>
                 <Input
                   type={isVisible ? "text" : "password"}
                   label="password"
@@ -332,13 +340,14 @@ const page = () => {
                     innerWrapper: ["bg-transparent", "boder-2 border-blue-100"],
                   }}
                 ></Input>
+                {error && <p className="text-red-500">{error}</p>}
                 <Button
                   onClick={() => handleChangePassword()}
                   color="primary"
                   variant="bordered"
                   className="w-full my-5 text-white border-2 border-[#323B45] bg-blue-500"
                 >
-                  {" "}
+                  {/* {" "} */}
                   submit
                 </Button>
               </div>
