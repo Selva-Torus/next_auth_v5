@@ -1,83 +1,3 @@
-// "use client";
-// import { register } from "@/app/(main)/action/register";
-// import { Button, Input } from "@nextui-org/react";
-// import { useRouter } from "next/navigation";
-// import React, { FC, useState } from "react";
-
-// const RegisterForm: FC = () => {
-//   const router = useRouter();
-//   const [formData, setFormData] = useState({
-//     email: "",
-//     username: "",
-//     password: "",
-//   });
-
-//   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const { name, value } = e.target;
-//     setFormData({
-//       ...formData,
-//       [name]: value,
-//     });
-//   };
-
-//   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-//     e.preventDefault();
-//     register(formData)
-//       .then((response) => {
-//         // Handle successful registration, such as redirecting to another page
-//         // router.push('/success');
-//       })
-//       .catch((error) => {
-//         // Handle registration error, such as displaying an error message
-//         console.error("Registration failed:", error);
-//       });
-//   };
-
-//   const handleNavigateToLogin = () => {
-//     router.push("/");
-//   };
-
-//   return (
-//     <div>
-//       <form
-//         onSubmit={handleSubmit}
-//         className="flex flex-col justify-center items-center gap-2"
-//       >
-//         <Input
-//           label="email"
-//           type="email"
-//           name="email"
-//           value={formData.email}
-//           onChange={handleInputChange}
-//         />
-//         <Input
-//           label="username"
-//           type="text"
-//           name="username"
-//           value={formData.username}
-//           onChange={handleInputChange}
-//         />
-//         <Input
-//           label="password"
-//           type="password"
-//           name="password"
-//           value={formData.password}
-//           onChange={handleInputChange}
-//         />
-//         <Button type="submit">Submit</Button>
-//       </form>
-//       <div>
-//         Already have an account{" "}
-//         <span className="cursor-pointer" onClick={handleNavigateToLogin}>
-//           Login here
-//         </span>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default RegisterForm;
-
 "use client";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -254,24 +174,12 @@ const RegisterForm = () => {
                 >
                   <Input
                     label=" Enter your username"
+                    labelPlacement="outside"
                     variant="bordered"
                     color={`${errors.username ? "danger" : "primary"}`}
                     classNames={{
-                      base: " w-full ",
-                      label: [
-                        // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
-                        "text-xs  text-white focus-within:text-white",
-                      ],
-
-                      // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
-
-                      // input: [
-                      //   "bg-transparent",
-                      //   "text-black",
-                      //   "placeholder:text-white",
-                      //   "text-sm",
-                      //   "font-bold",
-                      // ],
+                      base: " w-full h-7 my-2 -mt-3 ",
+                      label: ["text-xs  text-white focus-within:text-white"],
 
                       inputWrapper: [
                         "border border-slate-500/50",
@@ -295,113 +203,79 @@ const RegisterForm = () => {
                       {errors?.username?.message as string}
                     </p>
                   )}
-                  <Input
-                    label="firstname"
-                    variant="bordered"
-                    color={`${errors.firstName ? "danger" : "primary"}`}
-                    classNames={{
-                      base: " w-full ",
-                      label: [
-                        // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
-                        "text-xs  text-white focus-within:text-white",
-                      ],
+                  <div className="flex gap-2">
+                    <Input
+                      label="firstname"
+                      labelPlacement="outside"
+                      variant="bordered"
+                      color={`${errors.firstName ? "danger" : "primary"}`}
+                      classNames={{
+                        base: " w-full h-7 my-2 ",
+                        label: ["text-xs  text-white focus-within:text-white"],
 
-                      // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
+                        inputWrapper: [
+                          "border border-slate-500/50",
+                          "text-white",
+                          "bg-transparent",
+                          "data-[hover=true]:bg-[#282551]",
+                          "data-[hover=true]:border-[#4435CF]",
+                          "focus-within:!bg-[#282551]",
+                          "focus-within:border-[#4435CF] border-2",
+                        ],
+                        innerWrapper: [
+                          "bg-transparent",
+                          "boder-2 border-blue-100",
+                        ],
+                      }}
+                      type="text"
+                      {...register("firstName")}
+                    />
+                    {errors.firstName && (
+                      <p className="text-red-500" style={{ color: "red" }}>
+                        {errors.firstName.message as string}
+                      </p>
+                    )}
 
-                      // input: [
-                      //   "bg-transparent",
-                      //   "text-black",
-                      //   "placeholder:text-white",
-                      //   "text-sm",
-                      //   "font-bold",
-                      // ],
+                    <Input
+                      label="Lastname"
+                      labelPlacement="outside"
+                      variant="bordered"
+                      color={`${errors.lastName ? "danger" : "primary"}`}
+                      classNames={{
+                        base: " w-full h-7 my-2",
+                        label: ["text-xs  text-white focus-within:text-white"],
 
-                      inputWrapper: [
-                        "border border-slate-500/50",
-                        "text-white",
-                        "bg-transparent",
-                        "data-[hover=true]:bg-[#282551]",
-                        "data-[hover=true]:border-[#4435CF]",
-                        "focus-within:!bg-[#282551]",
-                        "focus-within:border-[#4435CF] border-2",
-                      ],
-                      innerWrapper: [
-                        "bg-transparent",
-                        "boder-2 border-blue-100",
-                      ],
-                    }}
-                    type="text"
-                    {...register("firstName")}
-                  />
-                  {errors.firstName && (
-                    <p className="text-red-500" style={{ color: "red" }}>
-                      {errors.firstName.message as string}
-                    </p>
-                  )}
-
-                  <Input
-                    label="Lastname"
-                    variant="bordered"
-                    color={`${errors.lastName ? "danger" : "primary"}`}
-                    classNames={{
-                      base: " w-full ",
-                      label: [
-                        // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
-                        "text-xs  text-white focus-within:text-white",
-                      ],
-
-                      // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
-
-                      // input: [
-                      //   "bg-transparent",
-                      //   "text-black",
-                      //   "placeholder:text-white",
-                      //   "text-sm",
-                      //   "font-bold",
-                      // ],
-
-                      inputWrapper: [
-                        "border border-slate-500/50",
-                        "text-white",
-                        "bg-transparent",
-                        "data-[hover=true]:bg-[#282551]",
-                        "data-[hover=true]:border-[#4435CF]",
-                        "focus-within:!bg-[#282551]",
-                        "focus-within:border-[#4435CF] border-2",
-                      ],
-                      innerWrapper: [
-                        "bg-transparent",
-                        "boder-2 border-blue-100",
-                      ],
-                    }}
-                    type="text"
-                    {...register("lastName")}
-                  />
-                  {errors.lastName && (
-                    <p className="text-red-500">
-                      {errors.lastName.message as string}
-                    </p>
-                  )}
+                        inputWrapper: [
+                          "border border-slate-500/50",
+                          "text-white",
+                          "bg-transparent",
+                          "data-[hover=true]:bg-[#282551]",
+                          "data-[hover=true]:border-[#4435CF]",
+                          "focus-within:!bg-[#282551]",
+                          "focus-within:border-[#4435CF] border-2",
+                        ],
+                        innerWrapper: [
+                          "bg-transparent",
+                          "boder-2 border-blue-100",
+                        ],
+                      }}
+                      type="text"
+                      {...register("lastName")}
+                    />
+                    {errors.lastName && (
+                      <p className="text-red-500">
+                        {errors.lastName.message as string}
+                      </p>
+                    )}
+                  </div>
                   <Input
                     label="Email"
+                    labelPlacement="outside"
                     variant="bordered"
                     color={`${errors.email ? "danger" : "primary"}`}
                     classNames={{
-                      base: " w-full ",
-                      label: [
-                        // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
-                        "text-xs  text-white focus-within:text-white",
-                      ],
-
-                      // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
-
-                      // input: [
-                      //   "bg-transparent",
-                      //   "text-black",
-                      //   "placeholder:text-white",
-                      //   "text-sm",
-                      //   "font-bold",
-                      // ],
+                      base: " w-full h-7 my-2 ",
+                      label: ["text-xs  text-white focus-within:text-white"],
 
                       inputWrapper: [
                         "border border-slate-500/50",
@@ -425,62 +299,83 @@ const RegisterForm = () => {
                       {errors.email.message as string}
                     </p>
                   )}
-                  <Input
-                    type={isVisible ? "text" : "password"}
-                    label="Password"
-                    variant="bordered"
-                    color={`${errors.password ? "danger" : "primary"}`}
-                    endContent={
-                      <button
-                        className="focus:outline-none"
-                        type="button"
-                        onClick={toggleVisibility}
-                      >
-                        {isVisible ? (
-                          <IoEyeOffOutline className="text-2xl text-default-400 pointer-events-none" />
-                        ) : (
-                          <MdOutlineRemoveRedEye className="text-2xl text-default-400 pointer-events-none" />
-                        )}
-                      </button>
-                    }
-                    classNames={{
-                      base: " w-full ",
-                      label: [
-                        // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
-                        "text-xs  text-white focus-within:text-white",
-                      ],
+                  <div className="flex gap-2">
+                    <Input
+                      type={isVisible ? "text" : "password"}
+                      label="Password"
+                      labelPlacement="outside"
+                      variant="bordered"
+                      color={`${errors.password ? "danger" : "primary"}`}
+                      endContent={
+                        <button
+                          className="focus:outline-none"
+                          type="button"
+                          onClick={toggleVisibility}
+                        >
+                          {isVisible ? (
+                            <IoEyeOffOutline className="text-2xl text-default-400 pointer-events-none" />
+                          ) : (
+                            <MdOutlineRemoveRedEye className="text-2xl text-default-400 pointer-events-none" />
+                          )}
+                        </button>
+                      }
+                      classNames={{
+                        base: " w-full h-7 my-2 ",
+                        label: ["text-xs  text-white focus-within:text-white"],
 
-                      // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
+                        inputWrapper: [
+                          "border border-slate-500/50",
+                          "text-white",
+                          "bg-transparent",
+                          "data-[hover=true]:bg-[#282551]",
+                          "data-[hover=true]:border-[#4435CF]",
+                          "focus-within:!bg-[#282551]",
+                          "focus-within:border-[#4435CF] border-2",
+                        ],
+                        innerWrapper: [
+                          "bg-transparent",
+                          "boder-2 border-blue-100",
+                        ],
+                      }}
+                      {...register("password")}
+                    />
+                    {errors.password && (
+                      <p className="text-red-500">
+                        {errors.password.message as string}
+                      </p>
+                    )}
+                    <Input
+                      type={isVisible ? "text" : "Confirm Password"}
+                      label="Confirm Password"
+                      labelPlacement="outside"
+                      variant="bordered"
+                      color={`${errors.password ? "danger" : "primary"}`}
+                      classNames={{
+                        base: " w-full h-7 my-2 ",
+                        label: ["text-xs  text-white focus-within:text-white"],
 
-                      // input: [
-                      //   "bg-transparent",
-                      //   "text-black",
-                      //   "placeholder:text-white",
-                      //   "text-sm",
-                      //   "font-bold",
-                      // ],
-
-                      inputWrapper: [
-                        "border border-slate-500/50",
-                        "text-white",
-                        "bg-transparent",
-                        "data-[hover=true]:bg-[#282551]",
-                        "data-[hover=true]:border-[#4435CF]",
-                        "focus-within:!bg-[#282551]",
-                        "focus-within:border-[#4435CF] border-2",
-                      ],
-                      innerWrapper: [
-                        "bg-transparent",
-                        "boder-2 border-blue-100",
-                      ],
-                    }}
-                    {...register("password")}
-                  />
-                  {errors.password && (
-                    <p className="text-red-500">
-                      {errors.password.message as string}
-                    </p>
-                  )}
+                        inputWrapper: [
+                          "border border-slate-500/50",
+                          "text-white",
+                          "bg-transparent",
+                          "data-[hover=true]:bg-[#282551]",
+                          "data-[hover=true]:border-[#4435CF]",
+                          "focus-within:!bg-[#282551]",
+                          "focus-within:border-[#4435CF] border-2",
+                        ],
+                        innerWrapper: [
+                          "bg-transparent",
+                          "boder-2 border-blue-100",
+                        ],
+                      }}
+                      {...register("confirm password")}
+                    />
+                    {errors.password && (
+                      <p className="text-red-500">
+                        {errors.password.message as string}
+                      </p>
+                    )}
+                  </div>
                   <div className="flex justify-between">
                     <div className="flex items-center w-full gap-3">
                       <p className="text-slate-400 text-[14px]">
