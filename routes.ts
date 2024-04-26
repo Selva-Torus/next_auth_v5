@@ -1,6 +1,10 @@
 export const publicRoutes = ["/nextAuthLogin"];
 
-export const authRoutes = ["/nextAuthLogin", "/nextAuthLogin/register"];
+export const authRoutes = [
+  "/nextAuthLogin",
+  "/nextAuthLogin/register",
+  "/nextAuthLogin/ForgetPass",
+];
 
 export const apiAuthPrefix = "/nextAuthLogin/api/auth";
 
