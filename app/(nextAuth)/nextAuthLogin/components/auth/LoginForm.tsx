@@ -251,12 +251,12 @@ const LoginForm: FC = () => {
           type="text"
           label="Email or phone"
           name="username"
-          // labelPlacement="outside"
+          labelPlacement="outside"
           color={`${checkDetails && !data.username ? "danger" : "primary"}`}
           onChange={handleChange}
           value={data.username}
           classNames={{
-            base: " w-full h-6 my-2 ",
+            base: " w-full h-6 my-2",
             label: [
               // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
               "text-xs  text-white focus-within:text-white",
@@ -289,6 +289,7 @@ const LoginForm: FC = () => {
           type={isVisible ? "text" : "password"}
           label="Password"
           name="password"
+          labelPlacement="outside"
           color={`${checkDetails && !data.password ? "danger" : "primary"}`}
           onChange={handleChange}
           value={data.password}
