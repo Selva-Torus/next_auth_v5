@@ -120,240 +120,60 @@
 //   rl.close();
 // });
 
+// const ff = {
+//   user: {
+//     id: "clvcfh8yy00002rzi4n1wv5bd",
+//     name: "hari6565",
+//     email: "harin@torus.tech",
+//     emailVerified: null,
+//     image: "https://avatars.githubusercontent.com/u/157453352?v=4",
+//     password: null,
+//     createdAt: "2024-04-23T13:34:51.562Z",
+//     updatedAt: "2024-04-23T13:34:51.562Z",
+//     token: {
+//       access_token:
+//         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiaGFyaTY1NjUiLCJlbWFpbCI6ImhhcmluQHRvcnVzLnRlY2giLCJwaWN0dXJlIjoiaHR0cHM6Ly9hdmF0YXJzLmdpdGh1YnVzZXJjb250ZW50LmNvbS91LzE1NzQ1MzM1Mj92PTQiLCJzdWIiOiJjbHZjZmg4eXkwMDAwMnJ6aTRuMXd2NWJkIiwidXNlciI6eyJpZCI6ImNsdmNmaDh5eTAwMDAycnppNG4xd3Y1YmQiLCJuYW1lIjoiaGFyaTY1NjUiLCJlbWFpbCI6ImhhcmluQHRvcnVzLnRlY2giLCJlbWFpbFZlcmlmaWVkIjpudWxsLCJpbWFnZSI6Imh0dHBzOi8vYXZhdGFycy5naXRodWJ1c2VyY29udGVudC5jb20vdS8xNTc0NTMzNTI_dj00IiwicGFzc3dvcmQiOm51bGwsImNyZWF0ZWRBdCI6IjIwMjQtMDQtMjNUMTM6MzQ6NTEuNTYyWiIsInVwZGF0ZWRBdCI6IjIwMjQtMDQtMjNUMTM6MzQ6NTEuNTYyWiJ9LCJpYXQiOjE3MTQyMTE0NTEsImV4cCI6MTcxNDIxMTYzMX0.ZeM1szQilyEnrl9fPV_XZfj06umZHsUE4ubTNHh079c",
+//       expires_in: 300,
+//       refresh_expires_in: 3600,
+//       refresh_token: "",
+//       token_type: "bearer",
+//       session_state: "",
+//       scope: "social profile",
+//     },
+//   },
+//   expires: "2024-05-27T09:50:53.160Z",
+//   client_id: "demoClient",
+//   client_secret: "oTtfWsw8SKukpKTiaNr4bGIg5Dlkp4sW",
+//   realm: "testRealm",
+// };
 
+// import { btoa } from "buffer";
+import { verify } from "jsonwebtoken";
 
-"use client";
-import { login } from "@/action/login";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import { Button, Input } from "@nextui-org/react";
-import { signIn } from "next-auth/react";
-import Image from "next/image";
-import { useRouter } from "next/navigation"; // Changed from 'next/navigation' to 'next/router'
-import React, { FC, useState } from "react";
-import torusIcon from "../../favicon.ico"
-import logo from "../../favicon.ico";
-import picture from "@/app/assets/google.png";
-import pictures from "@/app/assets/github.png";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { IoEyeOffOutline } from "react-icons/io5";
-import {  CircularProgress } from "@nextui-org/react";
-//  const [loading, setLoading] = useState("");
- 
- 
-const LoginForm: FC = () => {
-  const router = useRouter();
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-  });
-  const [isVisible, setIsVisible] = React.useState(false);
- 
-  const [errors, setErrors] = useState({
-    username: "",
-    password: "",
-  });
- 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
- 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    setErrors({
-      username: "",
-      password: "",
-    });
-    e.preventDefault();
-    if (!formData.username || !formData.password) {
-      setErrors({
-        username: "username required",
-        password: "password required",
-      });
-    } else {
-      const res = await login(formData);
-      if (res && res?.error) {
-        setErrors({
-          username: "please check username",
-          password: " please check password",
-        });
-      }
-    }
-  };
- 
-  const handleNavigateToRegister = () => {
-    router.push("/nextAuthLogin/register"); // Changed to '/register'
-  };
- 
-  const handleSocialLogin = (provider: "github" | "google") => {
-    signIn(provider, {
-      callbackUrl: DEFAULT_LOGIN_REDIRECT,
-    });
-  };
- 
- 
-  return (
-<div
-      style={{
-        background:
-          "linear-gradient(90deg, rgba(17,15,18,1) 0%, rgba(110,68,139,1) 45%, rgba(117,59,94,1) 55%, rgba(24,24,23,1) 100%)",
-      }}
-      className="flex flex-col w-full h-screen justify-center items-center gap-2"
-    >
-      <div className="flex gap-2">
-        <Image className=" w-12 h-12  transition-all" src={logo} alt=""></Image>
- 
-        <h2 className="text-center font-bold text-4xl text-white">Torus</h2>
-      </div>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
- 
-      <div className="p-4 rounded-xl shadow-md w-[42%] flex flex-col gap-4 border-2 border-[#323B45]  text-white bg-slate-800/70">
-        <div>
-          <h2 className="text-2xl font-semibold ">Login</h2>
-          <p className="text-slate-400 text-[14px]">
-            By creating and account you agree to accept our Terms of Service and
-            Privacy Policy Available in the links below.
-          </p>
-        </div>
-        <div className="flex flex-col justify-center items-center w-full gap-3 ">
-          <div className="grid grid-cols-2 gap-1">
-            <Button  onClick={() => handleSocialLogin("github")} className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2">
-               <Image src={pictures} alt="GitHub logo" width={20} height={25} />
-              <span className="ml-2 text-black text-sm">
-                Sign in with GitHub
-              </span>
-            </Button>
-            <Button  onClick={() => handleSocialLogin("google")} className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2">
-               <Image src={picture} alt="Google logo" width={30} height={35} />
-              <span className="ml-2 text-black text-sm">
-                Sign in with Google
-              </span>
-            </Button>
-          </div>
-          <h2 className="text-slate-400 text-[14px]">Or continue with</h2>
-        </div>
- 
-       
- 
-        <Input
-          type="text"
-          label="username"
-          name="username"
-          value={formData.username}
-          onChange={handleInputChange}
-         
-          classNames={{
-            base: " w-full ",
-            label: [
-              // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
-              "text-xs  text-white focus-within:text-white",
-            ],
- 
-            // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
- 
-            // input: [
-            //   "bg-transparent",
-            //   "text-black",
-            //   "placeholder:text-white",
-            //   "text-sm",
-            //   "font-bold",
-            // ],
- 
-            inputWrapper: [
-              "border border-slate-500/50",
-              "text-white",
-              "bg-transparent",
-              "data-[hover=true]:bg-[#282551]",
-              "data-[hover=true]:border-[#4435CF]",
-              "focus-within:!bg-[#282551]",
-              "focus-within:border-[#4435CF] border-2",
-            ],
-            innerWrapper: ["bg-transparent", "boder-2 border-blue-100"],
-          }}
-        />
-         {errors.username && (
-            <span className="text-red-500">{errors.username}</span>
-          )}
- 
-        <Input
-       
-          label="Password"
-          name="password"
-          value={formData.password}
-          onChange={handleInputChange}
-          endContent={
-            <button
-              className="focus:outline-none"
-              type="button"
-             
-            >
-              {isVisible ? (
-                <IoEyeOffOutline className="text-2xl text-default-400 pointer-events-none" />
-              ) : (
-                <MdOutlineRemoveRedEye className="text-2xl text-default-400 pointer-events-none" />
-              )}
-            </button>
-          }
-          classNames={{
-            base: " w-full ",
-            label: [
-              // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
-              "text-xs  text-white focus-within:text-white",
-            ],
- 
-            inputWrapper: [
-              "border border-slate-500/50",
-              "text-white",
-              "bg-transparent",
-              "data-[hover=true]:bg-[#282551]",
-              "data-[hover=true]:border-[#4435CF]",
-              "focus-within:!bg-[#282551]",
-              "focus-within:border-[#4435CF] border-2",
-            ],
-            innerWrapper: ["bg-transparent", "boder-2 border-blue-100"],
-          }}
-        />
-        {errors.password && (
-            <span className="text-red-500">{errors.password}</span>
-          )}
-        <div className="flex justify-between">
-          <Button
-            variant="bordered"
-            color="primary"
-            className="  text-white border-2 border-[#323B45]"
-          >
-            Forget password
-          </Button>
-          <Button
-type="submit"
-            color="primary"
-            variant="bordered"
-            className="w-[10%]  text-white border-2 border-[#323B45]"
-          >
-             {/* {loading ? <CircularProgress size="sm" /> : "Sign in"}  */}
-             Sign in
-          </Button>
-        </div>
-        <div className="flex justify-center items-center w-full gap-3">
-          <p className="text-slate-400 text-[14px]">Don't have an account? </p>
-          <span
-            className="cursor-pointer hover:bg-slate-400 rounded-full p-2 text-[14px] text-green-300"
-            onClick={handleNavigateToRegister}
-          >
-            Sign up
-          </span>
-        </div>
-      </div>
-      </form>
-    </div>
-  );
-   
-   
- 
+var token = {
+  access_token:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiaGFyaTY1NjUiLCJlbWFpbCI6ImhhcmluQHRvcnVzLnRlY2giLCJwaWN0dXJlIjoiaHR0cHM6Ly9hdmF0YXJzLmdpdGh1YnVzZXJjb250ZW50LmNvbS91LzE1NzQ1MzM1Mj92PTQiLCJzdWIiOiJjbHZjZmg4eXkwMDAwMnJ6aTRuMXd2NWJkIiwidXNlciI6eyJpZCI6ImNsdmNmaDh5eTAwMDAycnppNG4xd3Y1YmQiLCJuYW1lIjoiaGFyaTY1NjUiLCJlbWFpbCI6ImhhcmluQHRvcnVzLnRlY2giLCJlbWFpbFZlcmlmaWVkIjpudWxsLCJpbWFnZSI6Imh0dHBzOi8vYXZhdGFycy5naXRodWJ1c2VyY29udGVudC5jb20vdS8xNTc0NTMzNTI_dj00IiwicGFzc3dvcmQiOm51bGwsImNyZWF0ZWRBdCI6IjIwMjQtMDQtMjNUMTM6MzQ6NTEuNTYyWiIsInVwZGF0ZWRBdCI6IjIwMjQtMDQtMjNUMTM6MzQ6NTEuNTYyWiJ9LCJpYXQiOjE3MTQyMTE0NTEsImV4cCI6MTcxNDIxMTYzMX0.ZeM1szQilyEnrl9fPV_XZfj06umZHsUE4ubTNHh079c",
+  expires_in: 300,
+  refresh_expires_in: 3600,
+  refresh_token: "",
+  token_type: "bearer",
+  session_state: "",
+  scope: "social profile",
 };
- 
-export default LoginForm;
- 
-has context menu
+
+const PUBLICK_KEY =
+  "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4nxzwnTeXFaMypqO8dU7F9FlDLyXMzQka+u5X6WBIhnDD5pGm6pt2okZ1wxHva2Qh6cXmpSL+dQ45+slIQ97MO28lmNqGtwA95DwxBL/glixaheBHpebTYfUQYE3bfu7bztnzSdkI1sAFRzKB1690VQK5t4To3sonYWMG+WcfimL6IMLd1BIUbamn15D1t2PQ1rcD+oOPbW29e1Or15u3NhAlEqGRvvVNoIhNleNz6IQoZtbwE3zfkFytHIFKlTeaLswdnss5i0DZR0saymiag08guIcJzSjhNe0F0/XUh4m9kvrsHLVOi1t/NbxRSQRWuXYJR5obC6MpM4oz97k4QIDAQAB";
+const KEY = `-----BEGIN PUBLIC KEY-----\n${PUBLICK_KEY}\n-----END PUBLIC KEY-----`;
+//   console.log(token);
+var decoded;
+try {
+  decoded = verify(token.access_token, KEY, {
+    algorithms: ["HS256"],
+  });
+  console.log(decoded);
+} catch (err) {
+  decoded = "unable to decode";
+}
+
+// var encodedAccessToken = btoa(token.access_token);
+// console.log(encodedAccessToken);
