@@ -135,6 +135,7 @@ const RegisterForm = () => {
 
         if (res.data == "Email sent") {
           console.log("email sent");
+          toast.success("Otp sent to the provided email")
 
           setSteps("1");
         } else toast.error("unable to send otp");
@@ -209,7 +210,7 @@ const RegisterForm = () => {
               console.log(res);
               if (res.status == 201) {
                 router.push("/nextAuthLogin");
-                toast.success("new user created");
+                toast.success("Registered successfully");
               } else {
                 toast.error("failed to create");
               }
