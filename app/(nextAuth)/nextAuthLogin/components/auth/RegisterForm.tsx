@@ -23,19 +23,28 @@ const RegisterForm = () => {
   const [userData, setUserData] = useState<any>({});
   const [steps, setSteps] = useState("0");
   const router = useRouter();
+  const [isVisible, setIsVisible] = React.useState(false);
+  const [isVisibility, setIsVisibility] = React.useState(false);
+
+  const toggleVisibility = () => setIsVisible(!isVisible);
+  const toggleVisible = () => setIsVisibility(!isVisibility);
+
   const schema = z.object({
     username: z
       .string()
       .min(2, { message: "username should be at least 2 characters" })
       .max(20, { message: "max limit" }),
-    firstName: z.string().min(2).max(30),
-    lastName: z.string().min(2).max(30),
+    firstName: z.string().min(3 ,{ message: "firstName should be at least 3 characters" }).max(30),
+    lastName: z.string().min(1, { message: "Please provide lastName" }),
     email: z.string().email(),
-    password: z.string().min(4),
-  });
-  const [isVisible, setIsVisible] = React.useState(false);
-
-  const toggleVisibility = () => setIsVisible(!isVisible);
+    password: z.string().min(4,{ message: "Please provide valid password" }),
+    confirmPassword: z.string().min(4,{ message: "Please provide valid password"})
+  }).refine( 
+    (data : any) => data.password === data.confirmPassword, {
+      message: "Passwords do not match",
+      path: ["confirmPassword"],
+    }
+  )
 
   const {
     register,
@@ -370,11 +379,24 @@ const RegisterForm = () => {
                       </div>
                       <div className="flex flex-col gap-2 w-full">
                         <Input
-                          type={isVisible ? "text" : "Confirm Password"}
-                          label="Confirm Password"
+                          type={isVisibility ? "text" : "password"}
+                          label="confirmPassword"
                           labelPlacement="outside"
                           variant="bordered"
-                          color={`${errors.password ? "danger" : "primary"}`}
+                          color={`${errors.confirmPassword ? "danger" : "primary"}`}
+                          endContent={
+                            <button
+                              className="focus:outline-none"
+                              type="button"
+                              onClick={toggleVisible}
+                            >
+                              {isVisibility ? (
+                                <IoEyeOffOutline className="text-2xl text-default-400 pointer-events-none" />
+                              ) : (
+                                <MdOutlineRemoveRedEye className="text-2xl text-default-400 pointer-events-none" />
+                              )}
+                            </button>
+                          }
                           classNames={{
                             base: " w-full h-7 my-2 ",
                             label: [
@@ -395,11 +417,11 @@ const RegisterForm = () => {
                               "boder-2 border-blue-100",
                             ],
                           }}
-                          {...register("confirm password")}
+                          {...register("confirmPassword")}
                         />
-                        {errors.password && (
+                        {errors.confirmPassword && (
                           <p className="text-red-500">
-                            {errors.password.message as string}
+                            {errors.confirmPassword.message as string}
                           </p>
                         )}
                       </div>
@@ -440,9 +462,7 @@ const RegisterForm = () => {
                     color={`${errors.password ? "danger" : "primary"}`}
                     classNames={{
                       base: " w-full h-7 my-2 ",
-                      label: [
-                        "text-xs  text-white focus-within:text-white",
-                      ],
+                      label: ["text-xs  text-white focus-within:text-white"],
 
                       inputWrapper: [
                         "border border-slate-500/50",
@@ -459,7 +479,13 @@ const RegisterForm = () => {
                       ],
                     }}
                   />
-                  <Button color="primary"  className="mt-2 text-end" onClick={verifyOtpandPostUser}>Submit</Button>
+                  <Button
+                    color="primary"
+                    className="mt-2 text-end"
+                    onClick={verifyOtpandPostUser}
+                  >
+                    Submit
+                  </Button>
                 </div>
               );
           }
