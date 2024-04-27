@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod"; // Remove unused import: boolean
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,17 +11,55 @@ import Image from "next/image";
 import logo from "../../favicon.ico";
 import picture from "@/app/assets/google.png";
 import pictures from "@/app/assets/github.png";
+import {
+  Dropdown,
+  DropdownMenu,
+  DropdownTrigger,
+  DropdownItem,
+} from "@nextui-org/react";
 
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { IoEyeOffOutline } from "react-icons/io5";
 import {
+  getAllRealm,
+  getClientcredentials,
   getVerifyOtp,
   validateOtp,
 } from "@/app/utilsFunctions/ulits/keyCloakAuth";
 
+type Realm = {
+  id: string;
+  name: string;
+};
 const RegisterForm = () => {
+  const [checkDetails, setCheckDetails] = useState(false);
   const [userData, setUserData] = useState<any>({});
+  const [realmData, setRealmData] = useState<any>({
+    realm: "",
+    client_id: "",
+    client_secret: "",
+  });
   const [steps, setSteps] = useState("0");
+  const [token, setToken] = useState<any>();
+  const [realmList, setRealmList] = useState<Realm[] | any[]>([]);
+  const [realmId, setRealmId] = useState<string>("");
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await getAllRealm();
+
+        res.status == 200
+          ? setRealmList(res.data)
+          : // setData({ ...data, realm: res.data[0].name })
+
+            setRealmList([]);
+      } catch (err) {
+        console.log("Error occured");
+      }
+    })();
+  }, []);
+
   const router = useRouter();
   const [isVisible, setIsVisible] = React.useState(false);
   const [isVisibility, setIsVisibility] = React.useState(false);
@@ -29,28 +67,81 @@ const RegisterForm = () => {
   const toggleVisibility = () => setIsVisible(!isVisible);
   const toggleVisible = () => setIsVisibility(!isVisibility);
 
-  const schema = z.object({
-    username: z
-      .string()
-      .min(2, { message: "username should be at least 2 characters" })
-      .max(20, { message: "max limit" }),
-    firstName: z.string().min(3 ,{ message: "firstName should be at least 3 characters" }).max(30),
-    lastName: z.string().min(1, { message: "Please provide lastName" }),
-    email: z.string().email(),
-    password: z.string().min(4,{ message: "Please provide valid password" }),
-    confirmPassword: z.string().min(4,{ message: "Please provide valid password"})
-  }).refine( 
-    (data : any) => data.password === data.confirmPassword, {
+  const schema = z
+    .object({
+      username: z
+        .string()
+        .min(2, { message: "username should be at least 2 characters" })
+        .max(20, { message: "max limit" }),
+      firstName: z
+        .string()
+        .min(3, { message: "firstName should be at least 3 characters" })
+        .max(30),
+      lastName: z.string().min(1, { message: "Please provide lastName" }),
+      email: z.string().email(),
+      password: z.string().min(4, { message: "Please provide valid password" }),
+      confirmPassword: z
+        .string()
+        .min(4, { message: "Please provide valid password" }),
+    })
+    .refine((data: any) => data.password === data.confirmPassword, {
       message: "Passwords do not match",
       path: ["confirmPassword"],
-    }
-  )
+    });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema) });
+  const getRealmRegisToken = async (userEmail: any) => {
+    // Define the URL
+    const url = `https://keycloak9x.gsstvl.com:18443/realms/${realmData.realm}/protocol/openid-connect/token`;
+
+    // if(userData )
+    // Define the request body as a URL-encoded string
+    const requestBody = {
+      grant_type: "client_credentials",
+      client_id: realmData.client_id,
+      client_secret: realmData.client_secret,
+    };
+
+    // Define the headers
+    const headers = {
+      "Content-Type": "application/x-www-form-urlencoded",
+    };
+    const encodeFormData = (data: any) => {
+      return Object.keys(data)
+        .map(
+          (key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
+        )
+        .join("&");
+    };
+
+    // Make the POST request with request body and headers
+    const res = await axios.post(url, encodeFormData(requestBody), {
+      headers: headers,
+    });
+    console.log(res);
+    if (res.data) {
+      setToken(res.data.access_token);
+      console.log("register token", res.data.access_token);
+
+      console.log(userEmail);
+
+      getVerifyOtp({ email: userEmail }).then((res) => {
+        console.log(res);
+
+        if (res.data == "Email sent") {
+          console.log("email sent");
+
+          setSteps("1");
+        } else alert("unable to send otp");
+      });
+    } else {
+      alert("error occured");
+    }
+  };
   const submitData = async (data: any) => {
     const requestBody = {
       attributes: {
@@ -70,13 +161,13 @@ const RegisterForm = () => {
       emailVerified: true,
       enabled: true,
     };
+    // console.log({ ...requestBody, ...userData });
+    console.log("requestBody", requestBody);
 
     setUserData(requestBody);
-    getVerifyOtp({ email: data.email }).then((res) => {
-      if (res.data == "Email sent") setSteps("1");
-      else alert("unable to send otp");
-    });
+    getRealmRegisToken(data.email);
   };
+
   const [otp, setOtp] = useState<any>({ otp: "" });
 
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,23 +175,30 @@ const RegisterForm = () => {
     setOtp({ [name]: value });
   };
   const verifyOtpandPostUser = async () => {
-    // console.log(userData);
-    const res = await validateOtp({ otp: otp.otp, email: userData.email });
+    console.log("otp", otp);
+
+    // console.log("userData", userData);
+    const res = await validateOtp({
+      otp: otp.otp,
+      email: userData.email,
+    });
     console.log(res);
     if (res.error == "Invalid Otp or OTP expired") {
       alert("Invalid Otp or OTP expired");
     } else {
       if (res.data == "Email verified successfully") {
         try {
-          const token = localStorage.getItem("registertoken");
-
           const headers = {
             Authorization: `Bearer ${token}`, // Include bearer token in headers
           };
 
+          console.log("userData", userData);
+          console.log("token", token);
+          console.log("realmData", realmData);
+
           axios
             .post(
-              "https://keycloak9x.gsstvl.com:18443/admin/realms/testRealm/users",
+              `https://keycloak9x.gsstvl.com:18443/admin/realms/${realmData.realm}/users`,
               userData,
               {
                 headers: headers,
@@ -121,6 +219,26 @@ const RegisterForm = () => {
       }
     }
   };
+
+  const handleSelectRealm = async (datas: any) => {
+    setRealmId(datas.id);
+    setRealmData({ ...realmData, realm: datas.name });
+    // handleClientCredentials();
+  };
+  const handleClientCredentials = async () => {
+    const res = await getClientcredentials(realmId);
+    if (res.data.length) {
+      setRealmData({
+        ...realmData,
+        client_id: res.data[0].client_id,
+        client_secret: res.data[0].secret,
+      });
+    }
+  };
+
+  useEffect(() => {
+    handleClientCredentials();
+  }, [realmId]);
 
   return (
     <div className="flex flex-col md:flex-row gap-2 w-full md:max-w-screen   items-center  ">
@@ -183,6 +301,39 @@ const RegisterForm = () => {
                       Or continue with
                     </h2>
                   </div>
+                  <Dropdown className="w-[400px] border border-[#20252B]  p-0 ">
+                    <DropdownTrigger>
+                      <Button
+                        size="lg"
+                        variant="bordered"
+                        className={`border-2 border-[#323B45] ${
+                          checkDetails && !userData.realm
+                            ? "text-red-400"
+                            : "text-white"
+                        }`}
+                      >
+                        {userData.realm ? userData.realm : "Select Tenant"}
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label="Link Actions"
+                      className=" text-white rounded-sm"
+                      variant="light"
+                      classNames={{
+                        base: "bg-[#20252B] border-1 border-black",
+                      }}
+                    >
+                      {realmList.map((realm, id) => (
+                        <DropdownItem
+                          className=" text-white hover:bg-slate-500"
+                          key={id}
+                          onClick={() => handleSelectRealm(realm)}
+                        >
+                          {realm.name}
+                        </DropdownItem>
+                      ))}
+                    </DropdownMenu>
+                  </Dropdown>
                   <form
                     onSubmit={handleSubmit(submitData)}
                     className="flex flex-col gap-1"
@@ -383,7 +534,9 @@ const RegisterForm = () => {
                           label="confirmPassword"
                           labelPlacement="outside"
                           variant="bordered"
-                          color={`${errors.confirmPassword ? "danger" : "primary"}`}
+                          color={`${
+                            errors.confirmPassword ? "danger" : "primary"
+                          }`}
                           endContent={
                             <button
                               className="focus:outline-none"
