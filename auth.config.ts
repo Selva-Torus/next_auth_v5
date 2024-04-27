@@ -78,6 +78,9 @@ export default {
       if (account?.type == "credentials") {
         return true; //false;
       } else {
+        console.log("++++++++-------+++");
+        console.log(user, account);
+
         await registerIdentityProviderUser(user, account);
         return true;
       }
@@ -96,11 +99,17 @@ export default {
               session_state: "",
               acr: "1",
               "allowed-origins": ["http://localhost:3000"],
-              realm_access: { roles: ["offline_access", "default-roles-testrealm"] },
+              realm_access: {
+                roles: ["offline_access", "default-roles-testrealm"],
+              },
               resource_access: {
                 demoClient: { roles: ["testuser"] },
                 account: {
-                  roles: ["manage-account", "manage-account-links", "view-profile"],
+                  roles: [
+                    "manage-account",
+                    "manage-account-links",
+                    "view-profile",
+                  ],
                 },
               },
               scope: "social profile",
@@ -111,12 +120,15 @@ export default {
               given_name: token?.name ?? "",
               family_name: token?.name ?? "",
               email: token?.email ?? "",
-            }
+            };
 
             const updatedToken = {
-              ...token , ...defaultTokenOfKeycloak
-            }
-            const access_token = sign(updatedToken, PUBLICK_KEY, { expiresIn: "10m" });
+              ...token,
+              ...defaultTokenOfKeycloak,
+            };
+            const access_token = sign(updatedToken, PUBLICK_KEY, {
+              expiresIn: "10m",
+            });
             token.acc = access_token;
           }
         }

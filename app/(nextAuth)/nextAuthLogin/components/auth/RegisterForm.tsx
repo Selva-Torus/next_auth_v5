@@ -11,6 +11,7 @@ import Image from "next/image";
 import logo from "../../favicon.ico";
 import picture from "@/app/assets/google.png";
 import pictures from "@/app/assets/github.png";
+import { toast } from "react-toastify";
 import {
   Dropdown,
   DropdownMenu,
@@ -136,10 +137,10 @@ const RegisterForm = () => {
           console.log("email sent");
 
           setSteps("1");
-        } else alert("unable to send otp");
+        } else toast.error("unable to send otp");
       });
     } else {
-      alert("error occured");
+      toast.error("error occured");
     }
   };
   const submitData = async (data: any) => {
@@ -184,7 +185,7 @@ const RegisterForm = () => {
     });
     console.log(res);
     if (res.error == "Invalid Otp or OTP expired") {
-      alert("Invalid Otp or OTP expired");
+      toast.error("Invalid Otp or OTP expired");
     } else {
       if (res.data == "Email verified successfully") {
         try {
@@ -208,9 +209,9 @@ const RegisterForm = () => {
               console.log(res);
               if (res.status == 201) {
                 router.push("/nextAuthLogin");
-                alert("new user created");
+                toast.success("new user created");
               } else {
-                alert("failed to create");
+                toast.error("failed to create");
               }
             });
         } catch (error) {
@@ -307,12 +308,12 @@ const RegisterForm = () => {
                         size="lg"
                         variant="bordered"
                         className={`border-2 border-[#323B45] ${
-                          checkDetails && !userData.realm
+                          checkDetails && !realmData.realm
                             ? "text-red-400"
                             : "text-white"
                         }`}
                       >
-                        {userData.realm ? userData.realm : "Select Tenant"}
+                        {realmData.realm ? realmData.realm : "Select Tenant"}
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu
@@ -595,6 +596,7 @@ const RegisterForm = () => {
                         color="primary"
                         className="mt-2 text-end"
                         type="submit"
+                        onClick={()=>setCheckDetails(true)}
                       >
                         submit
                       </Button>
