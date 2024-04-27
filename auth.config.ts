@@ -10,7 +10,7 @@ let realmDetails = {};
 
 const PUBLICK_KEY =
   "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4nxzwnTeXFaMypqO8dU7F9FlDLyXMzQka+u5X6WBIhnDD5pGm6pt2okZ1wxHva2Qh6cXmpSL+dQ45+slIQ97MO28lmNqGtwA95DwxBL/glixaheBHpebTYfUQYE3bfu7bztnzSdkI1sAFRzKB1690VQK5t4To3sonYWMG+WcfimL6IMLd1BIUbamn15D1t2PQ1rcD+oOPbW29e1Or15u3NhAlEqGRvvVNoIhNleNz6IQoZtbwE3zfkFytHIFKlTeaLswdnss5i0DZR0saymiag08guIcJzSjhNe0F0/XUh4m9kvrsHLVOi1t/NbxRSQRWuXYJR5obC6MpM4oz97k4QIDAQAB";
-const KEY = `-----BEGIN PUBLIC KEY-----\n${PUBLICK_KEY}\n-----END PUBLIC KEY-----`;
+// const KEY = `-----BEGIN PUBLIC KEY-----\n${PUBLICK_KEY}\n-----END PUBLIC KEY-----`;
 
 export default {
   providers: [
@@ -78,6 +78,9 @@ export default {
       if (account?.type == "credentials") {
         return true; //false;
       } else {
+        console.log("++++++++-------+++");
+        console.log(user, account);
+
         await registerIdentityProviderUser(user, account);
         return true;
       }
@@ -88,7 +91,44 @@ export default {
         if (user) {
           token.user = user;
           if (user.image) {
-            const access_token = sign(token, KEY, { expiresIn: "3m" });
+            const defaultTokenOfKeycloak = {
+              iss: "http://192.168.2.165:8085/realms/testRealm",
+              aud: "account",
+              typ: "Bearer",
+              azp: "demoClient",
+              session_state: "",
+              acr: "1",
+              "allowed-origins": ["http://localhost:3000"],
+              realm_access: {
+                roles: ["offline_access", "default-roles-testrealm"],
+              },
+              resource_access: {
+                demoClient: { roles: ["testuser"] },
+                account: {
+                  roles: [
+                    "manage-account",
+                    "manage-account-links",
+                    "view-profile",
+                  ],
+                },
+              },
+              scope: "social profile",
+              sid: "",
+              email_verified: true,
+              name: token?.name ?? "",
+              preferred_username: token?.name ?? "",
+              given_name: token?.name ?? "",
+              family_name: token?.name ?? "",
+              email: token?.email ?? "",
+            };
+
+            const updatedToken = {
+              ...token,
+              ...defaultTokenOfKeycloak,
+            };
+            const access_token = sign(updatedToken, PUBLICK_KEY, {
+              expiresIn: "10m",
+            });
             token.acc = access_token;
           }
         }
