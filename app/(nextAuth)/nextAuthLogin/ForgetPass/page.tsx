@@ -32,9 +32,11 @@ const page = () => {
   const [steps, setSteps] = useState<string>("0");
 
   const [isVisible, setIsVisible] = React.useState(false);
+  const [isVisibility, setIsVisibility] = React.useState(false);
   const [error, setError] = useState<any>();
 
   const toggleVisibility = () => setIsVisible(!isVisible);
+  const toggleVisible = () => setIsVisibility(!isVisibility);
 
   const [data, setData] = useState({
     realm: "",
@@ -313,6 +315,7 @@ const page = () => {
                   }}
                 ></Input>
                 <Input
+                  type={isVisibility ? "text" : "password"}
                   label="ConfirmPassword"
                   name="confirmPassword"
                   labelPlacement="outside"
@@ -321,6 +324,19 @@ const page = () => {
                   }`}
                   value={resetPassword.confirmPassword}
                   onChange={handlePassChange}
+                  endContent={
+                    <button
+                      className="focus:outline-none"
+                      type="button"
+                      onClick={toggleVisible}
+                    >
+                      {isVisibility ? (
+                        <IoEyeOffOutline className="text-2xl text-default-400 pointer-events-none" />
+                      ) : (
+                        <MdOutlineRemoveRedEye className="text-2xl text-default-400 pointer-events-none" />
+                      )}
+                    </button>
+                  }
                   classNames={{
                     base: " w-full h-6 my-2 ",
                     label: [
