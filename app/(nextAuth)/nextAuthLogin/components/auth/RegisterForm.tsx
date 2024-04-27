@@ -307,12 +307,12 @@ const RegisterForm = () => {
                         size="lg"
                         variant="bordered"
                         className={`border-2 border-[#323B45] ${
-                          checkDetails && !userData.realm
+                          checkDetails && !realmData.realm
                             ? "text-red-400"
                             : "text-white"
                         }`}
                       >
-                        {userData.realm ? userData.realm : "Select Tenant"}
+                        {realmData.realm ? realmData.realm : "Select Tenant"}
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu
