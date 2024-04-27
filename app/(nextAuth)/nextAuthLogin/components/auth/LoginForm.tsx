@@ -20,6 +20,7 @@ import axios from "axios";
 import picture from "@/app/assets/google.png";
 import pictures from "@/app/assets/github.png";
 import Image from "next/image";
+import { toast, ToastContainer } from 'react-toastify';
 type Realm = {
   id: string;
   name: string;
@@ -92,7 +93,7 @@ const LoginForm: FC = () => {
     // console.log(res);
     if (res?.error) {
       setLoading(false);
-      alert("failed to login , check credentials");
+      toast.error("failed to login , check credentials");
     } else {
       localStorage.setItem("isLogin", "nextAuthTrue");
     }
