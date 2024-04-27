@@ -121,49 +121,51 @@ const LoginForm: FC = () => {
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setError("")
+    setError("");
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
 
   const handleNavigateToRegister = async () => {
-    // Define the URL
-    const url =
-      "https://keycloak9x.gsstvl.com:18443/realms/testRealm/protocol/openid-connect/token";
+    router.push("/nextAuthLogin/register");
 
-    // Define the request body as a URL-encoded string
-    const requestBody = {
-      grant_type: "client_credentials",
-      client_id: "demoClient",
-      client_secret: "oTtfWsw8SKukpKTiaNr4bGIg5Dlkp4sW",
-    };
+    // // Define the URL
+    // const url =
+    //   "https://keycloak9x.gsstvl.com:18443/realms/testRealm/protocol/openid-connect/token";
 
-    // Define the headers
-    const headers = {
-      "Content-Type": "application/x-www-form-urlencoded",
-    };
-    const encodeFormData = (data: any) => {
-      return Object.keys(data)
-        .map(
-          (key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
-        )
-        .join("&");
-    };
+    // // Define the request body as a URL-encoded string
+    // const requestBody = {
+    //   grant_type: "client_credentials",
+    //   client_id: "demoClient",
+    //   client_secret: "oTtfWsw8SKukpKTiaNr4bGIg5Dlkp4sW",
+    // };
 
-    // Make the POST request with request body and headers
-    axios
-      .post(url, encodeFormData(requestBody), {
-        headers: headers,
-      })
-      .then((response) => {
-        console.log("Response:", response.data);
-        localStorage.setItem("registertoken", response.data.access_token);
-        router.push("/nextAuthLogin/register");
-      })
-      .catch((error) => {
-        alert("error occured");
-        console.error("Error:", error);
-      });
+    // // Define the headers
+    // const headers = {
+    //   "Content-Type": "application/x-www-form-urlencoded",
+    // };
+    // const encodeFormData = (data: any) => {
+    //   return Object.keys(data)
+    //     .map(
+    //       (key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
+    //     )
+    //     .join("&");
+    // };
+
+    // // Make the POST request with request body and headers
+    // axios
+    //   .post(url, encodeFormData(requestBody), {
+    //     headers: headers,
+    //   })
+    //   .then((response) => {
+    //     console.log("Response:", response.data);
+    //     localStorage.setItem("registertoken", response.data.access_token);
+    //     router.push("/nextAuthLogin/register");
+    //   })
+    //   .catch((error) => {
+    //     alert("error occured");
+    //     console.error("Error:", error);
+    //   });
   };
 
   const handleSocialLogin = (provider: "github" | "google") => {
@@ -177,7 +179,7 @@ const LoginForm: FC = () => {
       style={{
         background:
           "linear-gradient(90deg, rgba(17,15,18,1) 0%, rgba(110,68,139,1) 45%, rgba(117,59,94,1) 55%, rgba(24,24,23,1) 100%)",
-          }}
+      }}
       className="flex flex-col w-full h-screen justify-center items-center gap-2 overflow-y-auto"
     >
       <div className="flex gap-2 ">
