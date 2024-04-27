@@ -1,7 +1,8 @@
 "use server";
 import axios from "axios";
 import { client } from "./dbFunctions";
-import { Decode } from "@/app/utilsFunctions/lib/decode"
+import { Decode } from "@/app/utilsFunctions/lib/decode";
+import { signOut } from "@/auth";
 
 // code for realm and client
 
@@ -179,9 +180,17 @@ export const checkIsActive = async (data, token) => {
 };
 
 export const checkIsActiveSocial = async (token) => {
-const res = await Decode(token);
-console.log(res);
-}
+  const res = await Decode(token);
+  if (res) {
+    console.log(res.exp);
+    const timeInms = new Date().getTime();
+    const currentTimeStamp = Math.ceil(timeInms / 1000);
+    console.log(currentTimeStamp);
+    if (currentTimeStamp > res.exp || !res.exp) {
+      await signOut();
+    }
+  }
+};
 
 export const forgetPass = async (data) => {
   var maindata = {
