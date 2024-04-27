@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import Torus from "@/app/Torus/Torus";
 import {
   checkIsActive,
+  checkIsActiveSocial,
   logoutRealm,
 } from "@/app/utilsFunctions/ulits/keyCloakAuth";
 import { signOut } from "next-auth/react";
@@ -12,7 +13,7 @@ const SessionWrapper = ({ session }: any) => {
   useEffect(() => {
     const allDeatiles = JSON.parse(session);
     console.log(allDeatiles, "allDeatiles");
-    if (allDeatiles.hasOwnProperty("user")) {
+    if (allDeatiles.hasOwnProperty("user") && !allDeatiles.user.hasOwnProperty('image')) {
       var client = {
         realm: allDeatiles.user.realm,
         client_id: allDeatiles.user.client_id,
@@ -25,6 +26,8 @@ const SessionWrapper = ({ session }: any) => {
           signOut();
         }
       });
+    }else{
+      checkIsActiveSocial(allDeatiles.user.token)
     }
   }, []);
   async function Logout() {
