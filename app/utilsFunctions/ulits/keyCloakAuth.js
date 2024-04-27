@@ -1,6 +1,7 @@
 "use server";
 import axios from "axios";
 import { client } from "./dbFunctions";
+import { Decode } from "@/app/utilsFunctions/lib/decode"
 
 // code for realm and client
 
@@ -131,7 +132,7 @@ export const logoutRealm = async (data, token) => {
 };
 
 export const checkIsActive = async (data, token) => {
-  console.log("checkIsActive", data, token);
+  // console.log("checkIsActive", data, token);
   var checkisAciveUrl = `http://192.168.2.165:8085/realms/${data.realm}/protocol/openid-connect/token/introspect`;
   // if (token === undefined) return "failed";
 
@@ -176,6 +177,11 @@ export const checkIsActive = async (data, token) => {
   }
   return "error";
 };
+
+export const checkIsActiveSocial = async (token) => {
+const res = await Decode(token);
+console.log(res);
+}
 
 export const forgetPass = async (data) => {
   var maindata = {

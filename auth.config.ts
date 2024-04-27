@@ -4,8 +4,13 @@ import axios from "axios";
 import { registerIdentityProviderUser } from "./action/registerIdentityProvider";
 import GoogleProvider from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
+import { sign } from "jsonwebtoken";
 
 let realmDetails = {};
+
+const PUBLICK_KEY =
+  "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4nxzwnTeXFaMypqO8dU7F9FlDLyXMzQka+u5X6WBIhnDD5pGm6pt2okZ1wxHva2Qh6cXmpSL+dQ45+slIQ97MO28lmNqGtwA95DwxBL/glixaheBHpebTYfUQYE3bfu7bztnzSdkI1sAFRzKB1690VQK5t4To3sonYWMG+WcfimL6IMLd1BIUbamn15D1t2PQ1rcD+oOPbW29e1Or15u3NhAlEqGRvvVNoIhNleNz6IQoZtbwE3zfkFytHIFKlTeaLswdnss5i0DZR0saymiag08guIcJzSjhNe0F0/XUh4m9kvrsHLVOi1t/NbxRSQRWuXYJR5obC6MpM4oz97k4QIDAQAB";
+const KEY = `-----BEGIN PUBLIC KEY-----\n${PUBLICK_KEY}\n-----END PUBLIC KEY-----`;
 
 export default {
   providers: [
@@ -62,56 +67,53 @@ export default {
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
-      // authorization: {
-      //   params: {
-      //     prompt: "consent",
-      //     access_type: "offline",
-      //     response_type: "code"
-      //   }
-      // },
     }),
     GitHub({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      // authorization: {
-      //   params: {
-      //     prompt: "consent",
-      //     access_type: "offline",
-      //     response_type: "code",
-      //   },
-      // },
     }),
   ],
   callbacks: {
     async signIn({ user, account }) {
-      // console.log(user, account, "hvyhvy");
       if (account?.type == "credentials") {
         return true; //false;
       } else {
         await registerIdentityProviderUser(user, account);
-
         return true;
       }
     },
     async jwt({ token, user }) {
-      // console.log(user);
-
-      console.log("++++++++++++++++++++++++++++");
-
       if (token) {
         // Check if token exists
         if (user) {
           token.user = user;
+          if (user.image) {
+            const access_token = sign(token, KEY, { expiresIn: "3m" });
+            token.acc = access_token;
+          }
         }
       }
       return token;
     },
     async session({ session, token }: any) {
-      console.log(session, token);
-
       if (token && token.user) {
         // Check if token and user exist
         session.user = token.user;
+        if (token.user.image) {
+          const obj = {
+            access_token: token.acc ?? "",
+            expires_in: 300,
+            refresh_expires_in: 3600,
+            refresh_token: "",
+            token_type: "bearer",
+            session_state: "",
+            scope: "social profile",
+          };
+          session.user.token = obj;
+          session.client_id = "demoClient";
+          (session.client_secret = "oTtfWsw8SKukpKTiaNr4bGIg5Dlkp4sW"),
+            (session.realm = "testRealm");
+        }
       }
       return session;
     },
