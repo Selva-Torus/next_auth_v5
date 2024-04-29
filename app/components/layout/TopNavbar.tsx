@@ -1,4 +1,5 @@
 import {
+    Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -29,10 +30,12 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
       </NavbarBrand>
       <NavbarContent justify="end">
         <Dropdown className=" bg-slate-100 text-slate-600  dark:bg-slate-500 dark:text-white">
-          <DropdownTrigger>
+          <DropdownTrigger><Button isIconOnly>
             <FaUserCircle size={20} />
+          </Button>
           </DropdownTrigger>
           <DropdownMenu>
+            <DropdownItem>Profile</DropdownItem>
             <DropdownItem onClick={() => Logout()}>Logout</DropdownItem>
           </DropdownMenu>
         </Dropdown>
