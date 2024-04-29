@@ -7,13 +7,17 @@ import {
   logoutRealm,
 } from "@/app/utilsFunctions/ulits/keyCloakAuth";
 import { signOut } from "next-auth/react";
+import TopNavbar from "@/app/components/layout/TopNavbar";
 
 const SessionWrapper = ({ session }: any) => {
   // const { status, data: session } = useSession();
   useEffect(() => {
     const allDeatiles = JSON.parse(session);
     console.log(allDeatiles, "allDeatiles");
-    if (allDeatiles.hasOwnProperty("user") && !allDeatiles.user.hasOwnProperty('image')) {
+    if (
+      allDeatiles.hasOwnProperty("user") &&
+      !allDeatiles.user.hasOwnProperty("image")
+    ) {
       var client = {
         realm: allDeatiles.user.realm,
         client_id: allDeatiles.user.client_id,
@@ -26,8 +30,8 @@ const SessionWrapper = ({ session }: any) => {
           signOut();
         }
       });
-    }else{
-      checkIsActiveSocial(allDeatiles.user.token)
+    } else {
+      checkIsActiveSocial(allDeatiles.user.token);
     }
   }, []);
   async function Logout() {
@@ -49,7 +53,10 @@ const SessionWrapper = ({ session }: any) => {
     return;
   }
   return (
-    <Torus session={JSON.stringify(JSON.parse(session))} Logout={Logout} />
+    <div className="flex flex-col">
+      <TopNavbar Logout={Logout}/>
+      <Torus session={JSON.stringify(JSON.parse(session))} Logout={Logout} />
+    </div>
   );
 };
 
