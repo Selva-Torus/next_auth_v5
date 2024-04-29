@@ -1,5 +1,5 @@
 "use client";
-import Torus from "@/app/Torus/Torus";
+import Torus from "@/app/components/layout/Torus/Torus";
 import { logoutRealm } from "@/app/utilsFunctions/ulits/keyCloakAuth";
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";

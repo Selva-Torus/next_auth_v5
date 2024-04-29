@@ -2,7 +2,6 @@
 
 import { verify } from "jsonwebtoken";
 import React, { useEffect } from "react";
-import startServer from "./KKK";
 
 const Torus = ({ session, Logout = () => {} }: any) => {
   useEffect(() => {
@@ -35,9 +34,6 @@ const Torus = ({ session, Logout = () => {} }: any) => {
     }
   };
 
-  const test = () => {
-    startServer();
-  };
   return (
     <>
       <div>page success</div>

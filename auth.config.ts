@@ -5,20 +5,21 @@ import { registerIdentityProviderUser } from "./action/registerIdentityProvider"
 import GoogleProvider from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
 import { sign } from "jsonwebtoken";
-
+import { realmData } from "@/realmData";
+ 
 let realmDetails = {};
-
+ 
 const PUBLICK_KEY =
   "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4nxzwnTeXFaMypqO8dU7F9FlDLyXMzQka+u5X6WBIhnDD5pGm6pt2okZ1wxHva2Qh6cXmpSL+dQ45+slIQ97MO28lmNqGtwA95DwxBL/glixaheBHpebTYfUQYE3bfu7bztnzSdkI1sAFRzKB1690VQK5t4To3sonYWMG+WcfimL6IMLd1BIUbamn15D1t2PQ1rcD+oOPbW29e1Or15u3NhAlEqGRvvVNoIhNleNz6IQoZtbwE3zfkFytHIFKlTeaLswdnss5i0DZR0saymiag08guIcJzSjhNe0F0/XUh4m9kvrsHLVOi1t/NbxRSQRWuXYJR5obC6MpM4oz97k4QIDAQAB";
 // const KEY = `-----BEGIN PUBLIC KEY-----\n${PUBLICK_KEY}\n-----END PUBLIC KEY-----`;
-
+ 
 export default {
   providers: [
     Credentials({
       async authorize(credentials) {
         const { realm, username, password, client_id, client_secret } =
           credentials;
-
+ 
         const encodeFormData = (data: any) => {
           return Object.keys(data)
             .map(
@@ -80,7 +81,7 @@ export default {
       } else {
         console.log("++++++++-------+++");
         console.log(user, account);
-
+ 
         await registerIdentityProviderUser(user, account);
         return true;
       }
@@ -92,10 +93,10 @@ export default {
           token.user = user;
           if (user.image) {
             const defaultTokenOfKeycloak = {
-              iss: "http://192.168.2.165:8085/realms/testRealm",
+              iss: `http://192.168.2.165:8085/realms/${realmData.realm}`,
               aud: "account",
               typ: "Bearer",
-              azp: "demoClient",
+              azp: realmData.client_id,
               session_state: "",
               acr: "1",
               "allowed-origins": ["http://localhost:3000"],
@@ -121,7 +122,7 @@ export default {
               family_name: token?.name ?? "",
               email: token?.email ?? "",
             };
-
+ 
             const updatedToken = {
               ...token,
               ...defaultTokenOfKeycloak,
@@ -150,12 +151,13 @@ export default {
             scope: "social profile",
           };
           session.user.token = obj;
-          session.client_id = "demoClient";
-          (session.client_secret = "oTtfWsw8SKukpKTiaNr4bGIg5Dlkp4sW"),
-            (session.realm = "testRealm");
+          session.client_id = realmData.client_id;
+          (session.client_secret = realmData.client_secret),
+            (session.realm = realmData.realm);
         }
       }
       return session;
     },
   },
 } as NextAuthConfig; // Use 'as NextAuthConfig' to satisfy TypeScript
+ 
