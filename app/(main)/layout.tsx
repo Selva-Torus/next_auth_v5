@@ -21,8 +21,10 @@ export default async function RootLayout({
   // const session = await auth();
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
       <ToastContainer/>
+        </body>
     </html>
   );
 }

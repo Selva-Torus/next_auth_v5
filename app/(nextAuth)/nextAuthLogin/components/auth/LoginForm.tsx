@@ -48,6 +48,7 @@ const LoginForm: FC = () => {
 
   const [isVisible, setIsVisible] = React.useState(false);
   const [error, setError] = useState<any>();
+  const [errTenant, setErrTenant] = useState<any>();
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -83,11 +84,15 @@ const LoginForm: FC = () => {
       !data.client_secret
     ) {
       // alert("fill all details");
-      setError("Fill all the details");
+      if (!data.email && !data.password) {
+        setError("Fill all the details");
+      }
+      if (!data.realm) {
+        setErrTenant("please select tenant");
+      }
       setCheckDetails(true);
       return;
     }
-    setCheckDetails(true);
     setLoading(true);
     const res = await login(data);
     // console.log(res);
@@ -103,6 +108,7 @@ const LoginForm: FC = () => {
   const handleSelectRealm = async (datas: any) => {
     setRealmId(datas.id);
     setData({ ...data, realm: datas.name });
+    setErrTenant("");
     // handleClientCredentials();
   };
   const handleClientCredentials = async () => {
@@ -128,7 +134,7 @@ const LoginForm: FC = () => {
   };
 
   const handleNavigateToRegister = async () => {
-    router.push("/nextAuthLogin/register");
+        router.push("/nextAuthLogin/register");
 
     // // Define the URL
     // const url =
@@ -184,7 +190,7 @@ const LoginForm: FC = () => {
       className="flex flex-col w-full h-screen justify-center items-center gap-2 overflow-y-auto"
     >
       <div className="flex gap-2 ">
-        <Image className=" w-12 h-12 transition-all" src={logo} alt=""></Image>
+      <Image className=" w-12 h-12 transition-all" src={logo} alt=""></Image>
 
         <h2 className="text-center font-bold text-4xl text-white">Torus</h2>
       </div>
@@ -252,6 +258,9 @@ const LoginForm: FC = () => {
             ))}
           </DropdownMenu>
         </Dropdown>
+        {errTenant && (
+          <p className="text-red-500 text-center text-sm">{errTenant}</p>
+        )}
 
         <Input
           type="text"
@@ -339,7 +348,7 @@ const LoginForm: FC = () => {
           >
             Forget password
           </Button>
-          {error && <p className="text-red-500 text-lg my-2 mr-5">{error}</p>}
+          {error && <p className="text-red-500 text-sm my-2 mr-14">{error}</p>}
           <Button
             onClick={Login}
             color="primary"

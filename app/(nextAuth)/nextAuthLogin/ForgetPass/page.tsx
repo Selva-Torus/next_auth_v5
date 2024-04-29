@@ -34,6 +34,7 @@ const page = () => {
   const [isVisible, setIsVisible] = React.useState(false);
   const [isVisibility, setIsVisibility] = React.useState(false);
   const [error, setError] = useState<any>();
+  const [errTenant, setErrTenant] = useState<any>();
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   const toggleVisible = () => setIsVisibility(!isVisibility);
@@ -78,6 +79,7 @@ const page = () => {
   const handleSelectRealm = async (datas: any) => {
     // setRealmId(datas.id);
     setData({ ...data, realmId: datas.id, realm: datas.name });
+    setErrTenant("")
     // setData({ ...data, realm: datas.name });
     // handleClientCredentials();
   };
@@ -88,7 +90,13 @@ const page = () => {
         setSteps("1");
       } else {
         // alert(res.error);
-        setError(res.error);
+        if(!data.email){
+          setError("Please Provide Email id");
+        }
+        if(!data.realm){
+          setErrTenant("please select tenant")
+        }
+        setCheckDetails(true);
       }
     });
   };
@@ -149,7 +157,7 @@ const page = () => {
         switch (steps) {
           case "0":
             return (
-              <div className="w-[40%] h-[40%] bg-slate-800/70 text-center text-white ">
+              <div className="w-[40%] h-[40%] bg-slate-800/70 text-center text-white rounded-lg ">
                 <Dropdown className="w-[400px] border border-[#20252B]  p-0 ">
                   <DropdownTrigger>
                     <Button
@@ -183,6 +191,7 @@ const page = () => {
                     ))}
                   </DropdownMenu>
                 </Dropdown>
+                {errTenant && <p className="text-red-500 text-center text-sm">{errTenant}</p>}
                 <Input
                   className="w-[90%] my-8 mx-7 bg-transparent text-white"
                   name="email"
@@ -211,7 +220,7 @@ const page = () => {
                     innerWrapper: ["bg-transparent", "boder-2 border-blue-100"],
                   }}
                 ></Input>
-                {error && <p className="text-red-500">{error}</p>}
+                {error && <p className="text-red-500 text-sm">{error}</p>}
                 <Button
                   onClick={() => {
                     handleForgetPass();
@@ -256,7 +265,7 @@ const page = () => {
                     innerWrapper: ["bg-transparent", "boder-2 border-blue-100"],
                   }}
                 ></Input>
-                {error && <p className="text-red-500 my-4">{error}</p>}
+                {error && <p className="text-red-500 my-4 text-sm">{error}</p>}
                 </div>
                 <Button
                   onClick={() => isOtpValid()}
@@ -271,7 +280,7 @@ const page = () => {
           case "2":
             return (
               <div className="p-4 my-4 rounded-xl shadow-md w-[42%] flex flex-col gap-4 border-2 border-[#323B45]  text-white bg-slate-800/70">
-                <h2 className="text-center text-blue-500">reset password</h2>
+                <h2 className="text-center text-lg text-blue-500">Reset password</h2>
                 <Input
                   type={isVisible ? "text" : "password"}
                   label="password"
@@ -356,7 +365,7 @@ const page = () => {
                     innerWrapper: ["bg-transparent", "boder-2 border-blue-100"],
                   }}
                 ></Input>
-                {error && <p className="text-red-500">{error}</p>}
+                {error && <p className="text-red-500 text-center text-sm">{error}</p>}
                 <Button
                   onClick={() => handleChangePassword()}
                   color="primary"
