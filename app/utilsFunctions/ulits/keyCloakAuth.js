@@ -1,7 +1,7 @@
 "use server";
 import axios from "axios";
 import { client } from "./dbFunctions";
-import { Decode } from "@/app/utilsFunctions/lib/decode";
+import { Decode } from "@/lib/decode";
 import { signOut } from "@/auth";
 
 // code for realm and client

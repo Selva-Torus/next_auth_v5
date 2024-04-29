@@ -1,6 +1,5 @@
 // "use client";
 "use server";
-import Torus from "@/app/Torus/Torus";
 import SessionWrapper from "./sessionWrapper";
 import {
   checkIsActive,

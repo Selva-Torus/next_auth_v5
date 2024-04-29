@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect } from "react";
-import Torus from "@/app/Torus/Torus";
 import {
   checkIsActive,
   checkIsActiveSocial,
@@ -8,6 +7,7 @@ import {
 } from "@/app/utilsFunctions/ulits/keyCloakAuth";
 import { signOut } from "next-auth/react";
 import TopNavbar from "@/app/components/layout/TopNavbar";
+import Torus from "@/app/components/Torus/Torus";
 
 const SessionWrapper = ({ session }: any) => {
   // const { status, data: session } = useSession();
