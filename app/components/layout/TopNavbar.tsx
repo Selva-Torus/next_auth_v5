@@ -20,13 +20,13 @@ interface TopNavbarProps {
 
 const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
   return (
-    <Navbar maxWidth="2xl">
+    <Navbar maxWidth="2xl" className="border h-[8%]">
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle />
       </NavbarContent>
       <NavbarBrand className="font-bold text-inherit">
-        <Image src={logo.src} alt="torus-logo" className="w-14 h-12" />
-        <span className="">Torus</span>
+        <Image src={logo.src} alt="torus-logo" className="w-12 h-10" />
+        <span className="text-2xl">Torus</span>
       </NavbarBrand>
       <NavbarContent justify="end">
         <Dropdown className=" bg-slate-100 text-slate-600  dark:bg-slate-500 dark:text-white">

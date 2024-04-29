@@ -283,7 +283,7 @@ const RegisterForm = () => {
                           width={20}
                           height={25}
                         />
-                        <span className="ml-2 text-black text-sm">
+                        <span className="ml-2 text-black text-sm font-semibold">
                           Sign in with GitHub
                         </span>
                       </Button>
@@ -294,7 +294,7 @@ const RegisterForm = () => {
                           width={30}
                           height={35}
                         />
-                        <span className="ml-2 text-black text-sm">
+                        <span className="ml-2 text-black text-sm font-semibold">
                           Sign in with Google
                         </span>
                       </Button>
@@ -303,6 +303,7 @@ const RegisterForm = () => {
                       Or continue with
                     </h2>
                   </div>
+                  
                   <Dropdown className="w-[400px] border border-[#20252B]  p-0 ">
                     <DropdownTrigger>
                       <Button
@@ -327,7 +328,7 @@ const RegisterForm = () => {
                     >
                       {realmList.map((realm, id) => (
                         <DropdownItem
-                          className=" text-white hover:bg-slate-500"
+                          className=" text-white hover:bg-slate-200"
                           key={id}
                           onClick={() => handleSelectRealm(realm)}
                         >
@@ -336,6 +337,7 @@ const RegisterForm = () => {
                       ))}
                     </DropdownMenu>
                   </Dropdown>
+
                   <form
                     onSubmit={handleSubmit(submitData)}
                     className="flex flex-col gap-1"

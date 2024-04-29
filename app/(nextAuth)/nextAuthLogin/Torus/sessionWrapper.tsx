@@ -6,8 +6,10 @@ import {
   logoutRealm,
 } from "@/app/utilsFunctions/ulits/keyCloakAuth";
 import { signOut } from "next-auth/react";
-import TopNavbar from "@/app/components/layout/TopNavbar";
 import Torus from "@/app/components/Torus/Torus";
+import TopNavbar from "@/app/components/layout/TopNavbar";
+import SideNavbar from "@/app/components/layout/SideNavbar";
+import Footer from "@/app/components/layout/Footer";
 
 const SessionWrapper = ({ session }: any) => {
   // const { status, data: session } = useSession();
@@ -53,9 +55,13 @@ const SessionWrapper = ({ session }: any) => {
     return;
   }
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-screen w-full">
       <TopNavbar Logout={Logout}/>
-      <Torus session={JSON.stringify(JSON.parse(session))} Logout={Logout} />
+      <div className="flex h-[90%]">
+        <SideNavbar />
+      {/* <Torus session={JSON.stringify(JSON.parse(session))} Logout={Logout} /> */}
+      </div>
+      <Footer />
     </div>
   );
 };
