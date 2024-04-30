@@ -39,7 +39,7 @@ import { login } from "@/action/login";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { writeFileContents } from "@/lib/fileSystem";
- 
+
 const LoginForm: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [checkDetails, setCheckDetails] = useState(false);
@@ -62,36 +62,36 @@ const LoginForm: FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const routes = useRouter();
- 
+
   const [isVisible, setIsVisible] = React.useState(false);
   const [error, setError] = useState<any>();
   const [errTenant, setErrTenant] = useState<any>();
- 
+
   const toggleVisibility = () => setIsVisible(!isVisible);
- 
+
   useEffect(() => {
     (async () => {
       try {
         const res = await getAllRealm();
- 
+
         res.status == 200
           ? setRealmList(res.data)
           : // setData({ ...data, realm: res.data[0].name })
- 
+
             setRealmList([]);
       } catch (err) {
         console.log("Error occured");
       }
     })();
   }, []);
- 
+
   useEffect(() => {
     var isLogin = localStorage.getItem("isLogin");
     if (isLogin == "keyCloakTrue") {
       routes.push("./keyCloakLogin");
     }
   }, []);
- 
+
   async function Login() {
     if (
       !data.realm ||
@@ -121,7 +121,7 @@ const LoginForm: FC = () => {
     }
     return;
   }
- 
+
   const handleSelectRealm = async (datas: any) => {
     setRealmId(datas.id);
     setRealmDataForSocial({
@@ -148,34 +148,43 @@ const LoginForm: FC = () => {
       });
     }
   };
- 
+
   useEffect(() => {
     handleClientCredentials();
   }, [realmId]);
- 
+
   const router = useRouter();
- 
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError("");
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
- 
+
   const handleNavigateToRegister = async () => {
     router.push("/nextAuthLogin/register");
   };
- 
+
   const handleSocialLogin = () => {
     // const res: any = writeFileContents({realm: `${realmDataForSocial.realm}`, realm_id: `${realmDataForSocial.realmId}`,client_id: `${realmDataForSocial.client_id}`,client_secret: `${realmDataForSocial.client_secret}`});
-    const res: any = writeFileContents(realmDataForSocial);
-    if (res) {
-      signIn(social, {
-        callbackUrl: DEFAULT_LOGIN_REDIRECT,
-      });
+    if (
+      realmDataForSocial.realm &&
+      realmDataForSocial.realmId &&
+      realmDataForSocial.client_id &&
+      realmDataForSocial.client_secret
+    ) {
+      const res: any = writeFileContents(realmDataForSocial);
+      if (res) {
+        signIn(social, {
+          callbackUrl: DEFAULT_LOGIN_REDIRECT,
+        });
+      }
+      setIsOpen(false);
+    } else {
+      toast.error("please select tenant");
     }
-    setIsOpen(false);
   };
- 
+
   return (
     <div
       style={{
@@ -186,10 +195,10 @@ const LoginForm: FC = () => {
     >
       <div className="flex gap-2 ">
         <Image className=" w-12 h-12 transition-all" src={logo} alt=""></Image>
- 
+
         <h2 className="text-center font-bold text-4xl text-white">Torus</h2>
       </div>
- 
+
       <div className="p-4 my-1 rounded-xl shadow-md w-[42%] flex flex-col gap-4 border-2 border-[#323B45] text-white bg-slate-800/70">
         <div>
           <h2 className="text-2xl font-semibold ">Login</h2>
@@ -208,7 +217,7 @@ const LoginForm: FC = () => {
               className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2"
             >
               <Image src={pictures} alt="GitHub logo" width={20} height={25} />
-              <span className="ml-2 text-black text-sm">
+              <span className="ml-2 text-black text-sm font-semibold">
                 Sign in with GitHub
               </span>
             </Button>
@@ -220,14 +229,14 @@ const LoginForm: FC = () => {
               className="google-signin-button flex items-center bg-white border border-black rounded-md px-4 py-2"
             >
               <Image src={picture} alt="Google logo" width={30} height={35} />
-              <span className="ml-2 text-black text-sm">
+              <span className="ml-2 text-black text-sm font-semibold">
                 Sign in with Google
               </span>
             </Button>
           </div>
           <h2 className="text-slate-400 text-[14px]">Or continue with</h2>
         </div>
- 
+
         <Dropdown className="w-[400px] border border-[#20252B]  p-0 ">
           <DropdownTrigger>
             <Button
@@ -250,7 +259,7 @@ const LoginForm: FC = () => {
           >
             {realmList.map((realm, id) => (
               <DropdownItem
-                className=" text-white hover:bg-slate-500"
+                className=" text-white hover:bg-slate-200"
                 key={id}
                 onClick={() => handleSelectRealm(realm)}
               >
@@ -262,10 +271,10 @@ const LoginForm: FC = () => {
         {errTenant && (
           <p className="text-red-500 text-center text-sm">{errTenant}</p>
         )}
- 
+
         <Input
           type="text"
-          label="Email or phone"
+          label="Email or username"
           name="username"
           labelPlacement="outside"
           color={`${checkDetails && !data.username ? "danger" : "primary"}`}
@@ -277,9 +286,9 @@ const LoginForm: FC = () => {
               // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
               "text-xs  text-white focus-within:text-white",
             ],
- 
+
             // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
- 
+
             // input: [
             //   "bg-transparent",
             //   "text-black",
@@ -287,7 +296,7 @@ const LoginForm: FC = () => {
             //   "text-sm",
             //   "font-bold",
             // ],
- 
+
             inputWrapper: [
               "border border-slate-500/50",
               "text-white",
@@ -327,7 +336,7 @@ const LoginForm: FC = () => {
               // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
               "text-xs  text-white focus-within:text-white",
             ],
- 
+
             inputWrapper: [
               "border border-slate-500/50",
               "text-white",
@@ -347,9 +356,9 @@ const LoginForm: FC = () => {
             className="  text-white border-2 border-[#323B45]"
             onClick={() => router.push("/nextAuthLogin/ForgetPass")}
           >
-            Forget password
+            Forgot password
           </Button>
-          {error && <p className="text-red-500 text-sm my-2 mr-14">{error}</p>}
+          {error && <p className="text-red-500 text-sm my-3 mr-14">{error}</p>}
           <Button
             onClick={Login}
             color="primary"
@@ -374,7 +383,11 @@ const LoginForm: FC = () => {
           </Link>
         </div>
       </div>
-      <Modal isOpen={isOpen} onOpenChange={setIsOpen}>
+
+      <Modal 
+        className="rounded-xl border-2 border-[#323B45] text-white bg-[#20252B] bg-opacity-800/70" 
+        isOpen={isOpen} onOpenChange={setIsOpen}
+        >
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
           <ModalBody>
@@ -400,7 +413,7 @@ const LoginForm: FC = () => {
               >
                 {realmList.map((realm, id) => (
                   <DropdownItem
-                    className=" text-white hover:bg-slate-500"
+                    className=" text-white hover:bg-slate-200"
                     key={id}
                     onClick={() => handleSelectRealm(realm)}
                   >
@@ -409,13 +422,14 @@ const LoginForm: FC = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button onClick={handleSocialLogin}>Submit</Button>
+            <Button color="primary" onClick={handleSocialLogin}>
+              Submit
+            </Button>
           </ModalBody>
         </ModalContent>
       </Modal>
     </div>
   );
 };
- 
+
 export default LoginForm;
- 
