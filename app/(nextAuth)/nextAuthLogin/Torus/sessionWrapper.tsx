@@ -10,6 +10,7 @@ import Torus from "@/app/components/Torus/Torus";
 import TopNavbar from "@/app/components/layout/TopNavbar";
 import SideNavbar from "@/app/components/layout/SideNavbar";
 import Footer from "@/app/components/layout/Footer";
+import ApplicationSelection from "@/app/components/application&appGroup/appSelector";
 
 const SessionWrapper = ({ session }: any) => {
   // const { status, data: session } = useSession();
@@ -59,6 +60,7 @@ const SessionWrapper = ({ session }: any) => {
       <TopNavbar Logout={Logout}/>
       <div className="flex h-[90%]">
         <SideNavbar />
+        <ApplicationSelection />
       {/* <Torus session={JSON.stringify(JSON.parse(session))} Logout={Logout} /> */}
       </div>
       <Footer />
