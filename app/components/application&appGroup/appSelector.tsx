@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Applist from "./Applist";
+import { Input } from "@nextui-org/react";
 
 const appSelector = () => {
   const [applicationGroup, setApplicationGroup] = useState<any[]>([]);
   const [selectedAppGroup, setSelectedAppGroup] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   //API calls
   const getAllApplicationGroup = async () => {
@@ -64,8 +66,15 @@ const appSelector = () => {
     <div className="flex w-full">
       <div className="flex flex-col p-3 gap-5">
         <h2 className="font-bold text-xl p-2 border-b">AppGroup List</h2>
+        <Input 
+          type="text"
+          placeholder="Search"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <div className="flex flex-col gap-3">
-          {applicationGroup.map((appGroup, index) => (
+          {applicationGroup.length && applicationGroup
+            .filter((appGroup) => appGroup.toLowerCase().includes(searchTerm.toLowerCase())).map((appGroup, index) => (
             <div
               onClick={() => setSelectedAppGroup(appGroup)}
               className={`cursor-pointer ${selectedAppGroup == appGroup ? "bg-gray-300 p-2 rounded": ""}`}

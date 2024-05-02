@@ -14,29 +14,29 @@ import ApplicationSelection from "@/app/components/application&appGroup/appSelec
 
 const SessionWrapper = ({ session }: any) => {
   // const { status, data: session } = useSession();
-  useEffect(() => {
-    const allDeatiles = JSON.parse(session);
-    console.log(allDeatiles, "allDeatiles");
-    if (
-      allDeatiles.hasOwnProperty("user") &&
-      !allDeatiles.user.hasOwnProperty("image")
-    ) {
-      var client = {
-        realm: allDeatiles.user.realm,
-        client_id: allDeatiles.user.client_id,
-        client_secret: allDeatiles.user.client_secret,
-      };
-      checkIsActive(client, allDeatiles.user.token).then((res) => {
-        console.log(res.active);
-        if (!res.active) {
-          localStorage.setItem("isLogin", "false");
-          signOut();
-        }
-      });
-    } else {
-      checkIsActiveSocial(allDeatiles.user.token);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const allDeatiles = JSON.parse(session);
+  //   console.log(allDeatiles, "allDeatiles");
+  //   if (
+  //     allDeatiles.hasOwnProperty("user") &&
+  //     !allDeatiles.user.hasOwnProperty("image")
+  //   ) {
+  //     var client = {
+  //       realm: allDeatiles.user.realm,
+  //       client_id: allDeatiles.user.client_id,
+  //       client_secret: allDeatiles.user.client_secret,
+  //     };
+  //     checkIsActive(client, allDeatiles.user.token).then((res) => {
+  //       console.log(res.active);
+  //       if (!res.active) {
+  //         localStorage.setItem("isLogin", "false");
+  //         signOut();
+  //       }
+  //     });
+  //   } else {
+  //     checkIsActiveSocial(allDeatiles.user.token);
+  //   }
+  // }, []);
   async function Logout() {
     const allDeatiles = JSON.parse(session);
     console.log(allDeatiles, "allDeatiles");
