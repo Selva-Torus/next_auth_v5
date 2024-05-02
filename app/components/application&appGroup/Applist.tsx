@@ -1,24 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Modal, ModalContent, Popover, PopoverContent, PopoverTrigger, Spinner } from "@nextui-org/react";
-import { FaFolderOpen } from "react-icons/fa6";
+import {
+  Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Spinner,
+  useDisclosure,
+} from "@nextui-org/react";
 import { IoIosAddCircle } from "react-icons/io";
 import { toast } from "react-toastify";
 import { CiMemoPad } from "react-icons/ci";
-
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { GrCheckboxSelected } from "react-icons/gr";
 
 const Applist = ({ appGroup }) => {
   const [applications, setApplications] = useState([]);
   const [appInput, setAppInput] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [localApp , setLocalApp ] = useState('')
-
-  
+  const [localApp, setLocalApp] = useState("");
+  const [selectedApp , setSelectedApp ] = useState(null)
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   //   API CALLS
-    const postAllApplication = async () => {
+  const postAllApplication = async () => {
     try {
-      if(localApp){
+      if (localApp) {
         const newApp = await fetch(
           `http://192.168.2.110:3002/vpt/applicationCreate?tenant=GSS-DEV&appGroup=${appGroup}&applicationName=${localApp}`,
           {
@@ -26,17 +39,16 @@ const Applist = ({ appGroup }) => {
           }
         ).then((res) => res.json());
         setApplications(newApp);
-        setAppInput(false)
-      }else{
-        toast.error('Please enter valid Application Name')
+        setAppInput(false);
+      } else {
+        toast.error("Please enter valid Application Name");
       }
-      
     } catch (error) {
       throw error;
     }
   };
 
-    const DeleteApplication = async (selectedApp: any) => {
+  const DeleteApplication = async (selectedApp: any) => {
     try {
       const response = await fetch(
         `http://192.168.2.110:3002/vpt/deleteApplication?tenant=GSS-DEV&appGroup=${appGroup}&applicationName=${selectedApp}`,
@@ -53,7 +65,6 @@ const Applist = ({ appGroup }) => {
     }
   };
   //   API CALLS
-
 
   useEffect(() => {
     try {
@@ -74,6 +85,17 @@ const Applist = ({ appGroup }) => {
     }
   }, [appGroup]);
 
+  const handleDelete = (app) => {
+    onOpen();
+    setSelectedApp(app);
+  };
+
+  const handleDeleteApp = () => {
+    if(selectedApp){
+      DeleteApplication(selectedApp);
+      onClose();
+    }
+  }
 
   return (
     <div className="flex flex-col w-full items-center justify-center dark:bg-[#14181b] bg-white">
@@ -81,41 +103,46 @@ const Applist = ({ appGroup }) => {
       <div className="flex w-full justify-center">
         {applications.length ? (
           applications.map((app, id) => (
-            <Popover >
+            <Popover placement="right-start">
               <PopoverTrigger>
-            <div
-              key={id}
-              className="flex flex-wrap py-4 px-5 gap-4 w-full justify-center"
-            >
-              <motion.div
-                whileHover={{ scale: 1.2 }}
-                key={id}
-                animate={{ x: [-100, 0], scale: 1 }}
-                initial={{ scale: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                 <div
-                    className="bg-blue-400 w-[55px] h-[55px] cursor-pointer flex item-center rounded-md justify-center">
-                    <CiMemoPad
-                      className="mt-[12px]"
-                      size={30}
-                    />
-                  </div>
-                  <span
-                    className={
-                      " w-[70%] cursor-pointer  mt-[10px] text-center " 
-                    }
-                    key={app}
+                <div
+                  key={id}
+                  className="flex flex-wrap py-4 px-5 gap-4 w-full justify-center"
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.2 }}
+                    key={id}
+                    animate={{ x: [-100, 0], scale: 1 }}
+                    initial={{ scale: 0 }}
+                    transition={{ duration: 0.5 }}
                   >
-                    {app}
-                  </span>
-              </motion.div>
-            </div>
-            </PopoverTrigger>
-            <PopoverContent>
-              <div className="hover:text-white hover:bg-blue-500 p-2">Select Application</div>
-              <div className="hover:text-white hover:bg-red-500 p-2" onClick={()=>DeleteApplication(app)}>Delete Application</div>
-            </PopoverContent>
+                    <div className="bg-blue-400 w-[55px] h-[55px] cursor-pointer flex item-center rounded-md justify-center">
+                      <CiMemoPad className="mt-[12px]" size={30} />
+                    </div>
+                    <span
+                      className={
+                        " w-[70%] cursor-pointer  mt-[10px] text-center "
+                      }
+                      key={app}
+                    >
+                      {app}
+                    </span>
+                  </motion.div>
+                </div>
+              </PopoverTrigger>
+              <PopoverContent>
+                <div className="hover:text-white hover:bg-blue-500 p-2 flex items-center gap-2">
+                  <GrCheckboxSelected />
+                  Select Application
+                </div>
+                <div
+                  className="hover:text-white hover:bg-red-500 p-2 flex items-center gap-2"
+                  onClick={() => handleDelete(app)}
+                >
+                  <RiDeleteBin6Line />
+                  Delete Application
+                </div>
+              </PopoverContent>
             </Popover>
           ))
         ) : loading ? (
@@ -130,12 +157,12 @@ const Applist = ({ appGroup }) => {
             <Input
               type="text"
               style={{ border: "none", boxShadow: "none" }}
-                onChange={(e) => setLocalApp(e.target.value)}
+              onChange={(e) => setLocalApp(e.target.value)}
               className="border-2 rounded-lg"
             />
             <Button
               className="bg-blue-500 text-white rounded px-3 mx-7 my-3"
-                onClick={postAllApplication}
+              onClick={postAllApplication}
             >
               Create Application
             </Button>
@@ -149,6 +176,17 @@ const Applist = ({ appGroup }) => {
           </div>
         )}
       </div>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalContent>
+          <ModalHeader className="flex flex-col gap-1">Confirm Deletion</ModalHeader>
+          <ModalBody>This action can't be reversed.Please confirm the delete action </ModalBody>
+          <ModalFooter>
+            <Button color="danger" onClick={handleDeleteApp}>
+              Delete
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   );
 };
