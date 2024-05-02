@@ -6,6 +6,7 @@ import { auth } from "@/auth";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import Favicon from "/public/favicon.ico"
+import ReduxProvider from "@/app/utilsFunctions/Providers/ReduxProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 
@@ -25,8 +26,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+      <ReduxProvider>
         <SessionProvider session={session}>{children}</SessionProvider>{" "}
         <ToastContainer/>
+        </ReduxProvider>
       </body>
     </html>
   );
