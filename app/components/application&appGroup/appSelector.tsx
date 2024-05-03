@@ -9,9 +9,11 @@ import { setAppGroup } from "@/app/utilsFunctions/Store/Reducers/MainSlice";
 const appSelector = () => {
   const [applicationGroup, setApplicationGroup] = useState<any[]>([]);
   const [selectedAppGroup, setSelectedAppGroup] = useState("");
+
   const [searchTerm, setSearchTerm] = useState("");
   const appGroup = useSelector((state: RootState) => state.main.appGroup);
   const dispatch = useDispatch();
+
 
   //API calls
   const getAllApplicationGroup = async () => {
