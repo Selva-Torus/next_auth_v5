@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Button,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -14,18 +13,15 @@ import {
   Spinner,
   useDisclosure,
 } from "@nextui-org/react";
-import { IoIosAddCircle } from "react-icons/io";
-import { toast } from "react-toastify";
 import { CiMemoPad } from "react-icons/ci";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { GrCheckboxSelected } from "react-icons/gr";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/utilsFunctions/Store/store";
+
 const Applist = ({ appGroup }) => {
   const [applications, setApplications] = useState([]);
-  const [appInput, setAppInput] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [localApp, setLocalApp] = useState("");
   const [selectedApp , setSelectedApp ] = useState(null)
   const { isOpen, onOpen, onClose } = useDisclosure();
   const application = useSelector((state: RootState) => state.main.applicationName);
@@ -61,7 +57,7 @@ const Applist = ({ appGroup }) => {
       )
         .then((res) => res.json())
         .then((res) => {
-          setApplications(res);
+          setApplications(res.data);
           setLoading(false);
         });
     } catch (error) {
@@ -135,31 +131,6 @@ const Applist = ({ appGroup }) => {
           <div>No Application Available</div>
         )}
       </div>
-      {/* <div className="flex flex-col justify-center items-center">
-        {appInput ? (
-          <div className="mb-3 flex flex-col ">
-            <Input
-              type="text"
-              style={{ border: "none", boxShadow: "none" }}
-              onChange={(e) => setLocalApp(e.target.value)}
-              className="border-2 rounded-lg"
-            />
-            <Button
-              className="bg-blue-500 text-white rounded px-3 mx-7 my-3"
-              onClick={postAllApplication}
-            >
-              Create Application
-            </Button>
-          </div>
-        ) : (
-          <div className="flex w-full justify-center ">
-            <Button onClick={() => setAppInput(true)} className="flex gap-2">
-              <IoIosAddCircle size={20} />
-              <h2>Create Application</h2>
-            </Button>
-          </div>
-        )}
-      </div> */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1">Confirm Deletion</ModalHeader>

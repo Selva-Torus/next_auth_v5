@@ -6,6 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/utilsFunctions/Store/store";
 import { setAppGroup } from "@/app/utilsFunctions/Store/Reducers/MainSlice";
 
+
+interface Response {
+  data: any[];
+  status: number;
+}
+
 const appSelector = () => {
   const [applicationGroup, setApplicationGroup] = useState<any[]>([]);
   const [selectedAppGroup, setSelectedAppGroup] = useState("");
@@ -17,7 +23,7 @@ const appSelector = () => {
   const getAllApplicationGroup = async () => {
     try {
       if (applicationGroup && applicationGroup.length == 0) {
-        const allData: string[] = await fetch(
+        const allData: Response = await fetch(
           "http://192.168.2.110:3002/vpt/appGroupList?tenant=GSS-DEV",
           {
             method: "GET",
@@ -26,8 +32,8 @@ const appSelector = () => {
         console.log(allData);
         
 
-        setApplicationGroup(allData);
-        setSelectedAppGroup(allData[0]);
+        setApplicationGroup(allData.data);
+        setSelectedAppGroup(allData.data[0]);
       }
     } catch (error) {
       throw error;
@@ -38,7 +44,7 @@ const appSelector = () => {
 
   const deleteAllApplicationGroup = async (e: any) => {
     try {
-      const response = await fetch(
+      const response: Response = await fetch(
         `http://192.168.2.110:3002/vpt/deleteAppGroup?tenant=GSS-DEV&appGroup=${e}`,
         {
           method: "DELETE",
