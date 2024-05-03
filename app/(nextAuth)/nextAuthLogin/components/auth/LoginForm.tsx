@@ -39,8 +39,11 @@ import { login } from "@/action/login";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { writeFileContents } from "@/lib/fileSystem";
+import { useDispatch } from "react-redux";
+import { setTenant } from "@/app/utilsFunctions/Store/Reducers/MainSlice";
 
 const LoginForm: FC = () => {
+  const disPatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [checkDetails, setCheckDetails] = useState(false);
   const [token, setToken] = useState<any>();
@@ -111,12 +114,14 @@ const LoginForm: FC = () => {
       return;
     }
     setLoading(true);
+    // disPatch(setTenant(data.realm));
     const res = await login(data);
     // console.log(res);
     if (res?.error) {
       setLoading(false);
       toast.error("failed to login , check credentials");
     } else {
+      localStorage.setItem("tenant", data.realm);
       localStorage.setItem("isLogin", "nextAuthTrue");
     }
     return;
@@ -384,10 +389,11 @@ const LoginForm: FC = () => {
         </div>
       </div>
 
-      <Modal 
-        className="rounded-xl border-2 border-[#323B45] text-white bg-[#20252B] bg-opacity-800/70" 
-        isOpen={isOpen} onOpenChange={setIsOpen}
-        >
+      <Modal
+        className="rounded-xl border-2 border-[#323B45] text-white bg-[#20252B] bg-opacity-800/70"
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
+      >
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
           <ModalBody>

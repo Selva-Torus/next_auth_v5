@@ -18,15 +18,30 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { GrCheckboxSelected } from "react-icons/gr";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/utilsFunctions/Store/store";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const Applist = ({ appGroup }) => {
+  const routes = useRouter();
+
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedApp , setSelectedApp ] = useState(null)
+  const [selectedApp, setSelectedApp] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const application = useSelector((state: RootState) => state.main.applicationName);
-
+  const [tenant, setTenant] = useState("");
+  const [popOverOpen, setpopOverOpen] = React.useState(false);
+  const application = useSelector(
+    (state: RootState) => state.main.applicationName
+  );
+  // const tenant = useSelector((state: RootState) => state.main.tenant);
   //   API CALLS
+
+  useEffect(() => {
+    const res = localStorage.getItem("tenant");
+    if (res) {
+      setTenant(res);
+    }
+  }, []);
 
   const DeleteApplication = async (selectedApp: any) => {
     try {
@@ -63,7 +78,7 @@ const Applist = ({ appGroup }) => {
     } catch (error) {
       throw error;
     }
-  }, [appGroup , application]);
+  }, [appGroup, application]);
 
   const handleDelete = (app) => {
     onOpen();
@@ -71,14 +86,21 @@ const Applist = ({ appGroup }) => {
   };
 
   const handleDeleteApp = () => {
-    if(selectedApp){
+    if (selectedApp) {
       DeleteApplication(selectedApp);
       onClose();
     }
-  }
+  };
+
+  const getAllApplication = async (app) => {
+    if (tenant && appGroup && app) {
+      localStorage.setItem("AssemblerKey", `${tenant}:${appGroup}:${app}`);
+      routes.push("./Assembler");
+    }
+  };
 
   return (
-    <div className="flex flex-col w-full h-full items-center justify-center dark:bg-[#14181b] bg-white">
+    <div className="flex flex-col w-full h-full pt-4 dark:bg-[#14181b] bg-white">
       <h2 className="font-bold text-2xl text-center">{appGroup}</h2>
       <div className="flex w-full justify-center">
         {applications.length ? (
@@ -111,12 +133,15 @@ const Applist = ({ appGroup }) => {
                 </div>
               </PopoverTrigger>
               <PopoverContent>
-                <div className="hover:text-white hover:bg-blue-500 p-2 flex items-center gap-2">
+                <div
+                  className="hover:text-white hover:bg-blue-500 p-2 flex items-center gap-2 cursor-pointer"
+                  onClick={() => getAllApplication(app)}
+                >
                   <GrCheckboxSelected />
                   Select Application
                 </div>
                 <div
-                  className="hover:text-white hover:bg-red-500 p-2 flex items-center gap-2"
+                  className="hover:text-white hover:bg-red-500 p-2 flex items-center gap-2 cursor-pointer"
                   onClick={() => handleDelete(app)}
                 >
                   <RiDeleteBin6Line />
@@ -131,10 +156,18 @@ const Applist = ({ appGroup }) => {
           <div>No Application Available</div>
         )}
       </div>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal
+        className="rounded-xl border-2 border-[#323B45] text-white bg-[#20252B] bg-opacity-800/70"
+        isOpen={isOpen}
+        onClose={onClose}
+      >
         <ModalContent>
-          <ModalHeader className="flex flex-col gap-1">Confirm Deletion</ModalHeader>
-          <ModalBody>This action can't be reversed.Please confirm the delete action </ModalBody>
+          <ModalHeader className="flex flex-col gap-1">
+            Confirm Deletion
+          </ModalHeader>
+          <ModalBody>
+            This action can't be reversed.Please confirm the delete action{" "}
+          </ModalBody>
           <ModalFooter>
             <Button color="danger" onClick={handleDeleteApp}>
               Delete
