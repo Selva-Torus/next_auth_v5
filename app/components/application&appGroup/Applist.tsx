@@ -19,7 +19,8 @@ import { toast } from "react-toastify";
 import { CiMemoPad } from "react-icons/ci";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { GrCheckboxSelected } from "react-icons/gr";
-
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/utilsFunctions/Store/store";
 const Applist = ({ appGroup }) => {
   const [applications, setApplications] = useState([]);
   const [appInput, setAppInput] = useState(false);
@@ -27,26 +28,9 @@ const Applist = ({ appGroup }) => {
   const [localApp, setLocalApp] = useState("");
   const [selectedApp , setSelectedApp ] = useState(null)
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const application = useSelector((state: RootState) => state.main.applicationName);
 
   //   API CALLS
-  const postAllApplication = async () => {
-    try {
-      if (localApp) {
-        const newApp = await fetch(
-          `http://192.168.2.110:3002/vpt/applicationCreate?tenant=GSS-DEV&appGroup=${appGroup}&applicationName=${localApp}`,
-          {
-            method: "POST",
-          }
-        ).then((res) => res.json());
-        setApplications(newApp);
-        setAppInput(false);
-      } else {
-        toast.error("Please enter valid Application Name");
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
 
   const DeleteApplication = async (selectedApp: any) => {
     try {
@@ -83,7 +67,7 @@ const Applist = ({ appGroup }) => {
     } catch (error) {
       throw error;
     }
-  }, [appGroup]);
+  }, [appGroup , application]);
 
   const handleDelete = (app) => {
     onOpen();
@@ -98,12 +82,12 @@ const Applist = ({ appGroup }) => {
   }
 
   return (
-    <div className="flex flex-col w-full items-center justify-center dark:bg-[#14181b] bg-white">
+    <div className="flex flex-col w-full h-full items-center justify-center dark:bg-[#14181b] bg-white">
       <h2 className="font-bold text-2xl text-center">{appGroup}</h2>
       <div className="flex w-full justify-center">
         {applications.length ? (
           applications.map((app, id) => (
-            <Popover placement="right-start">
+            <Popover placement="right-start" key={id}>
               <PopoverTrigger>
                 <div
                   key={id}
@@ -151,7 +135,7 @@ const Applist = ({ appGroup }) => {
           <div>No Application Available</div>
         )}
       </div>
-      <div className="flex flex-col justify-center items-center">
+      {/* <div className="flex flex-col justify-center items-center">
         {appInput ? (
           <div className="mb-3 flex flex-col ">
             <Input
@@ -175,7 +159,7 @@ const Applist = ({ appGroup }) => {
             </Button>
           </div>
         )}
-      </div>
+      </div> */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1">Confirm Deletion</ModalHeader>

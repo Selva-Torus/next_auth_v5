@@ -50,7 +50,7 @@ export default function SideNav() {
         className="flex flex-col justify-between gap-9 h-full bg-slate-100 pt-2 dark:bg-gray-700"
       >
         {Icons.map((item: any) => (
-          <ListboxItem textValue={item.tooltip} key={item.tooltip}>
+          <ListboxItem textValue={item.tooltip} key={item.id}>
             <Tooltip content={item.tooltip} key={item.id} placement="right-end">
             <div>
               {React.createElement(item.icon, {
