@@ -73,7 +73,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  console.log(pathname, "gjhfbh");
+  // console.log(pathname, "gjhfbh");
 
   const postAllApplicationGroup = async () => {
     try {
