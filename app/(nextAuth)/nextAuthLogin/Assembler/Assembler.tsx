@@ -15,7 +15,7 @@ const Assembler = () => {
   const fabric = useSelector((state: RootState) => state.main.fabric);
   const getAllApplicationList = async () => {
     const key: any = localStorage.getItem("AssemblerKey");
-    console.log(`${key}:${fabric}:`);
+    // console.log(`${key}:${fabric}:`);
     // return;
 
     if (key && key.split(":")[0] == "GSS-DEV") {
@@ -25,7 +25,7 @@ const Assembler = () => {
           keyPrefix: `${key}:${fabric}`, //key,
         }
       );
-      console.log(res);
+      // console.log(res);
       if (res.data.data) {
         setAllApplications(res.data.data);
         setviewAllApplications(res.data.data);
@@ -53,6 +53,9 @@ const Assembler = () => {
   //   }
   //   setviewAllApplications(main);
   // };
+  const handleDragStart = (e, key) => {
+    e.dataTransfer.setData("key", key);
+  };
   return (
     <div className="flex w-full ">
       <div className="flex flex-col p-3 gap-5 w-1/5">
@@ -96,7 +99,11 @@ const Assembler = () => {
                 app.toLowerCase().includes(searchTerm.toLowerCase())
               )
               .map((app: string, index) => (
-                <div key={index}>
+                <div
+                  key={index}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, app)}
+                >
                   <div className="flex items-center gap-2">
                     <div>
                       <FaRegFolderOpen />

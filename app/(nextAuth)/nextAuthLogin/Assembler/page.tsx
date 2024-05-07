@@ -38,7 +38,7 @@ const Home = () => {
         const res = await axios
           .get("http://192.168.2.110:3002/pe/processLog")
           .then((res) => res.data);
-        console.log(res);
+        // console.log(res);
 
         setData(res);
       } catch (err) {

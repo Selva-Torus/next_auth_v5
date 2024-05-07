@@ -276,3 +276,7 @@ export const validateOtp = async (data) => {
     return "error";
   }
 };
+
+export const display = async (data) => {
+  console.log(JSON.stringify(data));
+};

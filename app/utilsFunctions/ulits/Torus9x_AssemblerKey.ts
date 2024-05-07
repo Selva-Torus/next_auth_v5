@@ -11,7 +11,7 @@ export const AssemblerJson = {
         {
           mi1: {
             df: {
-              modelkey: "",
+              modelkey: "1",
               version: "",
               roles: "",
             },
@@ -23,7 +23,7 @@ export const AssemblerJson = {
             pf: {
               modelkey: "",
               version: "",
-              dfroles: "",
+              roles: "",
             },
             miroles: [],
           },
@@ -41,7 +41,7 @@ export const AssemblerJson = {
             pf: {
               modelkey: "",
               version: "",
-              dfroles: "",
+              roles: "",
             },
             miroles: [],
           },
@@ -59,7 +59,7 @@ export const AssemblerJson = {
             pf: {
               modelkey: "",
               version: "",
-              dfroles: "",
+              roles: "",
             },
             miroles: [],
           },
@@ -69,7 +69,7 @@ export const AssemblerJson = {
         {
           mi1: {
             df: {
-              modelkey: "",
+              modelkey: "2",
               version: "",
               roles: "",
             },
@@ -81,7 +81,7 @@ export const AssemblerJson = {
             pf: {
               modelkey: "",
               version: "",
-              dfroles: "",
+              roles: "",
             },
             miroles: [],
           },
@@ -99,7 +99,7 @@ export const AssemblerJson = {
             pf: {
               modelkey: "",
               version: "",
-              dfroles: "",
+              roles: "",
             },
             miroles: [],
           },
@@ -117,7 +117,7 @@ export const AssemblerJson = {
             pf: {
               modelkey: "",
               version: "",
-              dfroles: "",
+              roles: "",
             },
             miroles: [],
           },
