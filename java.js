@@ -1344,7 +1344,7 @@ var dddd = [
 ];
 
 dddd[0].menuItems[0].Fabric[0].modelkey = "test";
-
+// console.log(dddd[0].menuItems[0].Fabric[0].modelkey);
 // console.log(JSON.stringify(dddd));
 
 const _ = require("lodash");
@@ -1354,10 +1354,10 @@ let obj = { cpp: [{ java: { python: 2012 } }] };
 
 // Prinitng old object
 // before using _.set method
-console.log(obj.cpp[0].java.python);
+// console.log(obj.cpp[0].java.python);
 
 // set the value by _.set() method
 // _.set(obj, "cpp[0].java.python", 2020);
 
 // return the new set object
-console.log(obj.cpp[0].java.python);
+// console.log(obj.cpp[0].java.python);
