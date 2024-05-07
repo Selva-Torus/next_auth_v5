@@ -12,7 +12,6 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/react";
-import { display } from "@/app/utilsFunctions/ulits/keyCloakAuth";
 
 const AssemblerComponent = () => {
   if (
@@ -22,7 +21,7 @@ const AssemblerComponent = () => {
     AssemblerJson.menuGroup.length > 0
   ) {
     const [mapingData, setMapingData] = useState([]);
-    const [Assembles, setAssemblesData] = useState(AssemblerJson);
+
     useEffect(() => {
       const data = [];
 
@@ -51,50 +50,22 @@ const AssemblerComponent = () => {
       });
 
       setMapingData(data);
-      setAssemblesData({
-        ...Assembles,
-        menuGroup: data,
-      });
     }, []);
-    const [main, setMain] = useState("");
 
     function handleOnDrop(e, path) {
-      // console.log(e.dataTransfer.getData("key"));
-
+      const data = structuredClone(mapingData);
       console.log(path);
-      var newOne = _.set(Assembles, path, e.dataTransfer.getData("key"));
-
-      console.log(newOne.menuGroup[0].menuItems);
-
-      setMapingData(newOne.menuGroup);
-
-      // display(JSON.parse(newOne));
+      var newOne = _.set(data, path, e.dataTransfer.getData("key"));
+      setMapingData(newOne);
       e.preventDefault();
     }
+    0;
     function handleDragOver(e) {
       e.preventDefault();
     }
-    const HHHH = () => {
-      var set = require("lodash.set");
-
-      // The source object
-      let obj = { cpp: [{ java: { python: 2012 } }] };
-
-      set(obj, "cpp[0].java.python", 2020);
-
-      // Prinitng old object
-      // before using _.set method
-      console.log(obj.cpp[0].java.python);
-    };
     return (
       <div className="w-[70vw]">
         <h2 className="text-center">Assembler key</h2>
-        <Input
-          onDrop={handleOnDrop}
-          value={main}
-          onDragOver={handleDragOver}
-        ></Input>
-        <Button onClick={HHHH}>sdfs</Button>
         <Tabs aria-label="Options">
           {mapingData.map((ele, index) => (
             <Tab key={ele.menuGroup} title={ele.menuGroup}>
@@ -114,19 +85,19 @@ const AssemblerComponent = () => {
                           <TableCell>{item.item}</TableCell>
                           <TableCell>
                             {item.Fabric.map((fabric, i) => (
-                              <p>{fabric.name}</p>
+                              <p className="p-2">{fabric.name}</p>
                             ))}
                           </TableCell>
                           <TableCell>
                             {item.Fabric.map((fabric, i) => (
                               <Input
-                                className="p-2 m-2"
+                                className="p-2"
                                 type="text"
                                 size="sm"
                                 onDrop={(e) =>
                                   handleOnDrop(
                                     e,
-                                    `menuGroup[${index}].menuItems[${id}].Fabric[${i}].modelkey`
+                                    `${index}.menuItems[${id}].Fabric[${i}].modelkey`
                                   )
                                 }
                                 onDragOver={handleDragOver}
@@ -137,6 +108,7 @@ const AssemblerComponent = () => {
                           <TableCell>
                             {item.Fabric.map((fabric, i) => (
                               <Input
+                                className="p-2"
                                 type="text"
                                 size="sm"
                                 value={fabric.version}
@@ -146,6 +118,7 @@ const AssemblerComponent = () => {
                           <TableCell>
                             {item.Fabric.map((fabric, i) => (
                               <Input
+                                className="p-2"
                                 type="text"
                                 size="sm"
                                 value={fabric.roles}
@@ -161,7 +134,6 @@ const AssemblerComponent = () => {
             </Tab>
           ))}
         </Tabs>
-        <Button onClick={() => display(Assembles)}>HHHH</Button>
       </div>
     );
   } else {
