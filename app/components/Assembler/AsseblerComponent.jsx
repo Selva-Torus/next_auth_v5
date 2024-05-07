@@ -22,9 +22,7 @@ const AssemblerComponent = () => {
     AssemblerJson.menuGroup.length > 0
   ) {
     const [mapingData, setMapingData] = useState([]);
-    const [Assembles, setAssemblesData] = useState({
-      menuGroup: AssemblerComponent.menuGroup,
-    });
+    const [Assembles, setAssemblesData] = useState(AssemblerJson);
     useEffect(() => {
       const data = [];
 
@@ -53,18 +51,25 @@ const AssemblerComponent = () => {
       });
 
       setMapingData(data);
+      setAssemblesData({
+        ...Assembles,
+        menuGroup: data,
+      });
     }, []);
     const [main, setMain] = useState("");
 
     function handleOnDrop(e, path) {
       // console.log(e.dataTransfer.getData("key"));
 
-      // console.log(path);
+      console.log(path);
       var newOne = _.set(Assembles, path, e.dataTransfer.getData("key"));
 
-      console.log(newOne);
+      console.log(newOne.menuGroup[0].menuItems);
+
+      setMapingData(newOne.menuGroup);
 
       // display(JSON.parse(newOne));
+      e.preventDefault();
     }
     function handleDragOver(e) {
       e.preventDefault();
@@ -115,13 +120,13 @@ const AssemblerComponent = () => {
                           <TableCell>
                             {item.Fabric.map((fabric, i) => (
                               <Input
+                                className="p-2 m-2"
                                 type="text"
                                 size="sm"
                                 onDrop={(e) =>
                                   handleOnDrop(
                                     e,
-                                    `menuGroup[${index}].menuItems[${id}].Fabric[${i}]
-                                .modelkey`
+                                    `menuGroup[${index}].menuItems[${id}].Fabric[${i}].modelkey`
                                   )
                                 }
                                 onDragOver={handleDragOver}
@@ -156,7 +161,7 @@ const AssemblerComponent = () => {
             </Tab>
           ))}
         </Tabs>
-        <Button onClick={() => display(data)}>HHHH</Button>
+        <Button onClick={() => display(Assembles)}>HHHH</Button>
       </div>
     );
   } else {
