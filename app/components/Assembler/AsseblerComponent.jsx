@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 // var set = require("lodash.set");
-import {
-  Tabs,
-  Tab,
-  Input,
-  useDisclosure,
-} from "@nextui-org/react";
+import { Tabs, Tab, Input, useDisclosure, Button } from "@nextui-org/react";
 import { AssemblerJson } from "@/app/utilsFunctions/ulits/Torus9x_AssemblerKey";
 import _ from "lodash";
 import {
@@ -60,6 +55,37 @@ const AssemblerComponent = () => {
       setMapingData(data);
     }, []);
 
+    const convertData = () => {
+      var convertedData = {};
+
+      mapingData.forEach((group) => {
+        var mg = group.menuGroup;
+        convertedData[mg] = [];
+        group.menuItems.forEach((item) => {
+          var newItem = {};
+          newItem[item.item] = {};
+          item.Fabric.forEach((fab) => {
+            if (fab.name !== "miroles") {
+              newItem[item.item][fab.name] = {
+                modelkey: fab.modelkey,
+                version: fab.version,
+                roles: fab.roles,
+              };
+            } else {
+              newItem[item.item][fab.name] = [];
+            }
+          });
+          convertedData[mg].push(newItem);
+        });
+      });
+      const newData = {
+        ...AssemblerJson,
+        menuGroup: convertedData,
+      };
+
+      console.log(newData);
+    };
+
     function handleOnDrop(e, path) {
       const data = structuredClone(mapingData);
       var newOne = _.set(data, path, e.dataTransfer.getData("key"));
@@ -80,7 +106,10 @@ const AssemblerComponent = () => {
     return (
       <div className="w-[78vw] h-full overflow-y-scroll">
         <h2 className="text-center">Assembler key</h2>
-        <Tabs aria-label="Options" >
+        <div className="w-full flex justify-end">
+          <Button onClick={convertData}>save</Button>
+        </div>
+        <Tabs aria-label="Options">
           {mapingData.map((ele, index) => (
             <Tab key={ele.menuGroup} title={ele.menuGroup}>
               <Table aria-label="Example static collection table">
@@ -91,7 +120,7 @@ const AssemblerComponent = () => {
                   <TableColumn>version</TableColumn>
                   <TableColumn>roles</TableColumn>
                 </TableHeader>
-                <TableBody >
+                <TableBody>
                   {ele.menuItems.map((item, id) => (
                     <TableRow key={id}>
                       <TableCell>{item.item}</TableCell>
