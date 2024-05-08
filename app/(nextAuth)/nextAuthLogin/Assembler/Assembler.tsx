@@ -57,8 +57,8 @@ const Assembler = () => {
     e.dataTransfer.setData("key", key);
   };
   return (
-    <div className="flex w-full ">
-      <div className="flex flex-col p-3 gap-5 w-1/5">
+    <div className="flex w-full h-full">
+      <div className="flex flex-col p-3 gap-5 w-1/5 h-full">
         <h2 className="font-bold text-xl p-2 border-b">{fabric} Model Keys</h2>
         <Input
           size="sm"
@@ -114,7 +114,7 @@ const Assembler = () => {
               ))}
         </div>
       </div>
-      <div>
+      <div className="h-full">
         <AssemblerComponent />
       </div>
     </div>
