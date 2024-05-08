@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 // var set = require("lodash.set");
-import { Tabs, Tab, Card, CardBody, Button, Input } from "@nextui-org/react";
+import {
+  Tabs,
+  Tab,
+  Input,
+  useDisclosure,
+} from "@nextui-org/react";
 import { AssemblerJson } from "@/app/utilsFunctions/ulits/Torus9x_AssemblerKey";
-import TableComponent from "./tableComponent";
 import _ from "lodash";
 import {
   Table,
@@ -12,6 +16,8 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/react";
+import RolesAssignModal from "./RolesAssignModal";
+import { LiaHandPointer } from "react-icons/lia";
 
 const AssemblerComponent = () => {
   if (
@@ -21,7 +27,9 @@ const AssemblerComponent = () => {
     AssemblerJson.menuGroup.length > 0
   ) {
     const [mapingData, setMapingData] = useState([]);
-
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+    const [rolesPath, setRolesPath] = useState("");
+    const [existingRoles, setExistingRoles] = useState([]);
     useEffect(() => {
       const data = [];
 
@@ -54,7 +62,6 @@ const AssemblerComponent = () => {
 
     function handleOnDrop(e, path) {
       const data = structuredClone(mapingData);
-      console.log(path);
       var newOne = _.set(data, path, e.dataTransfer.getData("key"));
       setMapingData(newOne);
       e.preventDefault();
@@ -63,33 +70,45 @@ const AssemblerComponent = () => {
     function handleDragOver(e) {
       e.preventDefault();
     }
+
+    function handleRolesModal(role, path) {
+      setExistingRoles(role);
+      setRolesPath(path);
+      onOpen();
+    }
+
     return (
-      <div className="w-[70vw]">
+      <div className="w-[78vw] h-full overflow-y-scroll">
         <h2 className="text-center">Assembler key</h2>
-        <Tabs aria-label="Options">
+        <Tabs aria-label="Options" >
           {mapingData.map((ele, index) => (
             <Tab key={ele.menuGroup} title={ele.menuGroup}>
-              <Card>
-                <CardBody>
-                  <Table aria-label="Example static collection table">
-                    <TableHeader>
-                      <TableColumn>MenuItems</TableColumn>
-                      <TableColumn>Fabrics</TableColumn>
-                      <TableColumn>keys</TableColumn>
-                      <TableColumn>version</TableColumn>
-                      <TableColumn>roles</TableColumn>
-                    </TableHeader>
-                    <TableBody>
-                      {ele.menuItems.map((item, id) => (
-                        <TableRow key={id}>
-                          <TableCell>{item.item}</TableCell>
-                          <TableCell>
-                            {item.Fabric.map((fabric, i) => (
-                              <p className="p-2">{fabric.name}</p>
-                            ))}
-                          </TableCell>
-                          <TableCell>
-                            {item.Fabric.map((fabric, i) => (
+              <Table aria-label="Example static collection table">
+                <TableHeader>
+                  <TableColumn>MenuItems</TableColumn>
+                  <TableColumn>Fabrics</TableColumn>
+                  <TableColumn>keys</TableColumn>
+                  <TableColumn>version</TableColumn>
+                  <TableColumn>roles</TableColumn>
+                </TableHeader>
+                <TableBody >
+                  {ele.menuItems.map((item, id) => (
+                    <TableRow key={id}>
+                      <TableCell>{item.item}</TableCell>
+                      <TableCell>
+                        {item.Fabric.map(
+                          (fabric, i) =>
+                            i < 3 && (
+                              <p className="p-2" key={i}>
+                                {fabric.name}
+                              </p>
+                            )
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {item.Fabric.map(
+                          (fabric, i) =>
+                            i < 3 && (
                               <Input
                                 className="p-2"
                                 type="text"
@@ -102,38 +121,68 @@ const AssemblerComponent = () => {
                                 }
                                 onDragOver={handleDragOver}
                                 value={fabric.modelkey}
+                                key={i}
                               />
-                            ))}
-                          </TableCell>
-                          <TableCell>
-                            {item.Fabric.map((fabric, i) => (
+                            )
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {item.Fabric.map(
+                          (fabric, i) =>
+                            i < 3 && (
                               <Input
                                 className="p-2"
                                 type="text"
                                 size="sm"
                                 value={fabric.version}
+                                key={i}
                               />
-                            ))}
-                          </TableCell>
-                          <TableCell>
-                            {item.Fabric.map((fabric, i) => (
+                            )
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {item.Fabric.map(
+                          (fabric, i) =>
+                            i < 3 && (
                               <Input
                                 className="p-2"
                                 type="text"
                                 size="sm"
+                                key={i}
                                 value={fabric.roles}
+                                endContent={
+                                  <LiaHandPointer
+                                    className="cursor-pointer"
+                                    size={20}
+                                    onClick={(e) =>
+                                      handleRolesModal(
+                                        fabric.roles,
+                                        `${index}.menuItems[${id}].Fabric[${i}].roles`
+                                      )
+                                    }
+                                  />
+                                }
                               />
-                            ))}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardBody>
-              </Card>
+                            )
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </Tab>
           ))}
         </Tabs>
+        <RolesAssignModal
+          onClose={onClose}
+          isOpen={isOpen}
+          path={rolesPath}
+          roles={AssemblerJson.roles}
+          mapingData={mapingData}
+          setMapingData={setMapingData}
+          existingRoles={existingRoles}
+          setExistingRoles={setExistingRoles}
+        />
       </div>
     );
   } else {
@@ -142,24 +191,3 @@ const AssemblerComponent = () => {
 };
 
 export default AssemblerComponent;
-
-{
-  /* <Tabs
-          aria-label="Options"
-          className="w-[70vw] mt-5"
-          // classNames={{
-          //   base: "w-[70vw] mt-5",
-          // }}
-        >
-          {AssemblerJson.menuGroup.map((menuGroups, index) =>
-            Object.keys(menuGroups).map((menuGroup, i) => (
-              <Tab title={menuGroup}>
-                <TableComponent
-                  menuGroup={menuGroups[menuGroup]}
-                  sub={menuGroup}
-                />
-              </Tab>
-            ))
-          )}
-        </Tabs> */
-}
