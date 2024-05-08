@@ -24,6 +24,7 @@ import {
   PopoverTrigger,
   Tooltip,
   useDisclosure,
+  Switch
 } from "@nextui-org/react";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import React, { FunctionComponent, useState } from "react";
@@ -127,7 +128,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
   };
 
   return (
-    <Navbar maxWidth="2xl" className="border h-[8%]">
+    <Navbar maxWidth="2xl" className="border-b h-[8%]">
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle />
       </NavbarContent>
@@ -138,9 +139,9 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
           <Tooltip placement={"bottom"} content={"Help Menu"} color="secondary">
-            <Link onPress={() => setopen(true)}>
+            <div onClick={() => setopen(true)}>
               <AiOutlineQuestionCircle className="w-6 h-6 text-black dark:text-white" />
-            </Link>
+            </div>
           </Tooltip>
           <Modal size={"sm"} isOpen={open} onOpenChange={setopen}>
             <ModalContent>
@@ -181,9 +182,9 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
             content={"Keyboard Shortcuts"}
             color="secondary"
           >
-            <Link onPress={onOpen}>
+            <div onClick={onOpen}>
               <MdOutlineKeyboardCommandKey className="w-6 h-6  text-black dark:text-white" />
-            </Link>
+            </div>
           </Tooltip>
           <Modal size={"xs"} isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
@@ -222,9 +223,9 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
             content={"Command Palette"}
             color="secondary"
           >
-            <Link>
+            <div>
               <IoSearchSharp className="w-6 h-6  text-black dark:text-white" />
-            </Link>
+            </div>
           </Tooltip>
         </NavbarItem>
       </NavbarContent>
@@ -238,7 +239,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
                 content={"Create AppGroup"}
                 color="secondary"
               >
-                <Link
+                <Link className="mt-2"
                   size="sm"
                   onPress={() => setOpenAppGroupPopover(true)}
                   // onClick={() => dispatch(setApplicationName(""))}
@@ -315,7 +316,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
                 content={"Create Application"}
                 color="secondary"
               >
-                <Link
+                <Link className="mt-2"
                   size="sm"
                   onPress={() => setOpenApplicationPopover(true)}
                   // onClick={() => dispatch(setApplicationName(""))}
@@ -391,7 +392,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
           <NavbarItem>
             <Tooltip content={"Go to Application page"} color="secondary">
               <Link href="/nextAuthLogin/Torus">
-                <IoArrowBackCircleSharp className="w-7 h-7 " />
+                <IoArrowBackCircleSharp className="w-7 h-7 mt-2 " />
               </Link>
             </Tooltip>
           </NavbarItem>
@@ -404,10 +405,10 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
           >
             <Dropdown>
               <DropdownTrigger>
-                <Link className=" text-black dark:text-white">
+                <div className="flex items-center">
                   <CgRedo className="w-7 h-7 " />
                   v1
-                </Link>
+                </div>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions">
                 <DropdownItem key="new">App 1</DropdownItem>
@@ -420,10 +421,10 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
         {/* <div className="hover:border-1 hover:rounded-xl "> */}
         <NavbarItem>
           <Tooltip placement={"bottom"} content={"Comments"} color="secondary">
-            <Link>
+            <div className="flex items-center">
               <FcOk className="w-6 h-6 " />
-              <LiaComments className="w-6 h-6  text-black dark:text-white" />
-            </Link>
+              <LiaComments className="w-6 h-6 " />
+            </div>
           </Tooltip>
         </NavbarItem>
         {/* </div> */}
@@ -434,10 +435,10 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
             content={"Project Issues"}
             color="secondary"
           >
-            <Link>
+            <div className="flex items-center">
               <FcOk className="w-6 h-6" />
-              <GrBug className="w-5 h-5  text-black dark:text-white" />
-            </Link>
+              <GrBug className="w-5 h-5 " />
+            </div>
           </Tooltip>
         </NavbarItem>
         {/* </div> */}
@@ -461,13 +462,13 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
             content={"Project Share"}
             color="secondary"
           >
-            <Link>
-              <RiShareBoxFill className="w-6 h-6  text-black dark:text-white" />
-            </Link>
+            <div className="flex items-center">
+              <RiShareBoxFill className="w-6 h-6 " />
+            </div>
           </Tooltip>
         </NavbarItem>
         {/* </div> */}
-        <NavbarItem>
+        {/* <NavbarItem>
           <Tooltip placement="bottom" content="Preview App" color="secondary">
             <Button className=" " size={"sm"}>
               <MdPreview className="w-8 h-8 text-orange-600 dark:text-white" />
@@ -484,7 +485,13 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
               )}
             </Button>
           </NavbarItem>
-        )}
+        )} */}
+        <NavbarItem>
+          <Switch className="mt-2" size="sm" color="primary" onClick={toggleTheme}>
+            {theme == "dark" ? "" : "" }
+          </Switch>
+        </NavbarItem>
+
         <NavbarItem>
           <Dropdown className=" bg-slate-100 text-slate-600  dark:bg-slate-500 dark:text-white">
             <DropdownTrigger>

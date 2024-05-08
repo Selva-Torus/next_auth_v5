@@ -29,7 +29,9 @@ const Applist = ({ appGroup }) => {
   const [selectedApp, setSelectedApp] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [tenant, setTenant] = useState("");
-  const [popOverOpen, setpopOverOpen] = React.useState(false);
+  // const [popOverOpen, setpopOverOpen] = React.useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(true);
+  const [newState, setNewState] = useState(true)
   const application = useSelector(
     (state: RootState) => state.main.applicationName
   );
@@ -72,8 +74,17 @@ const Applist = ({ appGroup }) => {
       )
         .then((res) => res.json())
         .then((res) => {
-          setApplications(res.data);
-          setLoading(false);
+          console.log(res)
+          if(res.status==200){
+
+            setApplications(res.data);
+            setLoading(false);
+          }
+          else{
+            ("something went wrong")
+          }
+       
+         
         });
     } catch (error) {
       throw error;
@@ -83,12 +94,16 @@ const Applist = ({ appGroup }) => {
   const handleDelete = (app) => {
     onOpen();
     setSelectedApp(app);
+    setPopoverOpen(false);
+
   };
 
   const handleDeleteApp = () => {
     if (selectedApp) {
       DeleteApplication(selectedApp);
       onClose();
+
+
     }
   };
 
@@ -96,65 +111,81 @@ const Applist = ({ appGroup }) => {
     if (tenant && appGroup && app) {
       localStorage.setItem("AssemblerKey", `${tenant}:${appGroup}:${app}`);
       routes.push("./Assembler");
+      setPopoverOpen(false);
     }
   };
 
   return (
-    <div className="flex flex-col w-full h-full pt-4 dark:bg-[#14181b] bg-white">
+    <div className="flex flex-col h-full pt-4">
       <h2 className="font-bold text-2xl text-center">{appGroup}</h2>
-      <div className="flex w-full justify-center">
+      <div className="grid grid-cols-10">
         {applications.length ? (
           applications.map((app, id) => (
-            <Popover placement="right-start" key={id}>
-              <PopoverTrigger>
-                <div
-                  key={id}
-                  className="flex flex-wrap py-4 px-5 gap-4 w-full justify-center"
-                >
-                  <motion.div
-                    whileHover={{ scale: 1.2 }}
+
+            <>
+              {newState && <Popover placement="right-start" key={id}>
+                <PopoverTrigger>
+                  <div
                     key={id}
-                    animate={{ x: [-100, 0], scale: 1 }}
-                    initial={{ scale: 0 }}
-                    transition={{ duration: 0.5 }}
+                    className="flex flex-wrap py-4 px-5 gap-4 justify-center"
                   >
-                    <div className="bg-blue-400 w-[55px] h-[55px] cursor-pointer flex item-center rounded-md justify-center">
-                      <CiMemoPad className="mt-[12px]" size={30} />
-                    </div>
-                    <span
-                      className={
-                        " w-[70%] cursor-pointer  mt-[10px] text-center "
-                      }
-                      key={app}
+                    <motion.div
+                      whileHover={{ scale: 1.2 }}
+                      key={id}
+                      animate={{ x: [-100, 0], scale: 1 }}
+                      initial={{ scale: 0 }}
+                      transition={{ duration: 0.5 }}
                     >
-                      {app}
-                    </span>
-                  </motion.div>
-                </div>
-              </PopoverTrigger>
-              <PopoverContent>
-                <div
-                  className="hover:text-white hover:bg-blue-500 p-2 flex items-center gap-2 cursor-pointer"
-                  onClick={() => getAllApplication(app)}
-                >
-                  <GrCheckboxSelected />
-                  Select Application
-                </div>
-                <div
-                  className="hover:text-white hover:bg-red-500 p-2 flex items-center gap-2 cursor-pointer"
-                  onClick={() => handleDelete(app)}
-                >
-                  <RiDeleteBin6Line />
-                  Delete Application
-                </div>
-              </PopoverContent>
-            </Popover>
+                      <div className="bg-blue-400 w-[55px] h-[55px] cursor-pointer flex item-center rounded-md justify-center">
+                        <CiMemoPad className="mt-[12px]" size={30} />
+                      </div>
+                      <span
+                        className={
+                          " w-[70%] cursor-pointer  mt-[10px] "
+                        }
+                        key={app}
+                      >
+                        {app}
+                      </span>
+                    </motion.div>
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <div
+                    className="hover:text-white hover:bg-blue-500 p-2 flex items-center gap-2 cursor-pointer"
+                    onClick={() => {
+                      getAllApplication(app);
+
+                    }}
+
+
+                  >
+                    <GrCheckboxSelected />
+                    Select Application
+                  </div>
+                  <div
+                    className="hover:text-white hover:bg-red-500 p-2 flex items-center gap-2 cursor-pointer"
+                    onClick={() => {
+                      handleDelete(app)
+                      setPopoverOpen(false);
+                      setNewState(false)
+
+                    }
+                    }
+                  >
+                    <RiDeleteBin6Line />
+                    Delete Application
+                  </div>
+                </PopoverContent>
+              </Popover>}
+            </>
           ))
         ) : loading ? (
           <Spinner />
         ) : (
-          <div>No Application Available</div>
+          <div className="w-screen">No Application Available</div>
         )}
+        
       </div>
       <Modal
         className="rounded-xl border-2 border-[#323B45] text-white bg-[#20252B] bg-opacity-800/70"
