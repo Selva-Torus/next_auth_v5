@@ -7,6 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import Favicon from "/public/favicon.ico"
 import ReduxProvider from "@/app/utilsFunctions/Providers/ReduxProvider";
+import { NextUIProvider } from "@nextui-org/react";
+import { ThemeProvider as NextThemesProvider, ThemeProvider } from "next-themes";
 const inter = Inter({ subsets: ["latin"] });
 
 
@@ -26,10 +28,14 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <NextUIProvider>
+          <ThemeProvider>
       <ReduxProvider>
         <SessionProvider session={session}>{children}</SessionProvider>{" "}
         <ToastContainer/>
         </ReduxProvider>
+        </ThemeProvider>
+        </NextUIProvider>
       </body>
     </html>
   );

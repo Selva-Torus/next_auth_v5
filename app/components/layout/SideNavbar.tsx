@@ -37,11 +37,11 @@ const Icons = [
 export default function SideNav() {
   const dispatch = useDispatch();
   return (
-    <div className="h-full flex flex-col justify-between">
+    <div className="h-full flex flex-col justify-between ">
       <Listbox
         variant="faded"
         aria-label="Listbox menu with icons"
-        className="flex flex-col justify-between gap-9 h-full bg-slate-100 pt-2 dark:bg-gray-700"
+        className="flex flex-col justify-between gap-9 h-full border-r"
       >
         {Icons.map((item: any) => (
           <ListboxItem
