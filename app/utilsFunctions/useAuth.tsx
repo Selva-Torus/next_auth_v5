@@ -23,7 +23,7 @@ const useAuth = () => {
     setkeycloak(client);
     client
       .init({
-        onLoad: "check-sso",
+        onLoad: "login-required",
         redirectUri: "http://localhost:3000",
       })
       .then(() => {

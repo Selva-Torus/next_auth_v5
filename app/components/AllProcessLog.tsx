@@ -254,7 +254,7 @@ const AllProcessLog = ({ data }: any) => {
   // }, [SearchValue]);
 
   return (
-    <div className="flex w-full bg-white h-full mt-2">
+    <div className="flex w-full h-full mt-2">
       <div className="flex flex-col w-3/4 gap-4">
         <h2 className="font-bold text-xl text-center p-2 border-b">
           Process Log Details
@@ -364,7 +364,7 @@ const AllProcessLog = ({ data }: any) => {
           className="w-full h-full"
           aria-label="Example table with client side sorting"
           classNames={{
-            base: "max-h-[510px] overflow-scroll",
+            base: "max-h-[450px] overflow-scroll scrollbar-hide",
             table: "min-h-[410px]",
           }}
         >

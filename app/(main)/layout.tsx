@@ -4,6 +4,8 @@ import "./globals.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import Favicon from "/public/favicon.ico"
+import { NextUIProvider } from "@nextui-org/react";
+import { ThemeProvider as NextThemesProvider, ThemeProvider } from "next-themes";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +22,14 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <NextUIProvider>
+        <ThemeProvider>
       <body className={inter.className}>
         {children}
       <ToastContainer/>
         </body>
+        </ThemeProvider>
+        </NextUIProvider>
     </html>
   );
 }
