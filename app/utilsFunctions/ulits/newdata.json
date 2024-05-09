@@ -2,131 +2,137 @@
   "TENANT": [
     {
       "Code": "GSS",
-
       "Name": "Global Software Solutions",
-
       "Logo": "",
-
       "AG": [
         {
           "code": "NPSS",
-
           "name": "National Payment System Strategy",
-
           "description": "National Payment System Strategy by CBUAE",
-
           "icon": "",
-
           "roles": [
-            { "code": "ADMIN", "name": "ADMIN" },
-            { "code": "MAKER", "name": "MAKER" }
+            {
+              "code": "ADMIN",
+              "name": "ADMIN"
+            },
+            {
+              "code": "MAKER",
+              "name": "MAKER"
+            }
           ],
-
           "APPS": [
             {
               "code": "IPP",
-
               "name": "InstantPaymentPlatform",
-
               "description": "Instant payment platform governed by AEP(AlEthihad Payments)",
-
               "icon": "",
-
               "roles": [
-                { "code": "CHECKER", "name": "CHECKER" },
-                { "code": "MAKER", "name": "MAKER" }
+                {
+                  "code": "CHECKER",
+                  "name": "CHECKER"
+                },
+                {
+                  "code": "MAKER",
+                  "name": "MAKER"
+                }
               ]
             },
-
             {
               "code": "EDDA",
-
               "name": "ElectronicDirectDebitAuthorization",
-
               "description": "Electronic DirectDebit Authorization governed by AEP(AlEthihad Payments)",
-
               "icon": "",
-
               "roles": [
-                { "code": "CHECKER", "name": "CHECKER" },
-                { "code": "MAKER", "name": "MAKER" }
+                {
+                  "code": "CHECKER",
+                  "name": "CHECKER"
+                },
+                {
+                  "code": "MAKER",
+                  "name": "MAKER"
+                }
               ]
             },
-
             {
               "code": "ECHEQUE",
-
               "name": "ElectronicDirectDebitAuthorization",
-
               "description": "Electronic DirectDebit Authorization governed by AEP(AlEthihad Payments)",
-
               "icon": "",
-
               "roles": [
-                { "code": "CHECKER", "name": "CHECKER" },
-                { "code": "MAKER", "name": "MAKER" }
+                {
+                  "code": "CHECKER",
+                  "name": "CHECKER"
+                },
+                {
+                  "code": "MAKER",
+                  "name": "MAKER"
+                }
               ]
             }
           ]
         },
-
         {
           "code": "FPS",
-
           "name": "FastPaymentSystem",
-
           "description": "Fast Payment System by Federal Reserve(USA)",
-
           "icon": "",
-
           "roles": [
-            { "code": "ADMIN", "name": "ADMIN" },
-            { "code": "MAKER", "name": "MAKER" }
+            {
+              "code": "ADMIN",
+              "name": "ADMIN"
+            },
+            {
+              "code": "MAKER",
+              "name": "MAKER"
+            }
           ],
-
           "APPS": [
             {
               "code": "FEDNOW",
-
               "name": "FEDNOW Service",
-
               "description": "FEDNOW Service by Federal Reserve(USA)",
-
               "icon": "",
-
               "roles": [
-                { "code": "CHECKER", "name": "CHECKER" },
-                { "code": "MAKER", "name": "MAKER" }
+                {
+                  "code": "CHECKER",
+                  "name": "CHECKER"
+                },
+                {
+                  "code": "MAKER",
+                  "name": "MAKER"
+                }
               ]
             },
-
             {
               "code": "FEDWIRE",
-
               "name": "FEDWIRE",
-
               "description": "FEDWIRE Service by Federal Reserve(USA)",
-
               "icon": "",
-
               "roles": [
-                { "code": "CHECKER", "name": "CHECKER" },
-                { "code": "MAKER", "name": "MAKER" }
+                {
+                  "code": "CHECKER",
+                  "name": "CHECKER"
+                },
+                {
+                  "code": "MAKER",
+                  "name": "MAKER"
+                }
               ]
             },
-
             {
               "code": "FEDACH",
-
               "name": "FEDACH",
-
               "description": "FEDACH Service by Federal Reserve(USA)",
-
               "icon": "",
-
               "roles": [
-                { "code": "CHECKER", "name": "CHECKER" },
-                { "code": "MAKER", "name": "MAKER" }
+                {
+                  "code": "CHECKER",
+                  "name": "CHECKER"
+                },
+                {
+                  "code": "MAKER",
+                  "name": "MAKER"
+                }
               ]
             }
           ]
@@ -135,131 +141,139 @@
     },
     {
       "Code": "GSS-DEV",
-
       "Name": "Global Software Solutions Dev env",
-
       "Logo": "",
-
       "AG": [
         {
           "code": "NPSS",
-
           "name": "National Payment System Strategy",
-
           "description": "National Payment System Strategy by CBUAE",
-
           "icon": "",
-
           "roles": [
-            { "code": "ADMIN", "name": "ADMIN" },
-            { "code": "MAKER", "name": "MAKER" }
+            {
+              "code": "ADMIN",
+              "name": "ADMIN"
+            },
+            {
+              "code": "MAKER",
+              "name": "MAKER"
+            }
           ],
-
           "APPS": [
             {
               "code": "IPP",
-
               "name": "InstantPaymentPlatform",
-
               "description": "Instant payment platform governed by AEP(AlEthihad Payments)",
-
               "icon": "",
-
               "roles": [
-                { "code": "CHECKER", "name": "CHECKER" },
-                { "code": "MAKER", "name": "MAKER" }
+                {
+                  "code": "CHECKER",
+                  "name": "CHECKER"
+                },
+                {
+                  "code": "MAKER",
+                  "name": "MAKER"
+                }
               ]
             },
-
             {
-              "code": "EDDA",
-
-              "name": "ElectronicDirectDebitAuthorization",
-
+              "code": "creditPayment",
+              "name": "Credit payments",
               "description": "Electronic DirectDebit Authorization governed by AEP(AlEthihad Payments)",
-
               "icon": "",
-
               "roles": [
-                { "code": "CHECKER", "name": "CHECKER" },
-                { "code": "MAKER", "name": "MAKER" }
-              ]
-            },
-
-            {
-              "code": "ECHEQUE",
-
-              "name": "ElectronicDirectDebitAuthorization",
-
-              "description": "Electronic DirectDebit Authorization governed by AEP(AlEthihad Payments)",
-
-              "icon": "",
-
-              "roles": [
-                { "code": "CHECKER", "name": "CHECKER" },
-                { "code": "MAKER", "name": "MAKER" }
+                {
+                  "code": "CHECKER",
+                  "name": "CHECKER"
+                },
+                {
+                  "code": "MAKER",
+                  "name": "MAKER"
+                }
               ]
             }
           ]
         },
-
         {
-          "code": "FPS",
-
-          "name": "FastPaymentSystem",
-
-          "description": "Fast Payment System by Federal Reserve(USA)",
-
+          "code": "NeetSelection",
+          "name": "Neet Selection",
+          "description": "National eligibility cum entrance test",
           "icon": "",
-
           "roles": [
-            { "code": "ADMIN", "name": "ADMIN" },
-            { "code": "MAKER", "name": "MAKER" }
+            {
+              "code": "ADMIN",
+              "name": "ADMIN"
+            },
+            {
+              "code": "MAKER",
+              "name": "MAKER"
+            }
           ],
-
           "APPS": [
             {
-              "code": "FEDNOW",
-
-              "name": "FEDNOW Service",
-
-              "description": "FEDNOW Service by Federal Reserve(USA)",
-
+              "code": "NEET",
+              "name": "National eligibility cum entrance test",
+              "description": "National eligibility cum entrance test",
               "icon": "",
-
               "roles": [
-                { "code": "CHECKER", "name": "CHECKER" },
-                { "code": "MAKER", "name": "MAKER" }
+                {
+                  "code": "CHECKER",
+                  "name": "CHECKER"
+                },
+                {
+                  "code": "MAKER",
+                  "name": "MAKER"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "code": "Payments",
+          "name": "FastPaymentSystem",
+          "description": "Fast Payment System by Federal Reserve(USA)",
+          "icon": "",
+          "roles": [
+            {
+              "code": "ADMIN",
+              "name": "ADMIN"
+            },
+            {
+              "code": "MAKER",
+              "name": "MAKER"
+            }
+          ],
+          "APPS": [
+            {
+              "code": "DF",
+              "name": "Datafabrics Service",
+              "description": "",
+              "icon": "",
+              "roles": [
+                {
+                  "code": "CHECKER",
+                  "name": "CHECKER"
+                },
+                {
+                  "code": "MAKER",
+                  "name": "MAKER"
+                }
               ]
             },
-
             {
-              "code": "FEDWIRE",
-
-              "name": "FEDWIRE",
-
-              "description": "FEDWIRE Service by Federal Reserve(USA)",
-
+              "code": "TORUS",
+              "name": "TORUS",
+              "description": "TORUS Service ",
               "icon": "",
-
               "roles": [
-                { "code": "CHECKER", "name": "CHECKER" },
-                { "code": "MAKER", "name": "MAKER" }
-              ]
-            },
-
-            {
-              "code": "FEDACH",
-
-              "name": "FEDACH",
-
-              "description": "FEDACH Service by Federal Reserve(USA)",
-
-              "icon": "",
-
-              "roles": [
-                { "code": "CHECKER", "name": "CHECKER" },
-                { "code": "MAKER", "name": "MAKER" }
+                {
+                  "code": "CHECKER",
+                  "name": "CHECKER"
+                },
+                {
+                  "code": "MAKER",
+                  "name": "MAKER"
+                }
               ]
             }
           ]
