@@ -15,6 +15,7 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/react";
+import AccordianWindow from "../propertise/Properties";
 
 interface Response {
   data: any[];
@@ -26,9 +27,10 @@ const appSelector = () => {
   const [selectedAppGroup, setSelectedAppGroup] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const appGroup = useSelector((state: RootState) => state.main.appGroup);
+  const isProps = useSelector((state: RootState) => state.main.isProps);
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-  const [fallBack, setFallBack] = useState(true)
+  const [fallBack, setFallBack] = useState(true);
 
   //API calls
   const getAllApplicationGroup = async () => {
@@ -44,7 +46,9 @@ const appSelector = () => {
 
         setApplicationGroup(allData.data);
         setSelectedAppGroup(allData.data[0]);
-        setFallBack(false)
+        // console.log(allData.data[0]);
+        dispatch(setAppGroup(allData.data[0]));
+        setFallBack(false);
       }
     } catch (error) {
       throw error;
@@ -78,8 +82,17 @@ const appSelector = () => {
   useEffect(() => {
     setTimeout(() => {
       setFallBack(false);
-    }, Infinity)
-  }, [])
+    }, Infinity);
+  }, []);
+
+  const getPropsApplicationList = async () => {
+    const res = await fetch(
+      `http://192.168.2.110:3002/vpt/applicationList?tenant=GSS-DEV&appGroup=${appGroup}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => res.json());
+  };
 
   const handleAppGroupSelection = (appGroup: string) => {
     setSelectedAppGroup(appGroup);
@@ -87,7 +100,6 @@ const appSelector = () => {
   };
 
   return (
-
     <>
       {fallBack ? (
         <Subloader />
@@ -111,10 +123,11 @@ const appSelector = () => {
                     <div
                       key={index}
                       onClick={() => handleAppGroupSelection(appGroup)}
-                      className={`cursor-pointer ${selectedAppGroup == appGroup
+                      className={`cursor-pointer ${
+                        selectedAppGroup == appGroup
                           ? "bg-gray-400 p-2 rounded"
                           : ""
-                        }`}
+                      }`}
                     >
                       <div className="flex justify-between items-center">
                         <div className="flex gap-2 items-center">
@@ -154,8 +167,9 @@ const appSelector = () => {
               </ModalFooter>
             </ModalContent>
           </Modal>
-          <div className="w-full">
+          <div className="w-full flex">
             <Applist appGroup={selectedAppGroup} />
+            {isProps && <AccordianWindow />}
           </div>
         </div>
       )}

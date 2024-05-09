@@ -10,7 +10,7 @@
 /coverage
 /AssembleJson.json
 /app/api/route.ts
-# /java.js
+/java.js
 
 # next.js
 /.next/
