@@ -102,6 +102,17 @@ const AssemblerComponent = () => {
       setRolesPath(path);
       onOpen();
     }
+    function clearKey(path) {
+      const data = structuredClone(mapingData);
+      var newOne = _.set(data, path, "");
+      setMapingData(newOne);
+    }
+
+    function handleOnChange(value, path) {
+      const data = structuredClone(mapingData);
+      var newOne = _.set(data, path, value);
+      setMapingData(newOne);
+    }
 
     return (
       <div className="w-[78vw] h-full overflow-y-scroll">
@@ -140,8 +151,46 @@ const AssemblerComponent = () => {
                             i < 3 && (
                               <Input
                                 className="p-2"
+                                color="primary"
+                                classNames={{
+                                  base: " w-full ",
+                                  label: [
+                                    // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
+                                    "text-xs  text-black focus-within:text-white focus:text-white",
+                                  ],
+
+                                  // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
+
+                                  // input: [
+                                  //   "bg-transparent",
+                                  //   "text-black",
+                                  //   "placeholder:text-white",
+                                  //   "text-sm",
+                                  //   "font-bold",
+                                  // ],
+
+                                  inputWrapper: [
+                                    "border border-slate-500/50",
+                                    "text-black",
+                                    "bg-transparent",
+                                    "data-[hover=true]:bg-[#282551] data-[hover=true]:text-white",
+                                    "data-[hover=true]:border-[#4435CF]",
+                                    "focus-within:!bg-[#282551] focus-within:text-white",
+                                    "focus-within:border-[#4435CF] border-2 ",
+                                  ],
+                                  innerWrapper: [
+                                    "bg-transparent",
+                                    "boder-2 border-blue-100",
+                                  ],
+                                }}
                                 type="text"
                                 size="sm"
+                                isClearable
+                                onClear={() => {
+                                  clearKey(
+                                    `${index}.menuItems[${id}].Fabric[${i}].modelkey`
+                                  );
+                                }}
                                 onDrop={(e) =>
                                   handleOnDrop(
                                     e,
@@ -161,8 +210,46 @@ const AssemblerComponent = () => {
                             i < 3 && (
                               <Input
                                 className="p-2"
+                                color="primary"
+                                classNames={{
+                                  base: " w-full ",
+                                  label: [
+                                    // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
+                                    "text-xs  text-black focus-within:text-white focus:text-white",
+                                  ],
+
+                                  // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
+
+                                  // input: [
+                                  //   "bg-transparent",
+                                  //   "text-black",
+                                  //   "placeholder:text-white",
+                                  //   "text-sm",
+                                  //   "font-bold",
+                                  // ],
+
+                                  inputWrapper: [
+                                    "border border-slate-500/50",
+                                    "text-black",
+                                    "bg-transparent",
+                                    "data-[hover=true]:bg-[#282551] data-[hover=true]:text-white",
+                                    "data-[hover=true]:border-[#4435CF]",
+                                    "focus-within:!bg-[#282551] focus-within:text-white",
+                                    "focus-within:border-[#4435CF] border-2 ",
+                                  ],
+                                  innerWrapper: [
+                                    "bg-transparent",
+                                    "boder-2 border-blue-100",
+                                  ],
+                                }}
                                 type="text"
                                 size="sm"
+                                onChange={(e) =>
+                                  handleOnChange(
+                                    e.target.value,
+                                    `${index}.menuItems[${id}].Fabric[${i}].version`
+                                  )
+                                }
                                 value={fabric.version}
                                 key={i}
                               />
@@ -175,6 +262,38 @@ const AssemblerComponent = () => {
                             i < 3 && (
                               <Input
                                 className="p-2"
+                                color="primary"
+                                classNames={{
+                                  base: " w-full ",
+                                  label: [
+                                    // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
+                                    "text-xs  text-black focus-within:text-white focus:text-white",
+                                  ],
+
+                                  // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
+
+                                  // input: [
+                                  //   "bg-transparent",
+                                  //   "text-black",
+                                  //   "placeholder:text-white",
+                                  //   "text-sm",
+                                  //   "font-bold",
+                                  // ],
+
+                                  inputWrapper: [
+                                    "border border-slate-500/50",
+                                    "text-black",
+                                    "bg-transparent",
+                                    "data-[hover=true]:bg-[#282551] data-[hover=true]:text-white",
+                                    "data-[hover=true]:border-[#4435CF]",
+                                    "focus-within:!bg-[#282551] focus-within:text-white",
+                                    "focus-within:border-[#4435CF] border-2 ",
+                                  ],
+                                  innerWrapper: [
+                                    "bg-transparent",
+                                    "boder-2 border-blue-100",
+                                  ],
+                                }}
                                 type="text"
                                 size="sm"
                                 key={i}
