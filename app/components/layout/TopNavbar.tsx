@@ -164,7 +164,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
         <NavbarItem>
           <Tooltip placement={"bottom"} content={"Help Menu"} color="secondary">
             <div onClick={() => setopen(true)}>
-              <AiOutlineQuestionCircle className="w-6 h-6 text-black dark:text-white" />
+              <AiOutlineQuestionCircle className="w-6 h-6" />
             </div>
           </Tooltip>
           <Modal size={"sm"} isOpen={open} onOpenChange={setopen}>
@@ -207,7 +207,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
             color="secondary"
           >
             <div onClick={onOpen}>
-              <MdOutlineKeyboardCommandKey className="w-6 h-6  text-black dark:text-white" />
+              <MdOutlineKeyboardCommandKey className="w-6 h-6" />
             </div>
           </Tooltip>
           <Modal size={"xs"} isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -248,7 +248,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
             color="secondary"
           >
             <div>
-              <IoSearchSharp className="w-6 h-6  text-black dark:text-white" />
+              <IoSearchSharp className="w-6 h-6" />
             </div>
           </Tooltip>
         </NavbarItem>
@@ -466,11 +466,11 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
           </NavbarItem>
         )}
         <NavbarItem>
-          <Tooltip
+          {/* <Tooltip
             placement={"bottom"}
-            content={"It's been 28 days since you last saved a new version."}
+            content={"Version."}
             color="secondary"
-          >
+          > */}
             <Dropdown>
               <DropdownTrigger>
                 <div className="flex items-center">
@@ -483,7 +483,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
                 <DropdownItem key="copy">App 2</DropdownItem>
               </DropdownMenu>
             </Dropdown>
-          </Tooltip>
+          {/* </Tooltip> */}
         </NavbarItem>
 
         {/* <div className="hover:border-1 hover:rounded-xl "> */}

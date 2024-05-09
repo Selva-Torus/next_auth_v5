@@ -24,52 +24,52 @@ export const MainpageLoader = () => {
           <path
             d="M2528 549.606C2753.5 344.106 2914.5 298.106 3223 171.606"
             stroke="#00CE7C"
-            stroke-width="30"
+            strokeWidth="30"
           />
           <path
             d="M2276 347.605C2581.32 253.554 2799.3 232.501 3217 174.605"
             stroke="#00CE7C"
-            stroke-width="30"
+            strokeWidth="30"
           />
           <path
             d="M2269 343.105C2363 392.605 2478.5 466.105 2545 554.105"
             stroke="#00CE7C"
-            stroke-width="25"
+            strokeWidth="25"
           />
           <path
             d="M1058.43 888.433C1441.23 1405.18 1551.26 1814.06 1597.1 2452.61"
             stroke="#00CE7C"
-            stroke-width="30"
+            strokeWidth="30"
           />
           <path
             d="M2112.14 980.236C1766.76 1456.03 1643.19 1864.67 1601.82 2452.61"
             stroke="#00CE7C"
-            stroke-width="30"
+            strokeWidth="30"
           />
           <path
             d="M1686.88 524.754C1884.07 670.434 2045.62 848.678 2112.14 994.359"
             stroke="#00CE7C"
-            stroke-width="30"
+            strokeWidth="30"
           />
           <path
             d="M1058.43 906.087C1242.11 689.568 1360.18 635.835 1710.5 524.754"
             stroke="#00CE7C"
-            stroke-width="30"
+            strokeWidth="30"
           />
           <path
             d="M1053.82 178.321C1632.5 275.106 1935 630.106 2135 948.606"
             stroke="#009BC9"
-            stroke-width="30"
+            strokeWidth="30"
           />
           <path
             d="M1073 178.32L1687.51 178.32"
             stroke="#009BC9"
-            stroke-width="30"
+            strokeWidth="30"
           />
           <path
             d="M2128 935.605C2247.06 752.735 2398.15 631.496 2504 565.605"
             stroke="#009BC9"
-            stroke-width="30"
+            strokeWidth="30"
           />
           <path
             d="M1670 177.105C1997 233.605 2267.37 376.704 2486 564.105"
@@ -202,43 +202,43 @@ export const Subloader = () => {
           <path
             d="M2321.34 528.124C2641.34 381.624 2863.84 315.124 3251.34 297.124"
             stroke="#3A73CF"
-            stroke-width="57"
+            strokeWidth="57"
           />
           <path
             d="M1263.34 1281.12C1263.34 1281.12 1468.97 1011.31 1673.34 906.123"
             stroke="#3A73CF"
-            stroke-width="57"
+            strokeWidth="57"
           />
           <path
             d="M24.3418 286.124C985.927 388.587 1744.39 840.53 2045.34 1281.12"
             stroke="#3A73CF"
-            stroke-width="57"
+            strokeWidth="57"
           />
           <path
             d="M1319.34 292.624C1822.84 308.624 2290.34 473.124 2594.34 656.624"
             stroke="#3A73CF"
-            stroke-width="57"
+            strokeWidth="57"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M3247.34 305.11L24.3421 306.154L24.334 281.154L3247.33 280.11L3247.34 305.11Z"
             stroke="#3A73CF"
-            stroke-width="30"
+            strokeWidth="30"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M3251.8 309.302C2023.93 777.96 1672.84 1945.8 1672.84 2580.62H1647.84C1647.84 1939.39 2002.09 759.534 3242.88 285.945L3251.8 309.302Z"
             stroke="#3A73CF"
-            stroke-width="30"
+            strokeWidth="30"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M19.9999 309.345C1286.04 778.304 1647.84 1946.75 1647.84 2581.62H1672.84C1672.84 1939.89 1307.53 759.603 28.6836 285.902L19.9999 309.345Z"
             stroke="#3A73CF"
-            stroke-width="30"
+            strokeWidth="30"
           />
         </svg>
       </div>

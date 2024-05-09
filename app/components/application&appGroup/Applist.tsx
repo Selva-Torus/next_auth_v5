@@ -80,7 +80,7 @@ const Applist = ({ appGroup }) => {
             setApplications(res.data);
             setLoading(false);
           } else {
-            ("something went wrong");
+            ("invalid AppGroup");
           }
         });
     } catch (error) {
@@ -98,6 +98,7 @@ const Applist = ({ appGroup }) => {
     if (selectedApp) {
       DeleteApplication(selectedApp);
       onClose();
+      setNewState(true);
     }
   };
 
@@ -110,22 +111,20 @@ const Applist = ({ appGroup }) => {
   };
 
   return (
-    <div className="flex flex-col w-[70%] h-full pt-4">
+    <div className="flex flex-col h-full pt-4">
       <h2 className="font-bold text-2xl text-center">{appGroup}</h2>
       <div className="grid grid-cols-10">
         {applications.length ? (
           applications.map((app, id) => (
-            <>
+            <div key={id}>
               {newState && (
-                <Popover placement="right-start" key={id}>
+                <Popover placement="right-start">
                   <PopoverTrigger>
                     <div
-                      key={id}
                       className="flex flex-wrap py-4 px-5 gap-4 justify-center"
                     >
                       <motion.div
                         whileHover={{ scale: 1.2 }}
-                        key={id}
                         animate={{ x: [-100, 0], scale: 1 }}
                         initial={{ scale: 0 }}
                         transition={{ duration: 0.5 }}
@@ -166,12 +165,12 @@ const Applist = ({ appGroup }) => {
                   </PopoverContent>
                 </Popover>
               )}
-            </>
+            </div>
           ))
         ) : loading ? (
           <Spinner />
         ) : (
-          <div className="w-screen">No Application Available</div>
+          <div className="text-nowrap mt-10 ml-10">No Application Available</div>
         )}
       </div>
       <Modal
