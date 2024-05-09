@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   checkIsActive,
   checkIsActiveSocial,
@@ -57,11 +57,11 @@ const SessionWrapper = ({ session }: any) => {
   }
   return (
     <div className="flex flex-col h-screen w-full">
-      <TopNavbar Logout={Logout}/>
+      <TopNavbar Logout={Logout} />
       <div className="flex h-[90%]">
         <SideNavbar />
         <ApplicationSelection />
-      {/* <Torus session={JSON.stringify(JSON.parse(session))} Logout={Logout} /> */}
+        {/* <Torus session={JSON.stringify(JSON.parse(session))} Logout={Logout} /> */}
       </div>
       <Footer />
     </div>

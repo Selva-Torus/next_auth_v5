@@ -1,6 +1,6 @@
 export const realmData = {
-    realm: "testRealm",
-    realmId: "783d6448-f852-435d-8c93-984211abe822",
-    client_id: "demoClient",
-    client_secret: "oTtfWsw8SKukpKTiaNr4bGIg5Dlkp4sW"
+    realm: "GSS-DEV",
+    realmId: "b9404eec-7c7b-4150-8def-91f3ba6550ac",
+    client_id: "Torus",
+    client_secret: "MG6DXnpK7ZljhcaMCn1uKZGSNZAjWCp8"
   };

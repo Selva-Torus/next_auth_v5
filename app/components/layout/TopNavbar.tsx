@@ -12,6 +12,7 @@ import {
   Modal,
   ModalBody,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   Navbar,
   NavbarBrand,
@@ -23,9 +24,10 @@ import {
   PopoverTrigger,
   Tooltip,
   useDisclosure,
+  Switch,
 } from "@nextui-org/react";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { IoSearchSharp } from "react-icons/io5";
 import { FcOk } from "react-icons/fc";
@@ -41,16 +43,20 @@ import { MdOutlineNightsStay } from "react-icons/md";
 import { CiBrightnessUp } from "react-icons/ci";
 import { FaFolderPlus } from "react-icons/fa";
 import { FaFileCirclePlus } from "react-icons/fa6";
-import {
-  MdOutlineKeyboardCommandKey,
-} from "react-icons/md";
-
+import { MdOutlineKeyboardCommandKey } from "react-icons/md";
+import { IoArrowBackCircleSharp } from "react-icons/io5";
 import logo from "@/app/(nextAuth)/nextAuthLogin/favicon.ico";
 import { useTheme } from "next-themes";
-import { setAppGroup, setApplicationName } from "@/app/utilsFunctions/Store/Reducers/MainSlice";
+import {
+  setAppGroup,
+  setApplicationName,
+  setIsProps,
+  setPropsJson,
+} from "@/app/utilsFunctions/Store/Reducers/MainSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/utilsFunctions/Store/store";
 import { toast } from "react-toastify";
+import { usePathname, useRouter } from "next/navigation";
 
 interface TopNavbarProps {
   Logout: () => void;
@@ -60,31 +66,56 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
   const [open, setopen] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isClient, setIsClient] = useState(false);
-  const [localAppGroup , setLocalAppGroup] = useState("");
-  const [localApp , setLocalApp] = useState("");
+  const [localAppGroup, setLocalAppGroup] = useState("");
+  const [localApp, setLocalApp] = useState("");
   const { theme, setTheme } = useTheme();
   const [openAppGroupPopover, setOpenAppGroupPopover] = useState(false);
   const [openApplicationPopover, setOpenApplicationPopover] = useState(false);
   const dispatch = useDispatch();
   const appGroup = useSelector((state: RootState) => state.main.appGroup);
+  useEffect(() => {
+    dispatch(
+      setPropsJson({
+        [appGroup]: {
+          APP: [
+            {
+              code: "",
 
-   const postAllApplicationGroup = async () => {
-    try {
-      if(localAppGroup){
-        const newGroup = await fetch(
-        `http://192.168.2.110:3002/vpt/appGroupCreate?tenant=GSS-DEV&appGroup=${localAppGroup}`,
-        {
-          method: "POST",
-        }
-      ).then((res) => {
-        res.json()
-        dispatch(setAppGroup(localAppGroup));
-        setOpenAppGroupPopover(false);
-      }
+              name: "",
+
+              description: "",
+
+              icon: "",
+
+              roles: [{ code: "", name: "" }],
+            },
+          ],
+        },
+      })
     );
-    }else{
-      toast.error("Please Enter AppGroup Name")
-    }
+  }, [appGroup]);
+
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // console.log(pathname, "gjhfbh");
+
+  const postAllApplicationGroup = async () => {
+    try {
+      if (localAppGroup) {
+        const newGroup = await fetch(
+          `http://192.168.2.110:3002/vpt/appGroupCreate?tenant=GSS-DEV&appGroup=${localAppGroup}`,
+          {
+            method: "POST",
+          }
+        ).then((res) => {
+          dispatch(setAppGroup(localAppGroup));
+          res.json();
+          setOpenAppGroupPopover(false);
+        });
+      } else {
+        toast.error("Please Enter AppGroup Name");
+      }
       // setApplicationGroup(newGroup);
     } catch (error) {
       throw error;
@@ -93,26 +124,26 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
 
   const postAllApplication = async () => {
     try {
-      if (appGroup &&localApp) {
+      if (appGroup && localApp) {
         const newApp = await fetch(
           `http://192.168.2.110:3002/vpt/applicationCreate?tenant=GSS-DEV&appGroup=${appGroup}&applicationName=${localApp}`,
           {
             method: "POST",
           }
-        ).then((res) =>{
+        ).then((res) => {
           dispatch(setApplicationName(localApp));
-          res.json()
+          res.json();
           setOpenApplicationPopover(false);
-          });
-        
+        });
       } else {
-        toast.error("Please enter valid Application Name and corresponding AppGroup");
+        toast.error(
+          "Please enter valid Application Name and corresponding AppGroup"
+        );
       }
     } catch (error) {
       throw error;
     }
   };
-
 
   const toggleTheme = () => {
     console.log(theme, "theme");
@@ -121,7 +152,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
   };
 
   return (
-    <Navbar maxWidth="2xl" className="border h-[8%]">
+    <Navbar maxWidth="2xl" className="border-b h-[8%]">
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle />
       </NavbarContent>
@@ -132,9 +163,9 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
           <Tooltip placement={"bottom"} content={"Help Menu"} color="secondary">
-            <Link onPress={() => setopen(true)}>
-              <AiOutlineQuestionCircle className="w-6 h-6 text-black dark:text-white" />
-            </Link>
+            <div onClick={() => setopen(true)}>
+              <AiOutlineQuestionCircle className="w-6 h-6" />
+            </div>
           </Tooltip>
           <Modal size={"sm"} isOpen={open} onOpenChange={setopen}>
             <ModalContent>
@@ -175,9 +206,9 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
             content={"Keyboard Shortcuts"}
             color="secondary"
           >
-            <Link onPress={onOpen}>
-              <MdOutlineKeyboardCommandKey className="w-6 h-6  text-black dark:text-white" />
-            </Link>
+            <div onClick={onOpen}>
+              <MdOutlineKeyboardCommandKey className="w-6 h-6" />
+            </div>
           </Tooltip>
           <Modal size={"xs"} isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
@@ -216,131 +247,269 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
             content={"Command Palette"}
             color="secondary"
           >
-            <Link>
-              <IoSearchSharp className="w-6 h-6  text-black dark:text-white" />
-            </Link>
+            <div>
+              <IoSearchSharp className="w-6 h-6" />
+            </div>
           </Tooltip>
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent justify="end" className="">
-        <NavbarItem>
-          <Tooltip
-            placement={"bottom"}
-            content={"Create AppGroup"}
-            color="secondary"
+      <NavbarContent justify="end">
+        {pathname == "/nextAuthLogin/Torus" ? (
+          <>
+            <NavbarItem>
+              <Tooltip
+                placement={"bottom"}
+                content={"Create AppGroup"}
+                color="secondary"
+              >
+                <Link
+                  className="mt-2"
+                  size="sm"
+                  // onPress={() => setOpenAppGroupPopover(true)}
+                  onPress={() => {
+                    dispatch(setIsProps()),
+                      dispatch(
+                        setPropsJson({
+                          GSS_DEV: {
+                            AG: [
+                              {
+                                code: "",
+
+                                name: "",
+
+                                description: "",
+
+                                icon: "",
+
+                                roles: [{ code: "", name: "" }],
+                              },
+                            ],
+                          },
+                        })
+                      );
+                  }}
+                >
+                  <FaFolderPlus size={20} />
+                </Link>
+              </Tooltip>
+              <Modal
+                className="rounded-xl border-2 border-[#323B45] text-white bg-[#20252B] bg-opacity-800/70"
+                isOpen={openAppGroupPopover}
+                onOpenChange={(open) => setOpenAppGroupPopover(open)}
+              >
+                <ModalContent>
+                  <ModalHeader className="flex flex-col gap-1">
+                    Create AppGroup
+                  </ModalHeader>
+                  <ModalBody>
+                    <div className="mb-3 flex flex-col ">
+                      <Input
+                        type="text"
+                        placeholder="Enter AppGroup Name"
+                        style={{ border: "none", boxShadow: "none" }}
+                        onChange={(e) => setLocalAppGroup(e.target.value)}
+                        className="rounded-lg"
+                      />
+                    </div>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="success" onClick={postAllApplicationGroup}>
+                      Create AppGroup
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+              {/* <Popover
+            isOpen={openAppGroupPopover}
+            onOpenChange={(open) => setOpenAppGroupPopover(open)}
           >
-             <Popover isOpen={openAppGroupPopover} onOpenChange={(open) => setOpenAppGroupPopover(open)}>
-             <PopoverTrigger>
-            <Link
-              size="sm"
-              // onClick={() => dispatch(setApplicationName(""))}
+            <Tooltip
+              placement={"bottom"}
+              content={"Create AppGroup"}
+              color="secondary"
             >
-            <FaFolderPlus size={20} />
-          </Link>
-          </PopoverTrigger>
-          <PopoverContent>
-          <div className="mb-3 flex flex-col ">
-            <Input
-              type="text"
-              style={{ border: "none", boxShadow: "none" }}
-              onChange={(e) =>setLocalAppGroup(e.target.value)}
-              className="border-2 rounded-lg"
-            />
-            <Button
-              className="bg-blue-500 text-white rounded px-3 mx-7 my-3"
-              onClick={postAllApplicationGroup}
-            >
-              Create AppGroup
-            </Button>
-          </div>
-          </PopoverContent>
-          </Popover>
-          </Tooltip>
-        </NavbarItem>
-        <NavbarItem>
-          <Tooltip
-            placement={"bottom"}
-            content={"Create Application"}
-            color="secondary"
+              <PopoverTrigger>
+                <Link
+                  size="sm"
+                  // onClick={() => dispatch(setApplicationName(""))}
+                >
+                  <FaFolderPlus size={20} />
+                </Link>
+              </PopoverTrigger>
+            </Tooltip>
+            <PopoverContent>
+              <div className="mb-3 flex flex-col ">
+                <Input
+                  type="text"
+                  style={{ border: "none", boxShadow: "none" }}
+                  onChange={(e) => setLocalAppGroup(e.target.value)}
+                  className="border-2 rounded-lg"
+                />
+                <Button
+                  className="bg-blue-500 text-white rounded px-3 mx-7 my-3"
+                  onClick={postAllApplicationGroup}
+                >
+                  Create AppGroup
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover> */}
+            </NavbarItem>
+            <NavbarItem>
+              <Tooltip
+                placement={"bottom"}
+                content={"Create Application"}
+                color="secondary"
+              >
+                <Link
+                  className="mt-2"
+                  size="sm"
+                  // onPress={() => setOpenApplicationPopover(true)}
+                  onPress={() => {
+                    dispatch(setIsProps());
+                    dispatch(
+                      setPropsJson({
+                        [appGroup]: {
+                          APP: [
+                            {
+                              code: "",
+
+                              name: "",
+
+                              description: "",
+
+                              icon: "",
+
+                              roles: [{ code: "", name: "" }],
+                            },
+                          ],
+                        },
+                      })
+                    );
+                  }}
+                >
+                  <FaFileCirclePlus size={20} />
+                </Link>
+              </Tooltip>
+              <Modal
+                className="rounded-xl border-2 border-[#323B45] text-white bg-[#20252B] bg-opacity-800/70"
+                isOpen={openApplicationPopover}
+                onOpenChange={(open) => setOpenApplicationPopover(open)}
+              >
+                <ModalContent>
+                  <ModalHeader className="flex flex-col">
+                    Create Application
+                  </ModalHeader>
+                  <ModalBody>
+                    <div className="mb-3 flex flex-col ">
+                      <Input
+                        type="text"
+                        placeholder="Enter Application Name"
+                        style={{ border: "none", boxShadow: "none" }}
+                        onChange={(e) => setLocalApp(e.target.value)}
+                        className="rounded-lg"
+                      />
+                    </div>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="success" onClick={postAllApplication}>
+                      Create Application
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+              {/* <Popover
+            isOpen={openApplicationPopover}
+            onOpenChange={(open) => setOpenApplicationPopover(open)}
           >
-            <Popover isOpen={openApplicationPopover} onOpenChange={(open) => setOpenApplicationPopover(open)}>
-             <PopoverTrigger>
-            <Link
-              size="sm"
-              // onClick={() => dispatch(setApplicationName(""))}
+            <Tooltip
+              placement={"bottom"}
+              content={"Create Application"}
+              color="secondary"
             >
-            <FaFileCirclePlus size={20} />
-          </Link>
-          </PopoverTrigger>
-          <PopoverContent>
-          <div className="mb-3 flex flex-col ">
-            <Input
-              type="text"
-              style={{ border: "none", boxShadow: "none" }}
-              onChange={(e) =>setLocalApp(e.target.value)}
-              className="border-2 rounded-lg"
-            />
-            <Button
-              className="bg-blue-500 text-white rounded px-3 mx-7 my-3"
-              onClick={postAllApplication}
-            >
-              Create Application
-            </Button>
-          </div>
-          </PopoverContent>
-          </Popover>
-          </Tooltip>
-        </NavbarItem>
+              <PopoverTrigger>
+                <Link
+                  size="sm"
+                  // onClick={() => dispatch(setApplicationName(""))}
+                >
+                  <FaFileCirclePlus size={20} />
+                </Link>
+              </PopoverTrigger>
+            </Tooltip>
+            <PopoverContent>
+              <div className="mb-3 flex flex-col ">
+                <Input
+                  type="text"
+                  style={{ border: "none", boxShadow: "none" }}
+                  onChange={(e) => setLocalApp(e.target.value)}
+                  className="border-2 rounded-lg"
+                />
+                <Button
+                  className="bg-blue-500 text-white rounded px-3 mx-7 my-3"
+                  onClick={postAllApplication}
+                >
+                  Create Application
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover> */}
+            </NavbarItem>
+          </>
+        ) : (
+          <NavbarItem>
+            <Tooltip content={"Go to Application page"} color="secondary">
+              <Link href="/nextAuthLogin/Torus">
+                <IoArrowBackCircleSharp className="w-7 h-7 mt-2 " />
+              </Link>
+            </Tooltip>
+          </NavbarItem>
+        )}
         <NavbarItem>
-          <Tooltip
+          {/* <Tooltip
             placement={"bottom"}
-            content={"It's been 28 days since you last saved a new version."}
+            content={"Version."}
             color="secondary"
-          >
+          > */}
             <Dropdown>
               <DropdownTrigger>
-                <Link className=" text-black dark:text-white">
+                <div className="flex items-center">
                   <CgRedo className="w-7 h-7 " />
                   v1
-                </Link>
+                </div>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions">
                 <DropdownItem key="new">App 1</DropdownItem>
                 <DropdownItem key="copy">App 2</DropdownItem>
               </DropdownMenu>
             </Dropdown>
-          </Tooltip>
+          {/* </Tooltip> */}
         </NavbarItem>
 
-        <div className="hover:border-1 hover:rounded-xl ">
-          <NavbarItem>
-            <Tooltip
-              placement={"bottom"}
-              content={"Comments"}
-              color="secondary"
-            >
-              <Link>
-                <FcOk className="w-6 h-6 " />
-                <LiaComments className="w-6 h-6  text-black dark:text-white" />
-              </Link>
-            </Tooltip>
-          </NavbarItem>
-        </div>
-        <div className="hover:border-1 hover:rounded-xl ">
-          <NavbarItem>
-            <Tooltip
-              placement={"bottom"}
-              content={"Project Issues"}
-              color="secondary"
-            >
-              <Link>
-                <FcOk className="w-6 h-6" />
-                <GrBug className="w-5 h-5  text-black dark:text-white" />
-              </Link>
-            </Tooltip>
-          </NavbarItem>
-        </div>
+        {/* <div className="hover:border-1 hover:rounded-xl "> */}
+        <NavbarItem>
+          <Tooltip placement={"bottom"} content={"Comments"} color="secondary">
+            <div className="flex items-center">
+              <FcOk className="w-6 h-6 " />
+              <LiaComments className="w-6 h-6 " />
+            </div>
+          </Tooltip>
+        </NavbarItem>
+        {/* </div> */}
+        {/* <div className="hover:border-1 hover:rounded-xl "> */}
+        <NavbarItem>
+          <Tooltip
+            placement={"bottom"}
+            content={"Project Issues"}
+            color="secondary"
+          >
+            <div className="flex items-center">
+              <FcOk className="w-6 h-6" />
+              <GrBug className="w-5 h-5 " />
+            </div>
+          </Tooltip>
+        </NavbarItem>
+        {/* </div> */}
         {/* <div className="hover:border-1 hover:rounded-md ">
           <NavbarItem>
             <Tooltip
@@ -354,20 +523,20 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
             </Tooltip>
           </NavbarItem>
         </div> */}
-        <div className="hover:border-1 hover:rounded-md ">
-          <NavbarItem>
-            <Tooltip
-              placement={"bottom"}
-              content={"Project Share"}
-              color="secondary"
-            >
-              <Link>
-                <RiShareBoxFill className="w-6 h-6  text-black dark:text-white" />
-              </Link>
-            </Tooltip>
-          </NavbarItem>
-        </div>
+        {/* <div className="hover:border-1 hover:rounded-md "> */}
         <NavbarItem>
+          <Tooltip
+            placement={"bottom"}
+            content={"Project Share"}
+            color="secondary"
+          >
+            <div className="flex items-center">
+              <RiShareBoxFill className="w-6 h-6 " />
+            </div>
+          </Tooltip>
+        </NavbarItem>
+        {/* </div> */}
+        {/* <NavbarItem>
           <Tooltip placement="bottom" content="Preview App" color="secondary">
             <Button className=" " size={"sm"}>
               <MdPreview className="w-8 h-8 text-orange-600 dark:text-white" />
@@ -384,7 +553,18 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
               )}
             </Button>
           </NavbarItem>
-        )}
+        )} */}
+        <NavbarItem>
+          <Switch
+            className="mt-2"
+            size="sm"
+            color="primary"
+            onClick={toggleTheme}
+          >
+            {theme == "dark" ? "" : ""}
+          </Switch>
+        </NavbarItem>
+
         <NavbarItem>
           <Dropdown className=" bg-slate-100 text-slate-600  dark:bg-slate-500 dark:text-white">
             <DropdownTrigger>
@@ -394,9 +574,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
             </DropdownTrigger>
             <DropdownMenu>
               <DropdownItem>Profile</DropdownItem>
-              <DropdownItem onClick={() => Logout()}>
-                LogOut
-              </DropdownItem>
+              <DropdownItem onClick={() => Logout()}>LogOut</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </NavbarItem>

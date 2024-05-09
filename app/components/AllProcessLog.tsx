@@ -17,8 +17,14 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/react";
+import { IoSearchCircleOutline } from "react-icons/io5";
+import { set } from "react-hook-form";
 
 const columns = [
+  {
+    key: "id",
+    label: "Id",
+  },
   {
     key: "field",
     label: "Field",
@@ -34,18 +40,21 @@ const columns = [
 ];
 
 const AllProcessLog = ({ data }: any) => {
-  const [AllValues, setAllValues] = useState([]);
+  const [mainData, setMainData] = useState<any[]>([]);
+  const [AllValues, setAllValues] = useState<any[]>([]);
   const [tabdata, setTabData] = useState({ npc: "", ipc: "", err: "" });
+
   const [selectedAppDetails, setSelectedAppDetails] = useState({
-    tenant: "",
-    appGroup: "",
-    app: "",
+    artifact: "",
     version: "",
   });
   const [tenant, setTenant] = useState([]);
   const [appGroup, setAppGroup] = useState([]);
   const [Apps, setApps] = useState([]);
   const [versions, setVersions] = useState([]);
+  const [artifact, setArtifact] = useState([]);
+  const [SearchValue, setSearchValue] = useState("");
+  const [SearchData, setSearchData] = useState<any[]>([]);
 
   const getData = () => {
     var allKey: any = [];
@@ -84,7 +93,34 @@ const AllProcessLog = ({ data }: any) => {
       rearranged = [...rearranged, { key: allKey[i], ...timestamp[i] }];
 
     // console.log(rearranged);
-    setAllValues(rearranged);
+
+    var filter: any = [];
+
+    for (let i = 0; i < rearranged.length; i++) {
+      if (rearranged[i].key.startsWith("GSS-DEV:")) {
+        filter = [...filter, rearranged[i]];
+      }
+    }
+
+    setAllValues(filter);
+    setMainData(filter);
+
+    var main: any = [];
+    for (let i = 0; i < filter.length; i++) {
+      main = [...main, filter[i].key.split(":")[4]];
+    }
+
+    const filteredData = main.filter((item: any, index: any) => {
+      return main.indexOf(item) === index;
+    });
+
+    setArtifact(filteredData);
+
+    const updatedOptions = filter.map((option: any) => {
+      return { ...option, value: option.key, label: option.key };
+    });
+
+    setSearchData(updatedOptions);
   };
 
   const resetedData = (data: any) => {
@@ -123,68 +159,41 @@ const AllProcessLog = ({ data }: any) => {
     for (let i = 0; i < allKey.length; i++)
       rearranged = [...rearranged, { key: allKey[i], ...timestamp[i] }];
 
-    // console.log(rearranged);
-    setAllValues(rearranged);
+    var filter: any = [];
+
+    for (let i = 0; i < rearranged.length; i++) {
+      if (rearranged[i].key.startsWith("GSS-DEV:")) {
+        filter = [...filter, rearranged[i]];
+      }
+    }
+    setAllValues(filter);
   };
 
   useEffect(() => {
     getData();
-
-    handleTenant();
   }, []);
 
-  const handleTenant = () => {
+  const handelVersion = (artifact: any) => {
     var main: any = [];
     for (let i = 0; i < data.length; i++) {
-      main = [...main, data[i].key.split(":")[0]];
+      if (data[i].key.split(":")[4] == artifact)
+        main = [...main, data[i].key.split(":")[5]];
     }
 
     const unique = main.filter((item: any, index: any) => {
       return main.indexOf(item) === index;
     });
 
-    setTenant(unique);
-  };
-
-  const handelAppGroup = (appGroupName: any) => {
-    var main: any = [];
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].key.split(":")[0] == appGroupName)
-        main = [...main, data[i].key.split(":")[1]];
-    }
-
-    const unique = main.filter((item: any, index: any) => {
-      return main.indexOf(item) === index;
-    });
-
-    setAppGroup(unique);
-  };
-
-  const handelApps = (appName: any) => {
-    var main: any = [];
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].key.split(":")[1] == appName)
-        main = [...main, data[i].key.split(":")[2]];
-    }
-
-    const unique = main.filter((item: any, index: any) => {
-      return main.indexOf(item) === index;
-    });
-
-    setApps(unique);
+    setVersions(unique);
   };
 
   useEffect(() => {
-    if (
-      selectedAppDetails.tenant &&
-      selectedAppDetails.appGroup &&
-      selectedAppDetails.app
-    ) {
+    if (selectedAppDetails.artifact && selectedAppDetails.version) {
       var main: any = [];
       for (let i = 0; i < data.length; i++) {
         if (
-          data[i].key.startsWith(
-            `${selectedAppDetails.tenant}:${selectedAppDetails.appGroup}:${selectedAppDetails.app}`
+          data[i].key.includes(
+            `:${selectedAppDetails.artifact}:${selectedAppDetails.version}:`
           )
         )
           main = [...main, data[i]];
@@ -194,178 +203,168 @@ const AllProcessLog = ({ data }: any) => {
         return main.indexOf(item) === index;
       });
       resetedData(unique);
-    } else if (selectedAppDetails.tenant && selectedAppDetails.appGroup) {
+    } else if (selectedAppDetails.artifact) {
       var main: any = [];
       for (let i = 0; i < data.length; i++) {
-        if (
-          data[i].key.startsWith(
-            `${selectedAppDetails.tenant}:${selectedAppDetails.appGroup}`
-          )
-        )
+        if (data[i].key.includes(`:${selectedAppDetails.artifact}:`))
           main = [...main, data[i]];
       }
 
-      const unique = main.filter((item: any, index: any) => {
-        return main.indexOf(item) === index;
-      });
-      resetedData(unique);
-    } else if (selectedAppDetails.tenant) {
-      var main: any = [];
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].key.startsWith(`${selectedAppDetails.tenant}`))
-          main = [...main, data[i]];
-      }
       const unique = main.filter((item: any, index: any) => {
         return main.indexOf(item) === index;
       });
       resetedData(unique);
     }
   }, [selectedAppDetails]);
+
+  const handleSearch = (e: any) => {
+    const value = e.target.value;
+    var main: any = [];
+    for (let i = 0; i < SearchData.length; i++) {
+      if (SearchData[i].key.includes(value)) {
+        main = [...main, SearchData[i]];
+      }
+    }
+    console.log(main);
+  };
+  const [searchedValues, setSearchedValues] = useState<any[]>([]);
+
+  const handleSearchData = (e: any) => {
+    setSearchValue(e.target.value);
+
+    var main: any = [];
+    for (let i = 0; i < mainData.length; i++) {
+      if (mainData[i].key.includes(e.target.value)) {
+        main = [...main, SearchData[i]];
+      }
+    }
+
+    setAllValues(main);
+  };
+
+  // useEffect(() => {
+  //   var main: any = [];
+  //   for (let i = 0; i < mainData.length; i++) {
+  //     if (mainData[i].key.includes(SearchValue)) {
+  //       main = [...main, SearchData[i]];
+  //     }
+  //   }
+
+  //   setAllValues(main);
+  // }, [SearchValue]);
+
   return (
-    <div className="flex w-full bg-white h-full">
+    <div className="flex w-full h-full mt-2">
       <div className="flex flex-col w-3/4 gap-4">
-        <div className="flex justify-between w-4/4 pl-6 pr-6">
-          <Dropdown className=" border border-[#20252B]  p-0 ">
-            <DropdownTrigger>
-              {/* <Button size="lg" variant="bordered">
-                {selectedAppDetails.tenant
-                  ? selectedAppDetails.tenant
-                  : "Select Tenant"}
-              </Button> */}
-              <Input
-                className="w-[200px]"
-                key="outside"
-                type="button"
-                label="Tenant Name"
-                value={
-                  selectedAppDetails.tenant
-                    ? selectedAppDetails.tenant
-                    : "Select Tenant"
-                }
-                labelPlacement="outside"
-              />
-            </DropdownTrigger>
-            <DropdownMenu
-              aria-label="Link Actions"
-              className=" text-white rounded-sm"
-              variant="light"
+        <h2 className="font-bold text-xl text-center p-2 border-b">
+          Process Log Details
+        </h2>
+        <div className="flex justify-between w-4/4 px-5">
+          <div>
+            <Input
+              size="sm"
+              label="Search"
+              // isClearable
+              radius="lg"
+              onChange={handleSearchData}
+              value={SearchValue}
+              // onClear={() => setSearchValue("")}
               classNames={{
-                base: "bg-[#20252B] border-1 border-black",
+                label: "text-black/50 dark:text-white/90",
+                input: [
+                  "bg-transparent",
+                  "text-black/90 dark:text-white/90",
+                  "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                ],
+                innerWrapper: "bg-transparent",
+                inputWrapper: [
+                  "shadow-xl",
+                  "bg-default-200/50",
+                  "dark:bg-default/60",
+                  "backdrop-blur-xl",
+                  "backdrop-saturate-200",
+                  "hover:bg-default-200/70",
+                  "dark:hover:bg-default/70",
+                  "group-data-[focused=true]:bg-default-200/50",
+                  "dark:group-data-[focused=true]:bg-default/60",
+                  "!cursor-text",
+                ],
               }}
-            >
-              {tenant.map((item: any, id: any) => (
-                <DropdownItem
-                  id={id}
-                  className=" text-white hover:bg-slate-500"
-                  onClick={() => {
-                    setSelectedAppDetails({
-                      ...selectedAppDetails,
-                      tenant: item,
-                      appGroup: "",
-                      app: "",
-                    });
-                    handelAppGroup(item);
-                  }}
-                >
-                  {item}
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
-          <Dropdown className=" border border-[#20252B]  p-0 ">
-            <DropdownTrigger>
-              {/* <Button size="lg" variant="bordered">
-                {selectedAppDetails.appGroup
-                  ? selectedAppDetails.appGroup
-                  : "Select AppGroup"}
-              </Button> */}
-              <Input
-                className="w-[200px]"
-                key="outside"
-                type="button"
-                label="AppGroup Name"
-                value={
-                  selectedAppDetails.appGroup
-                    ? selectedAppDetails.appGroup
-                    : "Select AppGroup"
-                }
-                labelPlacement="outside"
-              />
-            </DropdownTrigger>
-            <DropdownMenu
-              aria-label="Link Actions"
-              className=" text-white rounded-sm"
-              variant="light"
-              classNames={{
-                base: "bg-[#20252B] border-1 border-black",
-              }}
-            >
-              {appGroup.map((item: any, id: any) => (
-                <DropdownItem
-                  id={id}
-                  className=" text-white hover:bg-slate-500"
-                  onClick={() => {
-                    setSelectedAppDetails({
-                      ...selectedAppDetails,
-                      appGroup: item,
-                      app: "",
-                    });
-                    handelApps(item);
-                    // handelResetArray();
-                  }}
-                >
-                  {item}
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
-          <Dropdown className=" border border-[#20252B]  p-0 ">
-            <DropdownTrigger>
-              {/* <Button size="lg" variant="bordered">
-                {selectedAppDetails.app ? selectedAppDetails.app : "Select App"}
-              </Button> */}
-              <Input
-                className="w-[200px]"
-                key="outside"
-                type="button"
-                label="App Name"
-                value={
-                  selectedAppDetails.app ? selectedAppDetails.app : "Select App"
-                }
-                labelPlacement="outside"
-              />
-            </DropdownTrigger>
-            <DropdownMenu
-              aria-label="Link Actions"
-              className=" text-white rounded-sm"
-              variant="light"
-              classNames={{
-                base: "bg-[#20252B] border-1 border-black",
-              }}
-            >
-              {Apps.map((item: any, id: any) => (
-                <DropdownItem
-                  id={id}
-                  className=" text-white hover:bg-slate-500"
-                  onClick={() => {
-                    setSelectedAppDetails({
-                      ...selectedAppDetails,
-                      app: item,
-                    });
-                  }}
-                >
-                  {item}
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
+              placeholder="Type to search..."
+            />
+          </div>
+          <div className="flex gap-4">
+            <Dropdown className=" border border-[#20252B]  p-0 ">
+              <DropdownTrigger>
+                <Input
+                  size="md"
+                  className="w-[200px]"
+                  color={selectedAppDetails.artifact ? "primary" : "default"}
+                  type="button"
+                  value={
+                    selectedAppDetails.artifact
+                      ? selectedAppDetails.artifact
+                      : "Select Artifact"
+                  }
+                />
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Link Actions">
+                {artifact.map((item: any, id: any) => (
+                  <DropdownItem
+                    id={id}
+                    onClick={() => {
+                      setSelectedAppDetails({
+                        ...selectedAppDetails,
+                        artifact: item,
+                        version: "",
+                      });
+                      handelVersion(item);
+                    }}
+                  >
+                    {item}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+            <Dropdown className=" border border-[#20252B]  p-0 ">
+              <DropdownTrigger>
+                <Input
+                  size="md"
+                  className="w-[200px]"
+                  type="button"
+                  color={selectedAppDetails.artifact ? "primary" : "default"}
+                  value={
+                    selectedAppDetails.version
+                      ? selectedAppDetails.version
+                      : "Select Version"
+                  }
+                />
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Link Actions">
+                {versions.map((item: any, id: any) => (
+                  <DropdownItem
+                    id={id}
+                    onClick={() => {
+                      setSelectedAppDetails({
+                        ...selectedAppDetails,
+                        version: item,
+                      });
+                    }}
+                  >
+                    {item}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+          </div>
         </div>
+
         <Table
           isHeaderSticky
           className="w-full h-full"
           aria-label="Example table with client side sorting"
           classNames={{
-            base: "max-h-[510px] overflow-scroll",
+            base: "max-h-[405px] overflow-scroll scrollbar-hide",
             table: "min-h-[410px]",
           }}
         >
@@ -381,6 +380,9 @@ const AllProcessLog = ({ data }: any) => {
             {AllValues &&
               AllValues.map((item: any, id: any) => (
                 <TableRow key={id}>
+                  <TableCell className="border px-4 py-2" width={10}>
+                    {id + 1}
+                  </TableCell>
                   <TableCell className="border px-4 py-2" width={50}>
                     {item.key.split(":").join(": ")}
                   </TableCell>

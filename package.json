@@ -17,6 +17,8 @@
     "axios": "^1.6.8",
     "framer-motion": "^11.1.7",
     "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "lodash.set": "^4.3.2",
     "next": "14.2.1",
     "next-auth": "^5.0.0-beta.16",
     "next-themes": "^0.3.0",
