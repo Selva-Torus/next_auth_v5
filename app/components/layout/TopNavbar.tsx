@@ -24,7 +24,7 @@ import {
   PopoverTrigger,
   Tooltip,
   useDisclosure,
-  Switch
+  Switch,
 } from "@nextui-org/react";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import React, { FunctionComponent, useState } from "react";
@@ -50,6 +50,8 @@ import { useTheme } from "next-themes";
 import {
   setAppGroup,
   setApplicationName,
+  setIsProps,
+  setPropsJson,
 } from "@/app/utilsFunctions/Store/Reducers/MainSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/utilsFunctions/Store/store";
@@ -71,6 +73,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
   const [openApplicationPopover, setOpenApplicationPopover] = useState(false);
   const dispatch = useDispatch();
   const appGroup = useSelector((state: RootState) => state.main.appGroup);
+
   const router = useRouter();
   const pathname = usePathname();
 
@@ -239,10 +242,149 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
                 content={"Create AppGroup"}
                 color="secondary"
               >
-                <Link className="mt-2"
+                <Link
+                  className="mt-2"
                   size="sm"
-                  onPress={() => setOpenAppGroupPopover(true)}
-                  // onClick={() => dispatch(setApplicationName(""))}
+                  // onPress={() => setOpenAppGroupPopover(true)}
+                  onPress={() => {
+                    dispatch(setIsProps()),
+                      dispatch(
+                        setPropsJson({
+                          AG: [
+                            {
+                              code: "",
+
+                              name: "",
+
+                              description: "",
+
+                              icon: "",
+
+                              roles: [
+                                { code: "ADMIN", name: "ADMIN" },
+                                { code: "MAKER", name: "MAKER" },
+                              ],
+
+                              APPS: [
+                                {
+                                  code: "IPP",
+
+                                  name: "InstantPaymentPlatform",
+
+                                  description:
+                                    "Instant payment platform governed by AEP(AlEthihad Payments)",
+
+                                  icon: "",
+
+                                  roles: [
+                                    { code: "CHECKER", name: "CHECKER" },
+                                    { code: "MAKER", name: "MAKER" },
+                                  ],
+                                },
+
+                                {
+                                  code: "EDDA",
+
+                                  name: "ElectronicDirectDebitAuthorization",
+
+                                  description:
+                                    "Electronic DirectDebit Authorization governed by AEP(AlEthihad Payments)",
+
+                                  icon: "",
+
+                                  roles: [
+                                    { code: "CHECKER", name: "CHECKER" },
+                                    { code: "MAKER", name: "MAKER" },
+                                  ],
+                                },
+
+                                {
+                                  code: "ECHEQUE",
+
+                                  name: "ElectronicDirectDebitAuthorization",
+
+                                  description:
+                                    "Electronic DirectDebit Authorization governed by AEP(AlEthihad Payments)",
+
+                                  icon: "",
+
+                                  roles: [
+                                    { code: "CHECKER", name: "CHECKER" },
+                                    { code: "MAKER", name: "MAKER" },
+                                  ],
+                                },
+                              ],
+                            },
+
+                            {
+                              code: "FPS",
+
+                              name: "FastPaymentSystem",
+
+                              description:
+                                "Fast Payment System by Federal Reserve(USA)",
+
+                              icon: "",
+
+                              roles: [
+                                { code: "ADMIN", name: "ADMIN" },
+                                { code: "MAKER", name: "MAKER" },
+                              ],
+
+                              APPS: [
+                                {
+                                  code: "FEDNOW",
+
+                                  name: "FEDNOW Service",
+
+                                  description:
+                                    "FEDNOW Service by Federal Reserve(USA)",
+
+                                  icon: "",
+
+                                  roles: [
+                                    { code: "CHECKER", name: "CHECKER" },
+                                    { code: "MAKER", name: "MAKER" },
+                                  ],
+                                },
+
+                                {
+                                  code: "FEDWIRE",
+
+                                  name: "FEDWIRE",
+
+                                  description:
+                                    "FEDWIRE Service by Federal Reserve(USA)",
+
+                                  icon: "",
+
+                                  roles: [
+                                    { code: "CHECKER", name: "CHECKER" },
+                                    { code: "MAKER", name: "MAKER" },
+                                  ],
+                                },
+
+                                {
+                                  code: "FEDACH",
+
+                                  name: "FEDACH",
+
+                                  description:
+                                    "FEDACH Service by Federal Reserve(USA)",
+
+                                  icon: "",
+
+                                  roles: [
+                                    { code: "CHECKER", name: "CHECKER" },
+                                    { code: "MAKER", name: "MAKER" },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        })
+                      );
+                  }}
                 >
                   <FaFolderPlus size={20} />
                 </Link>
@@ -316,10 +458,150 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
                 content={"Create Application"}
                 color="secondary"
               >
-                <Link className="mt-2"
+                <Link
+                  className="mt-2"
                   size="sm"
-                  onPress={() => setOpenApplicationPopover(true)}
-                  // onClick={() => dispatch(setApplicationName(""))}
+                  // onPress={() => setOpenApplicationPopover(true)}
+                  onPress={() => {
+                    dispatch(setIsProps()),
+                      dispatch(
+                        setPropsJson({
+                          AG: [
+                            {
+                              code: "NPSS",
+
+                              name: "National Payment System Strategy",
+
+                              description:
+                                "National Payment System Strategy by CBUAE",
+
+                              icon: "",
+
+                              roles: [
+                                { code: "ADMIN", name: "ADMIN" },
+                                { code: "MAKER", name: "MAKER" },
+                              ],
+
+                              APPS: [
+                                {
+                                  code: "IPP",
+
+                                  name: "InstantPaymentPlatform",
+
+                                  description:
+                                    "Instant payment platform governed by AEP(AlEthihad Payments)",
+
+                                  icon: "",
+
+                                  roles: [
+                                    { code: "CHECKER", name: "CHECKER" },
+                                    { code: "MAKER", name: "MAKER" },
+                                  ],
+                                },
+
+                                {
+                                  code: "EDDA",
+
+                                  name: "ElectronicDirectDebitAuthorization",
+
+                                  description:
+                                    "Electronic DirectDebit Authorization governed by AEP(AlEthihad Payments)",
+
+                                  icon: "",
+
+                                  roles: [
+                                    { code: "CHECKER", name: "CHECKER" },
+                                    { code: "MAKER", name: "MAKER" },
+                                  ],
+                                },
+
+                                {
+                                  code: "ECHEQUE",
+
+                                  name: "ElectronicDirectDebitAuthorization",
+
+                                  description:
+                                    "Electronic DirectDebit Authorization governed by AEP(AlEthihad Payments)",
+
+                                  icon: "",
+
+                                  roles: [
+                                    { code: "CHECKER", name: "CHECKER" },
+                                    { code: "MAKER", name: "MAKER" },
+                                  ],
+                                },
+                              ],
+                            },
+
+                            {
+                              code: "FPS",
+
+                              name: "FastPaymentSystem",
+
+                              description:
+                                "Fast Payment System by Federal Reserve(USA)",
+
+                              icon: "",
+
+                              roles: [
+                                { code: "ADMIN", name: "ADMIN" },
+                                { code: "MAKER", name: "MAKER" },
+                              ],
+
+                              APPS: [
+                                {
+                                  code: "FEDNOW",
+
+                                  name: "FEDNOW Service",
+
+                                  description:
+                                    "FEDNOW Service by Federal Reserve(USA)",
+
+                                  icon: "",
+
+                                  roles: [
+                                    { code: "CHECKER", name: "CHECKER" },
+                                    { code: "MAKER", name: "MAKER" },
+                                  ],
+                                },
+
+                                {
+                                  code: "FEDWIRE",
+
+                                  name: "FEDWIRE",
+
+                                  description:
+                                    "FEDWIRE Service by Federal Reserve(USA)",
+
+                                  icon: "",
+
+                                  roles: [
+                                    { code: "CHECKER", name: "CHECKER" },
+                                    { code: "MAKER", name: "MAKER" },
+                                  ],
+                                },
+
+                                {
+                                  code: "FEDACH",
+
+                                  name: "FEDACH",
+
+                                  description:
+                                    "FEDACH Service by Federal Reserve(USA)",
+
+                                  icon: "",
+
+                                  roles: [
+                                    { code: "CHECKER", name: "CHECKER" },
+                                    { code: "MAKER", name: "MAKER" },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        })
+                      );
+                  }}
                 >
                   <FaFileCirclePlus size={20} />
                 </Link>
@@ -487,8 +769,13 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
           </NavbarItem>
         )} */}
         <NavbarItem>
-          <Switch className="mt-2" size="sm" color="primary" onClick={toggleTheme}>
-            {theme == "dark" ? "" : "" }
+          <Switch
+            className="mt-2"
+            size="sm"
+            color="primary"
+            onClick={toggleTheme}
+          >
+            {theme == "dark" ? "" : ""}
           </Switch>
         </NavbarItem>
 
