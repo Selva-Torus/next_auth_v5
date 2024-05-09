@@ -331,11 +331,12 @@ const RenderTooltip = ({ tooltip }) => {
 
 const AccordianWindow = ({}) => {
   const PropsJson = useSelector((state: RootState) => state.main.PropsJson);
+  const appGroup = useSelector((state: RootState) => state.main.appGroup);
   const [value, setValue] = useState(null);
 
   const [keyJson, setKeyJson] = useState({});
 
-  const [dupjson, setDupjson] = useState(PropsJson);
+  const [dupjson, setDupjson] = useState({});
 
   const [tooltip, setTooltip] = useState(null);
 
@@ -374,16 +375,20 @@ const AccordianWindow = ({}) => {
 
     setTooltip(keyJson[key]);
   };
+  // useEffect(() => {
+  //   setDupjson(PropsJson);
+  //   console.log(appGroup);
+  // }, [appGroup]);
 
   return (
-    <div className="w-[20%] overflow-scroll scrollbar-hide h-full bg-[#214572]">
-      {dupjson && (
-        <div className="flex flex-col gap-2 p-3 w-[100%] border-none  h-full  text-white bg-[#214572] dark:bg-orange-400">
-          {Object.keys(dupjson).map((key, index) => (
+    <div className="w-[30%] overflow-scroll scrollbar-hide h-full ">
+      {PropsJson && (
+        <div className="flex flex-col gap-2 p-3 w-[100%] border-none  h-full  text-white  dark:bg-orange-400">
+          {Object.keys(PropsJson).map((key, index) => (
             <>
-              {typeof dupjson[key] === "object" ? (
+              {typeof PropsJson[key] === "object" ? (
                 <Accordion
-                  defaultExpandedKeys={[Object.keys(dupjson)[0]]}
+                  defaultExpandedKeys={[Object.keys(PropsJson)[0]]}
                   key={index}
                   itemClasses={{
                     title: "text-white/90 px-2 border-none",
@@ -462,9 +467,9 @@ const AccordianWindow = ({}) => {
                       </div>
                     }
                   >
-                    {typeof dupjson[key] === "object" && (
+                    {typeof PropsJson[key] === "object" && (
                       <RenderAccordion
-                        data={dupjson[key]}
+                        data={PropsJson[key]}
                         path={key}
                         handlejs={handlejs}
                         keyJson={keyJson}
@@ -543,7 +548,7 @@ const AccordianWindow = ({}) => {
                       onValueChange={(e) => {
                         // handleChange(e);
                       }}
-                      defaultValue={dupjson[key]}
+                      defaultValue={PropsJson[key]}
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           handlejs(value, key);

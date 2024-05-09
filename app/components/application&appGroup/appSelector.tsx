@@ -46,6 +46,8 @@ const appSelector = () => {
 
         setApplicationGroup(allData.data);
         setSelectedAppGroup(allData.data[0]);
+        // console.log(allData.data[0]);
+        dispatch(setAppGroup(allData.data[0]));
         setFallBack(false);
       }
     } catch (error) {
@@ -82,6 +84,15 @@ const appSelector = () => {
       setFallBack(false);
     }, Infinity);
   }, []);
+
+  const getPropsApplicationList = async () => {
+    const res = await fetch(
+      `http://192.168.2.110:3002/vpt/applicationList?tenant=GSS-DEV&appGroup=${appGroup}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => res.json());
+  };
 
   const handleAppGroupSelection = (appGroup: string) => {
     setSelectedAppGroup(appGroup);

@@ -28,6 +28,7 @@ const Assembler = () => {
       // console.log(res);
       if (res.data.data) {
         setAllApplications(res.data.data);
+
         setviewAllApplications(res.data.data);
       } else {
         toast.error("There is no ModelKey found for the AssemblerKey");
