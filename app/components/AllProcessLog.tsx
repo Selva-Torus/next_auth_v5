@@ -364,7 +364,7 @@ const AllProcessLog = ({ data }: any) => {
           className="w-full h-full"
           aria-label="Example table with client side sorting"
           classNames={{
-            base: "max-h-[450px] overflow-scroll scrollbar-hide",
+            base: "max-h-[405px] overflow-scroll scrollbar-hide",
             table: "min-h-[410px]",
           }}
         >
