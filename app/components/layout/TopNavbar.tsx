@@ -24,10 +24,10 @@ import {
   PopoverTrigger,
   Tooltip,
   useDisclosure,
-  Switch
+  Switch,
 } from "@nextui-org/react";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { IoSearchSharp } from "react-icons/io5";
 import { FcOk } from "react-icons/fc";
@@ -50,6 +50,8 @@ import { useTheme } from "next-themes";
 import {
   setAppGroup,
   setApplicationName,
+  setIsProps,
+  setPropsJson,
 } from "@/app/utilsFunctions/Store/Reducers/MainSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/utilsFunctions/Store/store";
@@ -71,6 +73,28 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
   const [openApplicationPopover, setOpenApplicationPopover] = useState(false);
   const dispatch = useDispatch();
   const appGroup = useSelector((state: RootState) => state.main.appGroup);
+  useEffect(() => {
+    dispatch(
+      setPropsJson({
+        [appGroup]: {
+          APP: [
+            {
+              code: "",
+
+              name: "",
+
+              description: "",
+
+              icon: "",
+
+              roles: [{ code: "", name: "" }],
+            },
+          ],
+        },
+      })
+    );
+  }, [appGroup]);
+
   const router = useRouter();
   const pathname = usePathname();
 
@@ -140,7 +164,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
         <NavbarItem>
           <Tooltip placement={"bottom"} content={"Help Menu"} color="secondary">
             <div onClick={() => setopen(true)}>
-              <AiOutlineQuestionCircle className="w-6 h-6 text-black dark:text-white" />
+              <AiOutlineQuestionCircle className="w-6 h-6" />
             </div>
           </Tooltip>
           <Modal size={"sm"} isOpen={open} onOpenChange={setopen}>
@@ -183,7 +207,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
             color="secondary"
           >
             <div onClick={onOpen}>
-              <MdOutlineKeyboardCommandKey className="w-6 h-6  text-black dark:text-white" />
+              <MdOutlineKeyboardCommandKey className="w-6 h-6" />
             </div>
           </Tooltip>
           <Modal size={"xs"} isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -224,7 +248,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
             color="secondary"
           >
             <div>
-              <IoSearchSharp className="w-6 h-6  text-black dark:text-white" />
+              <IoSearchSharp className="w-6 h-6" />
             </div>
           </Tooltip>
         </NavbarItem>
@@ -239,10 +263,32 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
                 content={"Create AppGroup"}
                 color="secondary"
               >
-                <Link className="mt-2"
+                <Link
+                  className="mt-2"
                   size="sm"
-                  onPress={() => setOpenAppGroupPopover(true)}
-                  // onClick={() => dispatch(setApplicationName(""))}
+                  // onPress={() => setOpenAppGroupPopover(true)}
+                  onPress={() => {
+                    dispatch(setIsProps()),
+                      dispatch(
+                        setPropsJson({
+                          GSS_DEV: {
+                            AG: [
+                              {
+                                code: "",
+
+                                name: "",
+
+                                description: "",
+
+                                icon: "",
+
+                                roles: [{ code: "", name: "" }],
+                              },
+                            ],
+                          },
+                        })
+                      );
+                  }}
                 >
                   <FaFolderPlus size={20} />
                 </Link>
@@ -316,10 +362,32 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
                 content={"Create Application"}
                 color="secondary"
               >
-                <Link className="mt-2"
+                <Link
+                  className="mt-2"
                   size="sm"
-                  onPress={() => setOpenApplicationPopover(true)}
-                  // onClick={() => dispatch(setApplicationName(""))}
+                  // onPress={() => setOpenApplicationPopover(true)}
+                  onPress={() => {
+                    dispatch(setIsProps());
+                    dispatch(
+                      setPropsJson({
+                        [appGroup]: {
+                          APP: [
+                            {
+                              code: "",
+
+                              name: "",
+
+                              description: "",
+
+                              icon: "",
+
+                              roles: [{ code: "", name: "" }],
+                            },
+                          ],
+                        },
+                      })
+                    );
+                  }}
                 >
                   <FaFileCirclePlus size={20} />
                 </Link>
@@ -398,11 +466,11 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
           </NavbarItem>
         )}
         <NavbarItem>
-          <Tooltip
+          {/* <Tooltip
             placement={"bottom"}
-            content={"It's been 28 days since you last saved a new version."}
+            content={"Version."}
             color="secondary"
-          >
+          > */}
             <Dropdown>
               <DropdownTrigger>
                 <div className="flex items-center">
@@ -415,7 +483,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
                 <DropdownItem key="copy">App 2</DropdownItem>
               </DropdownMenu>
             </Dropdown>
-          </Tooltip>
+          {/* </Tooltip> */}
         </NavbarItem>
 
         {/* <div className="hover:border-1 hover:rounded-xl "> */}
@@ -487,8 +555,13 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
           </NavbarItem>
         )} */}
         <NavbarItem>
-          <Switch className="mt-2" size="sm" color="primary" onClick={toggleTheme}>
-            {theme == "dark" ? "" : "" }
+          <Switch
+            className="mt-2"
+            size="sm"
+            color="primary"
+            onClick={toggleTheme}
+          >
+            {theme == "dark" ? "" : ""}
           </Switch>
         </NavbarItem>
 
