@@ -1,11 +1,14 @@
 import React, { useContext } from "react";
 import { useState, useEffect } from "react";
 import { Button, Input } from "@nextui-org/react";
-import JsonValue from "../../utilsFunctions/ulits/newdata.json";
 import { Accordion, AccordionItem, Tooltip } from "@nextui-org/react";
 import { AiOutlineInfoCircle } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/utilsFunctions/Store/store";
+import _ from "lodash";
+import { createApp, createAppGroup } from "@/app/utilsFunctions/ulits/redisFunctions";
+import { toast } from "react-toastify";
+import { setAppGroup, setApplicationName, setIsProps } from "@/app/utilsFunctions/Store/Reducers/MainSlice";
 
 const RenderAccordion = ({
   data,
@@ -29,7 +32,6 @@ const RenderAccordion = ({
     <>
       {Object.keys(data).map((key, index) => {
         const currentPath = `${path}.${key}`;
-        console.log(currentPath, "currentPath");
         if (typeof data[key] === "object" && !Array.isArray(data[key])) {
           return (
             <div className="mb-4" key={index}>
@@ -76,7 +78,7 @@ const RenderAccordion = ({
             <div className="">
               <Accordion
                 key={key}
-                itemClasses={{ title: "text-white/90" }}
+                // itemClasses={{ title: "text-white/90" }}
                 className={`flex flex-row text-base gap-4 px-2 border-none`}
                 variant="light"
               >
@@ -99,7 +101,7 @@ const RenderAccordion = ({
                         {key}
                       </span>
 
-                      {console.log(key.length, "keylength")}
+                      {/* {console.log(key.length, "keylength")} */}
 
                       {keyJson && keyJson.hasOwnProperty(currentPath) && (
                         <Tooltip
@@ -182,7 +184,7 @@ const RenderAccordion = ({
             <div className="">
               <Accordion
                 key={key}
-                itemClasses={{ title: "text-white/90" }}
+                // itemClasses={{ title: "text-white/90" }}
                 className={`flex flex-row text-base gap-4 px-2 border-none `}
                 variant="light"
               >
@@ -268,7 +270,7 @@ const RenderAccordion = ({
                           setHandleValue(e as any);
                         }}
                         defaultValue={item}
-                        onKeyDown={(e) => {
+                        onKeyUp={(e) => {
                           if (e.key === "Enter") {
                             console.log(currentPath + "." + index, "string");
 
@@ -297,10 +299,10 @@ const RenderAccordion = ({
                       setHandleValue(e as any);
                     }}
                     defaultValue={data[key]}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handlejs(handleValue, currentPath);
-                      }
+                    onKeyUp={(e) => {
+                      // if (e.key === "Enter") {
+                      handlejs(handleValue, currentPath);
+                      // }
                     }}
                   />
                 </>
@@ -332,11 +334,15 @@ const RenderTooltip = ({ tooltip }) => {
 const AccordianWindow = ({}) => {
   const PropsJson = useSelector((state: RootState) => state.main.PropsJson);
   const appGroup = useSelector((state: RootState) => state.main.appGroup);
+  const dispatch = useDispatch();
+  const isAppOrGroup = useSelector(
+    (state: RootState) => state.main.isAppOrGroup
+  );
   const [value, setValue] = useState(null);
 
   const [keyJson, setKeyJson] = useState({});
 
-  const [dupjson, setDupjson] = useState({});
+  const [dupjson, setDupjson] = useState(PropsJson);
 
   const [tooltip, setTooltip] = useState(null);
 
@@ -358,9 +364,9 @@ const AccordianWindow = ({}) => {
     if (i) {
       const js = structuredClone(dupjson);
 
-      // _.set(js as any, i, e) ;
+      _.set(js as any, i, e);
 
-      setDupjson(JsonValue);
+      setDupjson(js);
 
       // setSidebarData(js);
 
@@ -380,34 +386,180 @@ const AccordianWindow = ({}) => {
   //   console.log(appGroup);
   // }, [appGroup]);
 
+  const postAllApplicationGroup = async (tenant , group) => {
+    try {
+      console.log(group);
+      
+      if (group) {
+        const newGroup = await fetch(
+          `http://192.168.2.110:3002/vpt/appGroupCreate?tenant=${tenant}&appGroup=${group}`,
+          {
+            method: "POST",
+          }
+        ).then((res) => {
+          dispatch(setAppGroup(group));
+          res.json();
+          dispatch(setIsProps())
+          toast.success('New AppGroup created')
+        });
+      } else {
+        toast.error("Invalid AppGroup Credentials, Please check");
+      }
+    } catch (error) {
+      toast.error("Invalid AppGroup Credentials, Please check AppGroup Name is already exist");
+
+      throw error;
+    }
+  };
+
+  const postAllApplication = async (tenant , localApp) => {
+    try {
+      if (appGroup && localApp) {
+        const newApp = await fetch(
+          `http://192.168.2.110:3002/vpt/applicationCreate?tenant=GSS-DEV&appGroup=${appGroup}&applicationName=${localApp}`,
+          {
+            method: "POST",
+          }
+        ).then((res) => {
+          dispatch(setApplicationName(localApp));
+          res.json();
+          dispatch(setIsProps())
+          toast.success("New Application created successfully")
+        });
+      } else {
+        toast.error(
+          "Please enter valid Application Name and corresponding AppGroup"
+        );
+      }
+    } catch (error) {
+      toast.error(
+        "Please enter valid Application Name and corresponding AppGroup"
+      );
+      throw error;
+    }
+  };
+
+
+  const handleFunctions = async() => {
+    if(isAppOrGroup.group){
+    const res =await createAppGroup(JSON.stringify(dupjson) , localStorage.getItem('tenant'));
+      if(res?.data){
+        await postAllApplicationGroup(localStorage.getItem('tenant') , res.data)
+      }
+    }else if(isAppOrGroup.app){
+      console.log(dupjson , "app");
+      const res = await createApp(JSON.stringify(dupjson) , localStorage.getItem('tenant') , appGroup);
+      if(res?.data){
+        await postAllApplication(localStorage.getItem('tenant') , res.data)
+      }      
+    }
+  }
+
   return (
-    <div className="w-[30%] overflow-scroll scrollbar-hide h-full ">
+    <div className="w-[30%] h-full border">
       {PropsJson && (
-        <div className="flex flex-col gap-2 p-3 w-[100%] border-none  h-full  text-white  dark:bg-orange-400">
-          {Object.keys(PropsJson).map((key, index) => (
-            <>
-              {typeof PropsJson[key] === "object" ? (
-                <Accordion
-                  defaultExpandedKeys={[Object.keys(PropsJson)[0]]}
-                  key={index}
-                  itemClasses={{
-                    title: "text-white/90 px-2 border-none",
-                  }}
-                  className={`flex flex-col text-basegap-4 h-[60%] text-white/90 px-2 border-none`}
-                  variant="bordered"
-                >
-                  <AccordionItem
-                    textValue="dd"
-                    key={key}
-                    className=""
-                    title={
-                      <div
-                        className="flex items-center text-white/90 justify-between gap-2 my-2 "
-                        style={{
-                          width: "30%",
-                        }}
-                      >
-                        <span>{key}</span>
+        <>
+          <div className="flex flex-col gap-2 p-3 w-[100%] border-none h-[90%] overflow-scroll scrollbar-hide text-white  dark:bg-orange-400">
+            {Object.keys(PropsJson).map((key, index) => (
+              <>
+                {typeof PropsJson[key] === "object" ? (
+                  <Accordion
+                    defaultExpandedKeys={[Object.keys(PropsJson)[0]]}
+                    key={index}
+                    // itemClasses={{
+                    //   title: "text-white/90 px-2 border-none",
+                    // }}
+                    className={`flex flex-col text-basegap-4 h-[60%] px-2 border-none`}
+                    variant="bordered"
+                  >
+                    <AccordionItem
+                      textValue="dd"
+                      key={key}
+                      className=""
+                      title={
+                        <div
+                          className="flex items-center justify-between gap-2 my-2 "
+                          style={{
+                            width: "30%",
+                          }}
+                        >
+                          <span>{key}</span>
+
+                          {keyJson && keyJson.hasOwnProperty(key) && (
+                            <Tooltip
+                              content={
+                                visible ? (
+                                  <>
+                                    <RenderTooltip tooltip={tooltip} />
+                                  </>
+                                ) : null
+                              }
+                              motionProps={{
+                                variants: {
+                                  exit: {
+                                    opacity: 0,
+
+                                    transition: {
+                                      duration: 0.1,
+
+                                      ease: "easeIn",
+                                    },
+                                  },
+
+                                  enter: {
+                                    opacity: 1,
+
+                                    transition: {
+                                      duration: 0.15,
+
+                                      ease: "easeOut",
+                                    },
+                                  },
+                                },
+                              }}
+                              showArrow
+                              placement="right"
+                              closeDelay={50}
+                              delay={10}
+                              classNames={{
+                                base: [
+                                  "before:bg-neutral-400 dark:before:bg-white width-[300px]",
+                                ],
+
+                                content: [
+                                  "py-2 px-4 shadow-xl w-[300px] max-h-[450px] ",
+
+                                  "text-white ",
+                                ],
+                              }}
+                            >
+                              <div className="flex gap-2 items-center">
+                                <span onMouseEnter={() => handleTooltip(key)}>
+                                  <AiOutlineInfoCircle color="black" />
+                                </span>
+                              </div>
+                            </Tooltip>
+                          )}
+                        </div>
+                      }
+                    >
+                      {typeof PropsJson[key] === "object" && (
+                        <RenderAccordion
+                          data={PropsJson[key]}
+                          path={key}
+                          handlejs={handlejs}
+                          keyJson={keyJson}
+                          tooltip={tooltip}
+                          setTooltip={setTooltip}
+                        />
+                      )}
+                    </AccordionItem>
+                  </Accordion>
+                ) : (
+                  <>
+                    <div className=" " key={index}>
+                      <div className="flex  gap-2 items-center mb-2">
+                        {key}
 
                         {keyJson && keyJson.hasOwnProperty(key) && (
                           <Tooltip
@@ -453,114 +605,42 @@ const AccordianWindow = ({}) => {
                               content: [
                                 "py-2 px-4 shadow-xl w-[300px] max-h-[450px] ",
 
-                                "text-white ",
+                                "text-black ",
                               ],
                             }}
                           >
-                            <div className="flex gap-2 items-center">
-                              <span onMouseEnter={() => handleTooltip(key)}>
-                                <AiOutlineInfoCircle color="black" />
-                              </span>
-                            </div>
+                            <span onMouseEnter={() => handleTooltip(key)}>
+                              <AiOutlineInfoCircle color="white" />
+                            </span>
                           </Tooltip>
                         )}
                       </div>
-                    }
-                  >
-                    {typeof PropsJson[key] === "object" && (
-                      <RenderAccordion
-                        data={PropsJson[key]}
-                        path={key}
-                        handlejs={handlejs}
-                        keyJson={keyJson}
-                        tooltip={tooltip}
-                        setTooltip={setTooltip}
-                      />
-                    )}
-                  </AccordionItem>
-                </Accordion>
-              ) : (
-                <>
-                  <div className=" " key={index}>
-                    <div className="flex  gap-2 items-center mb-2">
-                      {key}
 
-                      {keyJson && keyJson.hasOwnProperty(key) && (
-                        <Tooltip
-                          content={
-                            visible ? (
-                              <>
-                                <RenderTooltip tooltip={tooltip} />
-                              </>
-                            ) : null
+                      <Input
+                        isClearable
+                        labelPlacement="outside"
+                        radius="lg"
+                        className="text-gray-700 shadow-md"
+                        onValueChange={(e) => {
+                          // handleChange(e);
+                        }}
+                        defaultValue={PropsJson[key]}
+                        onKeyUp={(e) => {
+                          if (e.key === "Enter") {
+                            handlejs(value, key);
                           }
-                          motionProps={{
-                            variants: {
-                              exit: {
-                                opacity: 0,
-
-                                transition: {
-                                  duration: 0.1,
-
-                                  ease: "easeIn",
-                                },
-                              },
-
-                              enter: {
-                                opacity: 1,
-
-                                transition: {
-                                  duration: 0.15,
-
-                                  ease: "easeOut",
-                                },
-                              },
-                            },
-                          }}
-                          showArrow
-                          placement="right"
-                          closeDelay={50}
-                          delay={10}
-                          classNames={{
-                            base: [
-                              "before:bg-neutral-400 dark:before:bg-white width-[300px]",
-                            ],
-
-                            content: [
-                              "py-2 px-4 shadow-xl w-[300px] max-h-[450px] ",
-
-                              "text-black ",
-                            ],
-                          }}
-                        >
-                          <span onMouseEnter={() => handleTooltip(key)}>
-                            <AiOutlineInfoCircle color="white" />
-                          </span>
-                        </Tooltip>
-                      )}
+                        }}
+                      />
                     </div>
-
-                    <Input
-                      isClearable
-                      labelPlacement="outside"
-                      radius="lg"
-                      className="text-gray-700 shadow-md"
-                      onValueChange={(e) => {
-                        // handleChange(e);
-                      }}
-                      defaultValue={PropsJson[key]}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          handlejs(value, key);
-                        }
-                      }}
-                    />
-                  </div>
-                </>
-              )}
-            </>
-          ))}
-        </div>
+                  </>
+                )}
+              </>
+            ))}
+          </div>
+          <Button color="primary" className="w-full" onClick={handleFunctions}>
+            Save changes
+          </Button>
+        </>
       )}
     </div>
   );

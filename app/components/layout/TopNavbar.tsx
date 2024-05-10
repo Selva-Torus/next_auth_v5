@@ -50,6 +50,7 @@ import { useTheme } from "next-themes";
 import {
   setAppGroup,
   setApplicationName,
+  setIsAppOrGroup,
   setIsProps,
   setPropsJson,
 } from "@/app/utilsFunctions/Store/Reducers/MainSlice";
@@ -77,7 +78,7 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
     dispatch(
       setPropsJson({
         [appGroup]: {
-          APP: [
+          APP: 
             {
               code: "",
 
@@ -89,7 +90,6 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
 
               roles: [{ code: "", name: "" }],
             },
-          ],
         },
       })
     );
@@ -268,11 +268,12 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
                   size="sm"
                   // onPress={() => setOpenAppGroupPopover(true)}
                   onPress={() => {
-                    dispatch(setIsProps()),
+                    dispatch(setIsProps());
+                      dispatch(setIsAppOrGroup({ app: false, group: true }));
                       dispatch(
                         setPropsJson({
-                          GSS_DEV: {
-                            AG: [
+                          [localStorage.getItem('tenant') as string ?? "GSS-DEV"]: {
+                            AG: 
                               {
                                 code: "",
 
@@ -283,8 +284,9 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
                                 icon: "",
 
                                 roles: [{ code: "", name: "" }],
+
+                                APPS: [],
                               },
-                            ],
                           },
                         })
                       );
@@ -368,10 +370,11 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
                   // onPress={() => setOpenApplicationPopover(true)}
                   onPress={() => {
                     dispatch(setIsProps());
+                    dispatch(setIsAppOrGroup({ app: true, group: false }));
                     dispatch(
                       setPropsJson({
                         [appGroup]: {
-                          APP: [
+                          APP:
                             {
                               code: "",
 
@@ -383,7 +386,6 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
 
                               roles: [{ code: "", name: "" }],
                             },
-                          ],
                         },
                       })
                     );
@@ -471,18 +473,18 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
             content={"Version."}
             color="secondary"
           > */}
-            <Dropdown>
-              <DropdownTrigger>
-                <div className="flex items-center">
-                  <CgRedo className="w-7 h-7 " />
-                  v1
-                </div>
-              </DropdownTrigger>
-              <DropdownMenu aria-label="Static Actions">
-                <DropdownItem key="new">App 1</DropdownItem>
-                <DropdownItem key="copy">App 2</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+          <Dropdown>
+            <DropdownTrigger>
+              <div className="flex items-center">
+                <CgRedo className="w-7 h-7 " />
+                v1
+              </div>
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Static Actions">
+              <DropdownItem key="new">App 1</DropdownItem>
+              <DropdownItem key="copy">App 2</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
           {/* </Tooltip> */}
         </NavbarItem>
 
