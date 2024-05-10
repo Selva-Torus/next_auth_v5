@@ -5,7 +5,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Image,
   Input,
   Kbd,
   Link,
@@ -58,6 +57,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/utilsFunctions/Store/store";
 import { toast } from "react-toastify";
 import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface TopNavbarProps {
   Logout: () => void;
@@ -157,8 +157,8 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
         <NavbarMenuToggle />
       </NavbarContent>
       <NavbarBrand className="font-bold text-inherit">
-        <Image src={logo.src} alt="torus-logo" className="w-12 h-10" />
-        <span className="text-2xl">Torus</span>
+        <Image src={logo} alt="torus-logo" className="w-12 h-10" />
+        <span className="text-3xl">Torus</span>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>

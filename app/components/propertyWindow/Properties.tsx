@@ -637,7 +637,7 @@ const AccordianWindow = ({}) => {
               </>
             ))}
           </div>
-          <Button color="primary" className="w-full" onClick={handleFunctions}>
+          <Button color="primary" className="w-full mt-3" onClick={handleFunctions}>
             Save changes
           </Button>
         </>
