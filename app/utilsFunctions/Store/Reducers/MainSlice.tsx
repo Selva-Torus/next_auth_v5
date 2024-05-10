@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+interface isAppOrGroup {
+    app : boolean;
+    group : boolean
+}
+
 interface NextUIState {
   tenant: string;
   appGroup: string;
@@ -7,6 +12,7 @@ interface NextUIState {
   fabric: string;
   isProps: boolean;
   PropsJson: any;
+  isAppOrGroup : isAppOrGroup
 }
 
 const initialState: NextUIState = {
@@ -16,6 +22,10 @@ const initialState: NextUIState = {
   fabric: "UF",
   isProps: false,
   PropsJson: {},
+  isAppOrGroup : {
+    app: false,
+    group : false
+  }
 };
 
 const MainStates = createSlice({
@@ -40,6 +50,9 @@ const MainStates = createSlice({
     setPropsJson: (state, action: PayloadAction<any>) => {
       state.PropsJson = action.payload;
     },
+    setIsAppOrGroup: (state , action:PayloadAction<isAppOrGroup>) =>{
+      state.isAppOrGroup = action.payload;
+    }
   },
 });
 
@@ -50,6 +63,7 @@ export const {
   setApplicationName,
   setIsProps,
   setPropsJson,
+  setIsAppOrGroup
 } = MainStates.actions;
 
 export default MainStates.reducer;
