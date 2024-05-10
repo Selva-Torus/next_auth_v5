@@ -27,8 +27,8 @@ import {
 } from "@nextui-org/react";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { FaUserCircle } from "react-icons/fa";
-import { IoSearchSharp } from "react-icons/io5";
+import { FaMoon, FaUserCircle } from "react-icons/fa";
+import { IoSearchSharp, IoSunny } from "react-icons/io5";
 import { FcOk } from "react-icons/fc";
 import { LiaComments } from "react-icons/lia";
 import { GrBug } from "react-icons/gr";
@@ -78,18 +78,17 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
     dispatch(
       setPropsJson({
         [appGroup]: {
-          APP: 
-            {
-              code: "",
+          APP: {
+            code: "",
 
-              name: "",
+            name: "",
 
-              description: "",
+            description: "",
 
-              icon: "",
+            icon: "",
 
-              roles: [{ code: "", name: "" }],
-            },
+            roles: [{ code: "", name: "" }],
+          },
         },
       })
     );
@@ -97,8 +96,6 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
 
   const router = useRouter();
   const pathname = usePathname();
-
-  // console.log(pathname, "gjhfbh");
 
   const postAllApplicationGroup = async () => {
     try {
@@ -116,7 +113,6 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
       } else {
         toast.error("Please Enter AppGroup Name");
       }
-      // setApplicationGroup(newGroup);
     } catch (error) {
       throw error;
     }
@@ -269,27 +265,27 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
                   // onPress={() => setOpenAppGroupPopover(true)}
                   onPress={() => {
                     dispatch(setIsProps());
-                      dispatch(setIsAppOrGroup({ app: false, group: true }));
-                      dispatch(
-                        setPropsJson({
-                          [localStorage.getItem('tenant') as string ?? "GSS-DEV"]: {
-                            AG: 
-                              {
-                                code: "",
+                    dispatch(setIsAppOrGroup({ app: false, group: true }));
+                    dispatch(
+                      setPropsJson({
+                        [(localStorage.getItem("tenant") as string) ??
+                        "GSS-DEV"]: {
+                          AG: {
+                            code: "",
 
-                                name: "",
+                            name: "",
 
-                                description: "",
+                            description: "",
 
-                                icon: "",
+                            icon: "",
 
-                                roles: [{ code: "", name: "" }],
+                            roles: [{ code: "", name: "" }],
 
-                                APPS: [],
-                              },
+                            APPS: [],
                           },
-                        })
-                      );
+                        },
+                      })
+                    );
                   }}
                 >
                   <FaFolderPlus size={20} />
@@ -374,18 +370,17 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
                     dispatch(
                       setPropsJson({
                         [appGroup]: {
-                          APP:
-                            {
-                              code: "",
+                          APP: {
+                            code: "",
 
-                              name: "",
+                            name: "",
 
-                              description: "",
+                            description: "",
 
-                              icon: "",
+                            icon: "",
 
-                              roles: [{ code: "", name: "" }],
-                            },
+                            roles: [{ code: "", name: "" }],
+                          },
                         },
                       })
                     );
@@ -558,13 +553,15 @@ const TopNavbar: FunctionComponent<TopNavbarProps> = ({ Logout }) => {
         )} */}
         <NavbarItem>
           <Switch
-            className="mt-2"
+            className="select-none"
+            checked={theme == "dark" ? true : false}
+            onChange={() => toggleTheme()}
             size="sm"
             color="primary"
-            onClick={toggleTheme}
-          >
-            {theme == "dark" ? "" : ""}
-          </Switch>
+            thumbIcon={({ isSelected }) =>
+              isSelected ? <IoSunny color="#000" /> : <FaMoon color="#000" />
+            }
+          ></Switch>
         </NavbarItem>
 
         <NavbarItem>

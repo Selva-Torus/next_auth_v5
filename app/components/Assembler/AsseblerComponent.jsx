@@ -1,7 +1,10 @@
+"use client";
 import React, { useEffect, useState } from "react";
-// var set = require("lodash.set");
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { MdDeleteOutline } from "react-icons/md";
+import { GrChapterAdd } from "react-icons/gr";
+import { MdAddRoad } from "react-icons/md";
+import { FcSearch } from "react-icons/fc";
 
 import {
   Modal,
@@ -9,18 +12,12 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  Tooltip,
 } from "@nextui-org/react";
 
-import {
-  Tabs,
-  Tab,
-  Input,
-  useDisclosure,
-  Button,
-  menuItem,
-} from "@nextui-org/react";
+import { Tabs, Tab, Input, useDisclosure, Button } from "@nextui-org/react";
 import { AssemblerJson } from "@/app/utilsFunctions/ulits/Torus9x_AssemblerKey";
-import _, { split } from "lodash";
+import _ from "lodash";
 import {
   Table,
   TableHeader,
@@ -31,6 +28,8 @@ import {
 } from "@nextui-org/react";
 import RolesAssignModal from "./RolesAssignModal";
 import { LiaHandPointer } from "react-icons/lia";
+import { useTheme } from "next-themes";
+
 const columns = [
   {
     key: "MenuItems",
@@ -59,6 +58,8 @@ const columns = [
 ];
 
 const AssemblerComponent = () => {
+  const { theme, setTheme } = useTheme();
+
   if (
     AssemblerJson &&
     typeof AssemblerJson === "object" &&
@@ -71,6 +72,7 @@ const AssemblerComponent = () => {
     const [existingRoles, setExistingRoles] = useState([]);
     const [isAddNewGroup, setIsAddNewGroup] = useState(false);
     const [mgGroupName, setMgGroupName] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
     useEffect(() => {
       const data = [];
 
@@ -109,7 +111,6 @@ const AssemblerComponent = () => {
 
         data.push(group);
       });
-      // console.log(JSON.stringify(data));
 
       setMapingData(data);
     }, []);
@@ -182,9 +183,6 @@ const AssemblerComponent = () => {
 
       console.log(data[arr[0]].menuItems[arr[1]].Fabric[arr[2]]);
       data[arr[0]].menuItems[arr[1]].Fabric.splice(arr[2], 1);
-      // // console.log(data[path]);
-      // var newOne = _.unset(data, path);
-      // console.log(newOne);
       setMapingData(data);
     };
 
@@ -202,9 +200,6 @@ const AssemblerComponent = () => {
         version: "",
         roles: [],
       });
-      // // console.log(data[path]);
-      // var newOne = _.unset(data, path);
-      // console.log(newOne);
       setMapingData(data);
     };
 
@@ -227,14 +222,11 @@ const AssemblerComponent = () => {
       console.log(data);
       setMapingData(data);
       setIsAddNewGroup(false);
-      // console.log(data[path]);
     };
 
-    function handelAddMenuItemsGroup(index) {
-      console.log(index);
-      return;
+    function handelAddNewMenuItem(index) {
       const data = structuredClone(mapingData);
-      data[0].menuGroup[0].push({
+      data[index].menuItems.push({
         item: "mi1",
         Fabric: [
           { name: "df", modelkey: "", version: "", roles: [] },
@@ -243,133 +235,104 @@ const AssemblerComponent = () => {
         ],
         miroles: [],
       });
-      console.log(data);
       setMapingData(data);
-      setIsAddNewGroup(false);
-      // console.log(data[path]);
     }
+
+    const topContent = () => {
+      return (
+        <div className=" w-full flex">
+          <div className="flex justify-between w-full">
+            <Input
+              isClearable
+              classNames={{
+                base: "w-full sm:max-w-[44%]",
+                inputWrapper: "border-1",
+              }}
+              placeholder="Search by menu item..."
+              size="sm"
+              startContent={
+                <FcSearch size={20} className="text-default-300 " />
+              }
+              onChange={(e) => setSearchTerm(e.target.value)}
+              variant="bordered"
+            />
+            <div className="flex gap-2">
+              <Tooltip content="Add New Menu Group">
+                <Button
+                  color="success"
+                  size="sm"
+                  onClick={() => setIsAddNewGroup(true)}
+                >
+                  <GrChapterAdd size={20} />
+                </Button>
+              </Tooltip>
+              <Button size="sm" onClick={convertData}>
+                save
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+    };
 
     return (
       <div className="w-[78vw] h-full">
         <h2 className="text-center">Assembler key</h2>
-        <div className="w-full flex justify-end">
-          <Button onClick={convertData}>save</Button>
-        </div>
         <div className="w-full flex flex-col">
           <Tabs aria-label="Options">
             {mapingData.map((ele, index) => (
               <Tab key={ele.menuGroup} title={ele.menuGroup}>
                 <Table
                   isHeaderSticky
+                  topContent={topContent()}
                   aria-label="Example static collection table"
                   classNames={{
-                    base: "max-h-[430px] overflow-scroll scrollbar-hide",
-                    // table: "min-h-[460px]",
+                    base: "max-h-[490px] overflow-scroll scrollbar-hide",
                   }}
                   bottomContent={
                     <div className="flex w-full justify-center">
-                      <Button
-                        size="sm"
-                        className="w-full"
-                        onPress={() => handelAddMenuItemsGroup("sdfsadf")}
-                        onClick={() => handelAddMenuItemsGroup("sdfsadf")}
-                      >
-                        add menu itemsss
-                      </Button>
+                      <Tooltip content="Add New Menu Items">
+                        <Button
+                          size="sm"
+                          className=""
+                          onClick={() => handelAddNewMenuItem(index)}
+                        >
+                          <MdAddRoad size={20} />
+                        </Button>
+                      </Tooltip>
                     </div>
                   }
                 >
                   <TableHeader
                     columns={columns}
-                    className="bg-white border-b sticky top-0"
+                    className="border-b sticky top-0"
                   >
                     {(column) => (
                       <TableColumn key={column.key}>{column.label}</TableColumn>
                     )}
                   </TableHeader>
                   <TableBody>
-                    {ele.menuItems.map((item, id) => (
-                      <TableRow key={id}>
-                        <TableCell>
-                          <Input
-                            className="p-2"
-                            color="primary"
-                            classNames={{
-                              base: " w-[150px] ",
-                              label: [
-                                // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
-                                "text-xs  text-black focus-within:text-white focus:text-white",
-                              ],
-
-                              // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
-
-                              // input: [
-                              //   "bg-transparent",
-                              //   "text-black",
-                              //   "placeholder:text-white",
-                              //   "text-sm",
-                              //   "font-bold",
-                              // ],
-
-                              inputWrapper: [
-                                "border border-slate-500/50",
-                                "text-black",
-                                "bg-transparent",
-                                "data-[hover=true]:bg-[#282551] data-[hover=true]:text-white",
-                                "data-[hover=true]:border-[#4435CF]",
-                                "focus-within:!bg-[#282551] focus-within:text-white",
-                                "focus-within:border-[#4435CF] border-2 ",
-                              ],
-                              innerWrapper: [
-                                "bg-transparent",
-                                "boder-2 border-blue-100",
-                              ],
-                            }}
-                            type="text"
-                            size="sm"
-                            // isClearable
-                            // onClear={() => {
-                            //   clearKey(
-                            //     `${index}.menuItems[${id}].Fabric[${i}].modelkey`
-                            //   );
-                            // }}
-                            // onDrop={(e) =>
-                            //   handleOnDrop(
-                            //     e,
-                            //     `${index}.menuItems[${id}].Fabric[${i}].modelkey`
-                            //   )
-                            // }
-                            // onDragOver={handleDragOver}
-                            onChange={(e) =>
-                              handleOnChange(
-                                e.target.value,
-                                `${index}.menuItems[${id}].item`
-                              )
-                            }
-                            value={item.item}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          {item.Fabric.map((fabric, i) => (
+                    {ele.menuItems
+                      .filter((app) =>
+                        app.item
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase())
+                      )
+                      .map((item, id) => (
+                        <TableRow key={id}>
+                          <TableCell>
                             <Input
                               className="p-2"
                               color="primary"
                               classNames={{
-                                base: " w-[50px] ",
+                                base: " w-[150px] ",
                                 label: [
-                                  // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
                                   "text-xs  text-black focus-within:text-white focus:text-white",
                                 ],
 
-                                // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
-
-                                // input: [
-                                //   "bg-transparent",
-                                //   "text-black",
-                                //   "placeholder:text-white",
-                                //   "text-sm",
-                                //   "font-bold",
-                                // ],
+                                input: [
+                                  `${theme == "light" ? "" : "text-white"}`,
+                                ],
 
                                 inputWrapper: [
                                   "border border-slate-500/50",
@@ -390,70 +353,101 @@ const AssemblerComponent = () => {
                               onChange={(e) =>
                                 handleOnChange(
                                   e.target.value,
-                                  `${index}.menuItems[${id}].Fabric[${i}].name`
+                                  `${index}.menuItems[${id}].item`
                                 )
                               }
-                              value={fabric.name}
+                              value={item.item}
                             />
-                          ))}
-                        </TableCell>
-                        <TableCell>
-                          {item.Fabric.map((fabric, i) => (
-                            <Input
-                              className="p-2"
-                              color="primary"
-                              classNames={{
-                                base: " w-full ",
-                                label: [
-                                  // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
-                                  "text-xs  text-black focus-within:text-white focus:text-white",
-                                ],
+                          </TableCell>
+                          <TableCell>
+                            {item.Fabric.map((fabric, i) => (
+                              <Input
+                                className="p-2"
+                                color="primary"
+                                classNames={{
+                                  base: " w-[50px] ",
+                                  label: [
+                                    "text-xs  text-black focus-within:text-white focus:text-white",
+                                  ],
+                                  input: [
+                                    `${theme == "light" ? "" : "text-white"}`,
+                                  ],
 
-                                // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
+                                  inputWrapper: [
+                                    "border border-slate-500/50",
+                                    "text-black",
+                                    "bg-transparent",
+                                    "data-[hover=true]:bg-[#282551] data-[hover=true]:text-white",
+                                    "data-[hover=true]:border-[#4435CF]",
+                                    "focus-within:!bg-[#282551] focus-within:text-white",
+                                    "focus-within:border-[#4435CF] border-2 ",
+                                  ],
+                                  innerWrapper: [
+                                    "bg-transparent",
+                                    "boder-2 border-blue-100",
+                                  ],
+                                }}
+                                type="text"
+                                size="sm"
+                                onChange={(e) =>
+                                  handleOnChange(
+                                    e.target.value,
+                                    `${index}.menuItems[${id}].Fabric[${i}].name`
+                                  )
+                                }
+                                value={fabric.name}
+                              />
+                            ))}
+                          </TableCell>
+                          <TableCell>
+                            {item.Fabric.map((fabric, i) => (
+                              <Input
+                                className="p-2"
+                                color="primary"
+                                classNames={{
+                                  base: " w-full ",
+                                  label: [
+                                    "text-xs  text-black focus-within:text-white focus:text-white",
+                                  ],
+                                  input: [
+                                    `${theme == "light" ? "" : "text-white"}`,
+                                  ],
 
-                                // input: [
-                                //   "bg-transparent",
-                                //   "text-black",
-                                //   "placeholder:text-white",
-                                //   "text-sm",
-                                //   "font-bold",
-                                // ],
-
-                                inputWrapper: [
-                                  "border border-slate-500/50",
-                                  "text-black",
-                                  "bg-transparent",
-                                  "data-[hover=true]:bg-[#282551] data-[hover=true]:text-white",
-                                  "data-[hover=true]:border-[#4435CF]",
-                                  "focus-within:!bg-[#282551] focus-within:text-white",
-                                  "focus-within:border-[#4435CF] border-2 ",
-                                ],
-                                innerWrapper: [
-                                  "bg-transparent",
-                                  "boder-2 border-blue-100",
-                                ],
-                              }}
-                              type="text"
-                              size="sm"
-                              isClearable
-                              onClear={() => {
-                                clearKey(
-                                  `${index}.menuItems[${id}].Fabric[${i}].modelkey`
-                                );
-                              }}
-                              onDrop={(e) =>
-                                handleOnDrop(
-                                  e,
-                                  `${index}.menuItems[${id}].Fabric[${i}].modelkey`
-                                )
-                              }
-                              onDragOver={handleDragOver}
-                              value={fabric.modelkey}
-                              key={i}
-                            />
-                          ))}
-                        </TableCell>
-                        {/* <TableCell>
+                                  inputWrapper: [
+                                    "border border-slate-500/50",
+                                    "text-black",
+                                    "bg-transparent",
+                                    "data-[hover=true]:bg-[#282551] data-[hover=true]:text-white",
+                                    "data-[hover=true]:border-[#4435CF]",
+                                    "focus-within:!bg-[#282551] focus-within:text-white",
+                                    "focus-within:border-[#4435CF] border-2 ",
+                                  ],
+                                  innerWrapper: [
+                                    "bg-transparent",
+                                    "boder-2 border-blue-100",
+                                  ],
+                                }}
+                                type="text"
+                                size="sm"
+                                isClearable
+                                onClear={() => {
+                                  clearKey(
+                                    `${index}.menuItems[${id}].Fabric[${i}].modelkey`
+                                  );
+                                }}
+                                onDrop={(e) =>
+                                  handleOnDrop(
+                                    e,
+                                    `${index}.menuItems[${id}].Fabric[${i}].modelkey`
+                                  )
+                                }
+                                onDragOver={handleDragOver}
+                                value={fabric.modelkey}
+                                key={i}
+                              />
+                            ))}
+                          </TableCell>
+                          {/* <TableCell>
                         {item.Fabric.map(
                           (fabric, i) =>
                             i < 3 && (
@@ -463,19 +457,8 @@ const AssemblerComponent = () => {
                                 classNames={{
                                   base: " w-full ",
                                   label: [
-                                    // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
                                     "text-xs  text-black focus-within:text-white focus:text-white",
                                   ],
-
-                                  // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
-
-                                  // input: [
-                                  //   "bg-transparent",
-                                  //   "text-black",
-                                  //   "placeholder:text-white",
-                                  //   "text-sm",
-                                  //   "font-bold",
-                                  // ],
 
                                   inputWrapper: [
                                     "border border-slate-500/50",
@@ -505,27 +488,66 @@ const AssemblerComponent = () => {
                             )
                         )}
                       </TableCell> */}
-                        <TableCell>
-                          {item.Fabric.map((fabric, i) => (
+                          <TableCell>
+                            {item.Fabric.map((fabric, i) => (
+                              <Input
+                                className="p-2"
+                                color="primary"
+                                classNames={{
+                                  base: " w-full ",
+                                  label: [
+                                    "text-xs  text-black focus-within:text-white focus:text-white",
+                                  ],
+                                  input: [
+                                    `${theme == "light" ? "" : "text-white"}`,
+                                  ],
+
+                                  inputWrapper: [
+                                    "border border-slate-500/50",
+                                    "text-black",
+                                    "bg-transparent",
+                                    "data-[hover=true]:bg-[#282551] data-[hover=true]:text-white",
+                                    "data-[hover=true]:border-[#4435CF]",
+                                    "focus-within:!bg-[#282551] focus-within:text-white",
+                                    "focus-within:border-[#4435CF] border-2 ",
+                                  ],
+                                  innerWrapper: [
+                                    "bg-transparent",
+                                    "boder-2 border-blue-100",
+                                  ],
+                                }}
+                                type="text"
+                                size="sm"
+                                key={i}
+                                value={fabric.roles}
+                                endContent={
+                                  <LiaHandPointer
+                                    className="cursor-pointer"
+                                    fill={theme == "light" ? "" : "white"}
+                                    size={20}
+                                    onClick={(e) =>
+                                      handleRolesModal(
+                                        fabric.roles,
+                                        `${index}.menuItems[${id}].Fabric[${i}].roles`
+                                      )
+                                    }
+                                  />
+                                }
+                              />
+                            ))}
+                          </TableCell>
+                          <TableCell>
                             <Input
                               className="p-2"
                               color="primary"
                               classNames={{
                                 base: " w-full ",
                                 label: [
-                                  // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
                                   "text-xs  text-black focus-within:text-white focus:text-white",
                                 ],
-
-                                // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
-
-                                // input: [
-                                //   "bg-transparent",
-                                //   "text-black",
-                                //   "placeholder:text-white",
-                                //   "text-sm",
-                                //   "font-bold",
-                                // ],
+                                input: [
+                                  `${theme == "light" ? "" : "text-white"}`,
+                                ],
 
                                 inputWrapper: [
                                   "border border-slate-500/50",
@@ -543,123 +565,57 @@ const AssemblerComponent = () => {
                               }}
                               type="text"
                               size="sm"
-                              key={i}
-                              value={fabric.roles}
                               endContent={
                                 <LiaHandPointer
+                                  fill={theme == "light" ? "" : "white"}
                                   className="cursor-pointer"
                                   size={20}
                                   onClick={(e) =>
                                     handleRolesModal(
-                                      fabric.roles,
-                                      `${index}.menuItems[${id}].Fabric[${i}].roles`
+                                      item.miroles,
+                                      `${index}.menuItems[${id}].miroles`
                                     )
                                   }
                                 />
                               }
+                              value={item.miroles}
                             />
-                          ))}
-                        </TableCell>
-                        <TableCell>
-                          <Input
-                            className="p-2"
-                            color="primary"
-                            classNames={{
-                              base: " w-full ",
-                              label: [
-                                // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
-                                "text-xs  text-black focus-within:text-white focus:text-white",
-                              ],
-
-                              // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
-
-                              // input: [
-                              //   "bg-transparent",
-                              //   "text-black",
-                              //   "placeholder:text-white",
-                              //   "text-sm",
-                              //   "font-bold",
-                              // ],
-
-                              inputWrapper: [
-                                "border border-slate-500/50",
-                                "text-black",
-                                "bg-transparent",
-                                "data-[hover=true]:bg-[#282551] data-[hover=true]:text-white",
-                                "data-[hover=true]:border-[#4435CF]",
-                                "focus-within:!bg-[#282551] focus-within:text-white",
-                                "focus-within:border-[#4435CF] border-2 ",
-                              ],
-                              innerWrapper: [
-                                "bg-transparent",
-                                "boder-2 border-blue-100",
-                              ],
-                            }}
-                            type="text"
-                            size="sm"
-                            // isClearable
-                            // onClear={() => {
-                            //   clearKey(
-                            //     `${index}.menuItems[${id}].Fabric[${i}].modelkey`
-                            //   );
-                            // }}
-                            // onDrop={(e) =>
-                            //   handleOnDrop(
-                            //     e,
-                            //     `${index}.menuItems[${id}].Fabric[${i}].modelkey`
-                            //   )
-                            // }
-                            // onDragOver={handleDragOver}
-                            value={item.miroles}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          {item.Fabric.map((fabric, i) => (
-                            <p className="flex w-full p-2 justify-between gap-2">
-                              <Button
-                                size="sm"
-                                isIconOnly
-                                onClick={() =>
-                                  handleDeleteRow(`${index}:${id}:${i}`)
-                                }
-                              >
-                                <MdDeleteOutline size={20} />
-                              </Button>
-                              {item.Fabric.length - 1 == i && (
-                                <Button
-                                  isIconOnly
-                                  size="sm"
-                                  onClick={() => handleAddRow(`${index}:${id}`)}
-                                >
-                                  <IoIosAddCircleOutline size={20} />
-                                </Button>
-                              )}
-                            </p>
-                          ))}
-                          {item.Fabric.length == 0 && (
-                            <Button
-                              isIconOnly
-                              size="sm"
-                              onClick={() => handleAddRow(`${index}:${id}`)}
-                            >
-                              <IoIosAddCircleOutline size={20} />
-                            </Button>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                          </TableCell>
+                          <TableCell>
+                            {item.Fabric.map((fabric, i) => (
+                              <p className="flex w-full p-2 justify-between gap-2">
+                                <MdDeleteOutline
+                                  size={20}
+                                  onClick={() =>
+                                    handleDeleteRow(`${index}:${id}:${i}`)
+                                  }
+                                  className="cursor-pointer"
+                                />
+                                {item.Fabric.length - 1 == i && (
+                                  <IoIosAddCircleOutline
+                                    size={20}
+                                    onClick={() =>
+                                      handleAddRow(`${index}:${id}`)
+                                    }
+                                    className="cursor-pointer"
+                                  />
+                                )}
+                              </p>
+                            ))}
+                            {item.Fabric.length == 0 && (
+                              <IoIosAddCircleOutline
+                                size={20}
+                                onClick={() => handleAddRow(`${index}:${id}`)}
+                                className="cursor-pointer"
+                              />
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
                   </TableBody>
                 </Table>
               </Tab>
             ))}
-            <Tab
-              key={"new"}
-              title={
-                <button onClick={() => setIsAddNewGroup(true)}>
-                  <IoIosAddCircleOutline size={20} />
-                </button>
-              }
-            ></Tab>
           </Tabs>
         </div>
         <RolesAssignModal
@@ -676,7 +632,7 @@ const AssemblerComponent = () => {
           <ModalContent>
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Modal Title
+                Add Menu Group
               </ModalHeader>
               <ModalBody>
                 <Input
@@ -689,19 +645,8 @@ const AssemblerComponent = () => {
                   classNames={{
                     base: " w-full ",
                     label: [
-                      // "text-sm font-bold  text-[#3243C4] focus-within:text-[#3243C4]",
                       "text-xs  text-black focus-within:text-white focus:text-white",
                     ],
-
-                    // mainWrapper: ["h-full text-white rounded-xl bg-transparent"],
-
-                    // input: [
-                    //   "bg-transparent",
-                    //   "text-black",
-                    //   "placeholder:text-white",
-                    //   "text-sm",
-                    //   "font-bold",
-                    // ],
 
                     inputWrapper: [
                       "border border-slate-500/50",
