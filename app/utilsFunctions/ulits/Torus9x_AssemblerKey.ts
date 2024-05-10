@@ -3,13 +3,13 @@ export const AssemblerJson = {
   Tenant: "",
   AppGroup: "",
   App: "",
-  roles: ['dev' , 'designer' , 'maker' , 'checker' , 'approver'],
+  roles: ["dev", "designer", "maker", "checker", "approver"],
   version: "",
   menuGroup: [
     {
-      mg1: [
+      master: [
         {
-          mi1: {
+          bankMaster: {
             df: {
               modelkey: "",
               version: "",
@@ -27,7 +27,7 @@ export const AssemblerJson = {
             },
             miroles: [],
           },
-          mi2: {
+          branchMaster: {
             df: {
               modelkey: "",
               version: "",
@@ -65,9 +65,9 @@ export const AssemblerJson = {
           },
         },
       ],
-      mg2: [
+      trn: [
         {
-          mi1: {
+          initPayment: {
             df: {
               modelkey: "2",
               version: "",
@@ -85,7 +85,7 @@ export const AssemblerJson = {
             },
             miroles: [],
           },
-          mi2: {
+          return: {
             df: {
               modelkey: "",
               version: "",
