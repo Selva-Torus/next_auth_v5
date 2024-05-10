@@ -1362,228 +1362,442 @@
 // // return the new set object
 // // console.log(obj.cpp[0].java.python);
 
-var demo = [
+// var demo = [
+//   {
+//     Code: "GSS",
+
+//     Name: "Global Software Solutions",
+
+//     Logo: "",
+
+//     AG: [
+//       {
+//         code: "NPSS",
+
+//         name: "National Payment System Strategy",
+
+//         description: "National Payment System Strategy by CBUAE",
+
+//         icon: "",
+
+//         roles: [
+//           { code: "ADMIN", name: "ADMIN" },
+//           { code: "MAKER", name: "MAKER" },
+//         ],
+
+//         APPS: [
+//           {
+//             code: "IPP",
+
+//             name: "InstantPaymentPlatform",
+
+//             description:
+//               "Instant payment platform governed by AEP(AlEthihad Payments)",
+
+//             icon: "",
+
+//             roles: [
+//               { code: "CHECKER", name: "CHECKER" },
+//               { code: "MAKER", name: "MAKER" },
+//             ],
+//           },
+
+//           {
+//             code: "EDDA",
+
+//             name: "ElectronicDirectDebitAuthorization",
+
+//             description:
+//               "Electronic DirectDebit Authorization governed by AEP(AlEthihad Payments)",
+
+//             icon: "",
+
+//             roles: [
+//               { code: "CHECKER", name: "CHECKER" },
+//               { code: "MAKER", name: "MAKER" },
+//             ],
+//           },
+
+//           {
+//             code: "ECHEQUE",
+
+//             name: "ElectronicDirectDebitAuthorization",
+
+//             description:
+//               "Electronic DirectDebit Authorization governed by AEP(AlEthihad Payments)",
+
+//             icon: "",
+
+//             roles: [
+//               { code: "CHECKER", name: "CHECKER" },
+//               { code: "MAKER", name: "MAKER" },
+//             ],
+//           },
+//         ],
+//       },
+
+//       {
+//         code: "FPS",
+
+//         name: "FastPaymentSystem",
+
+//         description: "Fast Payment System by Federal Reserve(USA)",
+
+//         icon: "",
+
+//         roles: [
+//           { code: "ADMIN", name: "ADMIN" },
+//           { code: "MAKER", name: "MAKER" },
+//         ],
+
+//         APPS: [
+//           {
+//             code: "FEDNOW",
+
+//             name: "FEDNOW Service",
+
+//             description: "FEDNOW Service by Federal Reserve(USA)",
+
+//             icon: "",
+
+//             roles: [
+//               { code: "CHECKER", name: "CHECKER" },
+//               { code: "MAKER", name: "MAKER" },
+//             ],
+//           },
+
+//           {
+//             code: "FEDWIRE",
+
+//             name: "FEDWIRE",
+
+//             description: "FEDWIRE Service by Federal Reserve(USA)",
+
+//             icon: "",
+
+//             roles: [
+//               { code: "CHECKER", name: "CHECKER" },
+//               { code: "MAKER", name: "MAKER" },
+//             ],
+//           },
+
+//           {
+//             code: "FEDACH",
+
+//             name: "FEDACH",
+
+//             description: "FEDACH Service by Federal Reserve(USA)",
+
+//             icon: "",
+
+//             roles: [
+//               { code: "CHECKER", name: "CHECKER" },
+//               { code: "MAKER", name: "MAKER" },
+//             ],
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// ];
+
+// // var demo2=
+
+// var data = {
+//   name: "hari",
+//   obj: {
+//     age: 12,
+//     roles: ["user", "admin"],
+//   },
+//   // roles: [1, "2", 3, { age: 24 }, ["hari", "amar"], 5, [{ name: "test" }, 6]],
+// };
+
+// var dddd = "";
+// var path = 0;
+// function spaces(n) {
+//   var data = "";
+//   for (let i = 0; i < n; i++) {
+//     data = data.concat(" ");
+//   }
+//   return data;
+// }
+// function splitData(ele) {
+//   // console.log(ele);
+//   if (typeof ele == "string") {
+//     for (const key in ele) {
+//       dddd = dddd.concat(`${spaces(path)} ${key}:${ele[key]}`);
+//     }
+//   }
+//   if (typeof ele == "object" && Array.isArray(ele)) {
+//     dddd = dddd.concat(`[\n`);
+//     ele.map((item) => {
+//       if (typeof item == "string" || typeof item == "number")
+//         dddd = dddd.concat(item, ",");
+//       else {
+//         splitData(item);
+//       }
+//     });
+//     dddd = dddd.concat("],\n");
+//   }
+//   if (typeof ele == "object" && !Array.isArray(ele)) {
+//     path = path + 1;
+//     dddd = dddd.concat("{\n");
+//     for (const key in ele) {
+//       if (typeof ele[key] == "string" || typeof ele[key] == "number") {
+//         dddd = dddd.concat(`${spaces(path)} ${key}:\"${ele[key]}\",\n`);
+//       }
+
+//       if (Array.isArray(ele[key])) {
+//         dddd = dddd.concat(`${spaces(path)} `, key, ":[");
+//         ele[key].map((item) => {
+//           if (typeof item == "string" || typeof item == "number")
+//             dddd = dddd.concat(item, ",");
+//           else {
+//             splitData(item);
+//           }
+//         });
+
+//         dddd = dddd.concat("],\n");
+//       }
+//       if (typeof ele[key] == "object" && !Array.isArray(ele[key])) {
+//         dddd = dddd.concat(`${spaces(path)} ${key}:`);
+//         splitData(ele[key]);
+//         path = path - 1;
+//       }
+//     }
+//     path = path - 1;
+//     dddd = dddd.concat(`${spaces(path)}},\n`);
+//   }
+// }
+
+// splitData(data);
+
+// // dddd = dddd.concat("test");
+
+// // console.log(dddd);
+
+// function call(n) {
+//   var data = "";
+//   for (let i = 0; i < n; i++) {
+//     data = data.concat(" ");
+//   }
+//   return data;
+// }
+
+// var fff = `sdfsadf${call(3)}sdfasdf`;
+
+// console.log(fff);
+
+const newData = [
   {
-    Code: "GSS",
-
-    Name: "Global Software Solutions",
-
-    Logo: "",
-
-    AG: [
+    menuGroup: "mg1",
+    menuItems: [
       {
-        code: "NPSS",
-
-        name: "National Payment System Strategy",
-
-        description: "National Payment System Strategy by CBUAE",
-
-        icon: "",
-
-        roles: [
-          { code: "ADMIN", name: "ADMIN" },
-          { code: "MAKER", name: "MAKER" },
+        item: "mi1",
+        Fabric: [
+          { name: "df", modelkey: "", version: "", roles: [] },
+          { name: "uf", modelkey: "", version: "", roles: [] },
+          { name: "pf", modelkey: "", version: "", roles: [] },
         ],
-
-        APPS: [
-          {
-            code: "IPP",
-
-            name: "InstantPaymentPlatform",
-
-            description:
-              "Instant payment platform governed by AEP(AlEthihad Payments)",
-
-            icon: "",
-
-            roles: [
-              { code: "CHECKER", name: "CHECKER" },
-              { code: "MAKER", name: "MAKER" },
-            ],
-          },
-
-          {
-            code: "EDDA",
-
-            name: "ElectronicDirectDebitAuthorization",
-
-            description:
-              "Electronic DirectDebit Authorization governed by AEP(AlEthihad Payments)",
-
-            icon: "",
-
-            roles: [
-              { code: "CHECKER", name: "CHECKER" },
-              { code: "MAKER", name: "MAKER" },
-            ],
-          },
-
-          {
-            code: "ECHEQUE",
-
-            name: "ElectronicDirectDebitAuthorization",
-
-            description:
-              "Electronic DirectDebit Authorization governed by AEP(AlEthihad Payments)",
-
-            icon: "",
-
-            roles: [
-              { code: "CHECKER", name: "CHECKER" },
-              { code: "MAKER", name: "MAKER" },
-            ],
-          },
-        ],
+        miroles: ["dev", "user"],
       },
-
       {
-        code: "FPS",
-
-        name: "FastPaymentSystem",
-
-        description: "Fast Payment System by Federal Reserve(USA)",
-
-        icon: "",
-
-        roles: [
-          { code: "ADMIN", name: "ADMIN" },
-          { code: "MAKER", name: "MAKER" },
+        item: "mi2",
+        Fabric: [
+          { name: "df", modelkey: "", version: "", roles: [] },
+          { name: "uf", modelkey: "", version: "", roles: [] },
+          { name: "pf", modelkey: "", version: "", roles: [] },
         ],
-
-        APPS: [
-          {
-            code: "FEDNOW",
-
-            name: "FEDNOW Service",
-
-            description: "FEDNOW Service by Federal Reserve(USA)",
-
-            icon: "",
-
-            roles: [
-              { code: "CHECKER", name: "CHECKER" },
-              { code: "MAKER", name: "MAKER" },
-            ],
-          },
-
-          {
-            code: "FEDWIRE",
-
-            name: "FEDWIRE",
-
-            description: "FEDWIRE Service by Federal Reserve(USA)",
-
-            icon: "",
-
-            roles: [
-              { code: "CHECKER", name: "CHECKER" },
-              { code: "MAKER", name: "MAKER" },
-            ],
-          },
-
-          {
-            code: "FEDACH",
-
-            name: "FEDACH",
-
-            description: "FEDACH Service by Federal Reserve(USA)",
-
-            icon: "",
-
-            roles: [
-              { code: "CHECKER", name: "CHECKER" },
-              { code: "MAKER", name: "MAKER" },
-            ],
-          },
+        miroles: [],
+      },
+      {
+        item: "mi3",
+        Fabric: [
+          { name: "df", modelkey: "", version: "", roles: [] },
+          { name: "uf", modelkey: "", version: "", roles: [] },
+          { name: "pf", modelkey: "", version: "", roles: [] },
         ],
+        miroles: [],
+      },
+    ],
+  },
+  {
+    menuGroup: "mg2",
+    menuItems: [
+      {
+        item: "mi1",
+        Fabric: [
+          { name: "df", modelkey: "2", version: "", roles: [] },
+          { name: "uf", modelkey: "", version: "", roles: [] },
+          { name: "pf", modelkey: "", version: "", roles: [] },
+        ],
+        miroles: [],
+      },
+      {
+        item: "mi2",
+        Fabric: [
+          { name: "df", modelkey: "", version: "", roles: [] },
+          { name: "uf", modelkey: "", version: "", roles: [] },
+          { name: "pf", modelkey: "", version: "", roles: [] },
+        ],
+        miroles: [],
       },
     ],
   },
 ];
 
-// var demo2=
-
-var data = {
-  name: "hari",
-  obj: {
-    age: 12,
-    roles: ["user", "admin"],
-  },
-  // roles: [1, "2", 3, { age: 24 }, ["hari", "amar"], 5, [{ name: "test" }, 6]],
+const AssemblerJson = {
+  AssemblerKey: "Tenant:AppGroup:App",
+  Tenant: "",
+  AppGroup: "",
+  App: "",
+  roles: ["dev", "designer", "maker", "checker", "approver"],
+  version: "",
+  menuGroup: [
+    {
+      mg1: [
+        {
+          mi1: {
+            df: {
+              modelkey: "",
+              version: "",
+              roles: [],
+            },
+            uf: {
+              modelkey: "",
+              version: "",
+              roles: [],
+            },
+            pf: {
+              modelkey: "",
+              version: "",
+              roles: [],
+            },
+            miroles: ["dev", "user"],
+          },
+          mi2: {
+            df: {
+              modelkey: "",
+              version: "",
+              roles: [],
+            },
+            uf: {
+              modelkey: "",
+              version: "",
+              roles: [],
+            },
+            pf: {
+              modelkey: "",
+              version: "",
+              roles: [],
+            },
+            miroles: [],
+          },
+          mi3: {
+            df: {
+              modelkey: "",
+              version: "",
+              roles: [],
+            },
+            uf: {
+              modelkey: "",
+              version: "",
+              roles: [],
+            },
+            pf: {
+              modelkey: "",
+              version: "",
+              roles: [],
+            },
+            miroles: [],
+          },
+        },
+      ],
+      mg2: [
+        {
+          mi1: {
+            df: {
+              modelkey: "",
+              version: "",
+              roles: [],
+            },
+            uf: {
+              modelkey: "",
+              version: "",
+              roles: [],
+            },
+            pf: {
+              modelkey: "",
+              version: "",
+              roles: [],
+            },
+            miroles: [],
+          },
+          mi2: {
+            df: {
+              modelkey: "",
+              version: "",
+              roles: [],
+            },
+            uf: {
+              modelkey: "",
+              version: "",
+              roles: [],
+            },
+            pf: {
+              modelkey: "",
+              version: "",
+              roles: [],
+            },
+            miroles: [],
+          },
+        },
+      ],
+    },
+  ],
 };
 
-var dddd = "";
-var path = 0;
-function spaces(n) {
-  var data = "";
-  for (let i = 0; i < n; i++) {
-    data = data.concat(" ");
-  }
-  return data;
-}
-function splitData(ele) {
-  // console.log(ele);
-  if (typeof ele == "string") {
-    for (const key in ele) {
-      dddd = dddd.concat(`${spaces(path)} ${key}:${ele[key]}`);
-    }
-  }
-  if (typeof ele == "object" && Array.isArray(ele)) {
-    dddd = dddd.concat(`[\n`);
-    ele.map((item) => {
-      if (typeof item == "string" || typeof item == "number")
-        dddd = dddd.concat(item, ",");
-      else {
-        splitData(item);
-      }
-    });
-    dddd = dddd.concat("],\n");
-  }
-  if (typeof ele == "object" && !Array.isArray(ele)) {
-    path = path + 1;
-    dddd = dddd.concat("{\n");
-    for (const key in ele) {
-      if (typeof ele[key] == "string" || typeof ele[key] == "number") {
-        dddd = dddd.concat(`${spaces(path)} ${key}:\"${ele[key]}\",\n`);
-      }
+function convertData(AssemblerJson) {
+  const data = [];
 
-      if (Array.isArray(ele[key])) {
-        dddd = dddd.concat(`${spaces(path)} `, key, ":[");
-        ele[key].map((item) => {
-          if (typeof item == "string" || typeof item == "number")
-            dddd = dddd.concat(item, ",");
-          else {
-            splitData(item);
-          }
+  // Loop through each menuGroup in AssemblerJson
+  AssemblerJson.menuGroup.forEach((menuGroup, index) => {
+    const group = {};
+    const groupKey = `mg${index + 1}`;
+
+    group.menuGroup = groupKey;
+    group.menuItems = [];
+
+    // Loop through each menu item in menuGroup
+    Object.keys(menuGroup[groupKey][0]).forEach((menuItemKey) => {
+      const menuItem = {
+        item: menuItemKey,
+      };
+      const itemData = menuGroup[groupKey][0][menuItemKey];
+      const fabric = [];
+
+      // Loop through df, uf, pf in menuItem
+      ["df", "uf", "pf"].forEach((fabricKey) => {
+        fabric.push({
+          name: fabricKey,
+          modelkey: itemData[fabricKey].modelkey,
+          version: itemData[fabricKey].version,
+          roles: itemData[fabricKey].roles,
         });
+      });
 
-        dddd = dddd.concat("],\n");
-      }
-      if (typeof ele[key] == "object" && !Array.isArray(ele[key])) {
-        dddd = dddd.concat(`${spaces(path)} ${key}:`);
-        splitData(ele[key]);
-        path = path - 1;
-      }
-    }
-    path = path - 1;
-    dddd = dddd.concat(`${spaces(path)}},\n`);
-  }
-}
+      menuItem.Fabric = fabric;
+      menuItem.miroles = itemData.miroles;
 
-splitData(data);
+      group.menuItems.push(menuItem);
+    });
 
-// dddd = dddd.concat("test");
+    data.push(group);
+  });
 
-console.log(dddd);
-
-function call(n) {
-  var data = "";
-  for (let i = 0; i < n; i++) {
-    data = data.concat(" ");
-  }
   return data;
 }
 
-var fff = `sdfsadf${call(3)}sdfasdf`;
-
-// console.log(fff);
+// Usage
+const data = convertData(AssemblerJson);
+console.log(JSON.stringify(data));
