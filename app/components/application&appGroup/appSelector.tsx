@@ -15,7 +15,7 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/react";
-import AccordianWindow from "../propertise/Properties";
+import AccordianWindow from "../propertyWindow/Properties";
 
 interface Response {
   data: any[];
