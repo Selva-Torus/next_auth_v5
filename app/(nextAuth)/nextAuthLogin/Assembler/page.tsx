@@ -36,7 +36,11 @@ const Home = () => {
     (async () => {
       try {
         const res = await axios
-          .get("http://192.168.2.110:3002/pe/processLog")
+          .get("http://192.168.2.110:3002/pe/processLog", {
+            headers: {
+              role: "Admin",
+            },
+          })
           .then((res) => res.data);
         // console.log(res);
 
