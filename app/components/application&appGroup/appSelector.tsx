@@ -167,7 +167,7 @@ const appSelector = () => {
               </ModalFooter>
             </ModalContent>
           </Modal>
-          <div className="w-full flex">
+          <div className="w-full flex justify-between">
             <Applist appGroup={selectedAppGroup} />
             {isProps && <AccordianWindow />}
           </div>

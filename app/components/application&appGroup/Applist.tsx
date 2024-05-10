@@ -113,7 +113,7 @@ const Applist = ({ appGroup }) => {
   return (
     <div className="flex flex-col h-full pt-4">
       <h2 className="font-bold text-2xl text-center">{appGroup}</h2>
-      <div className="grid grid-cols-10">
+      <div className="flex flex-wrap">
         {applications.length ? (
           applications.map((app, id) => (
             <div key={id}>
